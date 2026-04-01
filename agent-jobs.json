@@ -1,0 +1,127 @@
+[
+  {
+    "token": "0x824768fbcf4133c84cbe741ba89dcf507f014444",
+    "agentType": "hunter",
+    "budget": "0.01",
+    "hours": "1",
+    "tg": "",
+    "jobId": 8,
+    "owner": "0x3695FaAe9F41d633DC79eb1b004a5A393fFf5380",
+    "thresholds": {
+      "minTokenAmount": 10,
+      "minBuyBNB": 0,
+      "minHoldSeconds": 10,
+      "minReferrals": 0
+    },
+    "active": false,
+    "createdAt": 1773579955098,
+    "cancelledAt": 1773581191369
+  },
+  {
+    "token": "0xa7f2181449264352fc2a9798cb036b0b1bbaffff",
+    "agentType": "hunter",
+    "budget": "0.01",
+    "hours": "1",
+    "tg": "",
+    "jobId": 9,
+    "owner": "0x3695FaAe9F41d633DC79eb1b004a5A393fFf5380",
+    "thresholds": {
+      "minTokenAmount": 1000,
+      "minBuyBNB": 0,
+      "minHoldSeconds": 1,
+      "minReferrals": 0
+    },
+    "active": false,
+    "createdAt": 1773580860609,
+    "cancelledAt": 1773581191369
+  },
+  {
+    "token": "0x26984d796f86e01d7f3b8bcea20c144b68244444",
+    "agentType": "strategist",
+    "budget": "0.01",
+    "hours": "120",
+    "tg": "",
+    "jobId": 0,
+    "owner": "0x77044EebA9d094aF5fD93CB977bb82a583A5a26E",
+    "thresholds": {
+      "minTokenAmount": 0,
+      "minBuyBNB": 0,
+      "minHoldSeconds": 0,
+      "minReferrals": 0
+    },
+    "active": false,
+    "createdAt": 1773913441746,
+    "cancelledAt": 1773937947968
+  },
+  {
+    "token": "0x26984d796f86e01d7f3b8bcea20c144b68244444",
+    "agentType": "strategist",
+    "budget": "0.01",
+    "hours": "1",
+    "tg": "",
+    "jobId": 3,
+    "owner": "0x77044EebA9d094aF5fD93CB977bb82a583A5a26E",
+    "thresholds": {
+      "minTokenAmount": 0,
+      "minBuyBNB": 0,
+      "minHoldSeconds": 0,
+      "minReferrals": 0
+    },
+    "active": false,
+    "createdAt": 1773940063607,
+    "cancelledAt": 1773940159817
+  },
+  {
+    "token": "0x2e591b13d3caf27adf1db47d75278315d0754444",
+    "agentType": "hunter",
+    "budget": "0.01",
+    "hours": "120",
+    "tg": "",
+    "jobId": 4,
+    "owner": "0x77044EebA9d094aF5fD93CB977bb82a583A5a26E",
+    "thresholds": {
+      "minTokenAmount": 0,
+      "minBuyBNB": 0,
+      "minHoldSeconds": 0,
+      "minReferrals": 0
+    },
+    "active": false,
+    "createdAt": 1773975692573,
+    "cancelledAt": 1774340172167
+  },
+  {
+    "token": "0x26984d796f86e01d7f3b8bcea20c144b68244444",
+    "agentType": "strategist",
+    "budget": "0.03",
+    "hours": "120",
+    "tg": "",
+    "jobId": 5,
+    "owner": "0x77044EebA9d094aF5fD93CB977bb82a583A5a26E",
+    "thresholds": {
+      "minTokenAmount": 0,
+      "minBuyBNB": 0,
+      "minHoldSeconds": 0,
+      "minReferrals": 0
+    },
+    "active": false,
+    "createdAt": 1773977265524,
+    "cancelledAt": 1774340188641
+  },
+  {
+    "token": "0xa46198e80b01df2e1edab360eb5b6b4dd25e4444",
+    "agentType": "hunter",
+    "budget": "0.01",
+    "hours": "120",
+    "tg": "",
+    "jobId": 6,
+    "owner": "0x77044EebA9d094aF5fD93CB977bb82a583A5a26E",
+    "thresholds": {
+      "minTokenAmount": 0,
+      "minBuyBNB": 0,
+      "minHoldSeconds": 0,
+      "minReferrals": 0
+    },
+    "active": true,
+    "createdAt": 1774341276973
+  }
+]

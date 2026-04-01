@@ -1,0 +1,48 @@
+{
+  "bsc": {
+    "bnbChg": "1.47",
+    "fundRate": "0.0100",
+    "obRatio": "1.63",
+    "tokens": {
+      "0xa46198e80b01df2e1edab360eb5b6b4dd25e4444": {
+        "sym": "FOURAI",
+        "price": 7.183752264745094e-9,
+        "liq": 10.669167610406213,
+        "chain": "bsc",
+        "jobId": 6
+      }
+    },
+    "ts": 1775026117143,
+    "chain": "bsc"
+  },
+  "xlayer": {
+    "taskCount": 0,
+    "activeTasks": 0,
+    "tokens": {},
+    "ts": 1775026116999,
+    "chain": "xlayer"
+  },
+  "decision": {
+    "action": "CREATE",
+    "taskType": 2,
+    "reason": "资金费负值抄底",
+    "priority": "MED",
+    "rewardMul": 1.2,
+    "persona": "strategist",
+    "decidedAt": 1774966220892,
+    "source": "rules",
+    "pending": false,
+    "executed": []
+  },
+  "lastObserve": 1775026117143,
+  "observerAlive": true,
+  "decisionAgent": {
+    "alive": true,
+    "lastRun": 1774966220892
+  },
+  "executorAgent": {
+    "alive": true,
+    "lastRun": 1774966279123,
+    "lastResults": []
+  }
+}

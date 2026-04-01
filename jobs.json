@@ -1,0 +1,26 @@
+[
+  {
+    "jobId": 0,
+    "token": "",
+    "agentType": "hunter",
+    "budget": "0.001",
+    "hours": 24,
+    "owner": "0xfBac39F42c9e2e9e1A0e6c085E8a73DC1C2c64e3",
+    "status": "active",
+    "ts": 1742300000000,
+    "description": "Seki Agent: \u730e\u624b | Token: test",
+    "thresholds": {}
+  },
+  {
+    "jobId": 1,
+    "token": "",
+    "agentType": "hunter",
+    "budget": "0.001",
+    "hours": 24,
+    "owner": "0xfBac39F42c9e2e9e1A0e6c085E8a73DC1C2c64e3",
+    "status": "active",
+    "ts": 1742300060000,
+    "description": "Seki Agent: \u730e\u624b | Token: test2",
+    "thresholds": {}
+  }
+]

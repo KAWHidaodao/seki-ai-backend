@@ -1,0 +1,36 @@
+{
+  "0x26984d796f86e01d7f3b8bcea20c144b68244444": {
+    "vol24hPrev": null,
+    "vol24hTs": 0,
+    "rolloverBNB": 0,
+    "diamondSnap": {},
+    "persona": "hunter",
+    "personaTs": 1774338843499,
+    "lastBudgetShare": {
+      "0x26984d796f86e01d7f3b8bcea20c144b68244444": 0.5
+    },
+    "lastRun": 1774340121985
+  },
+  "0x2e591b13d3caf27adf1db47d75278315d0754444": {
+    "vol24hPrev": 162.7,
+    "vol24hTs": 1774339520552,
+    "rolloverBNB": 0,
+    "diamondSnap": {},
+    "persona": "hunter",
+    "personaTs": 1774339340500,
+    "lastBudgetShare": {
+      "0x2e591b13d3caf27adf1db47d75278315d0754444": 0.5
+    },
+    "lastRun": 1774339755435
+  },
+  "0xa46198e80b01df2e1edab360eb5b6b4dd25e4444": {
+    "vol24hPrev": 18.36,
+    "vol24hTs": 1775006619657,
+    "rolloverBNB": 0,
+    "diamondSnap": {},
+    "persona": "hunter",
+    "personaTs": 1775024317855,
+    "lastBudgetShare": {},
+    "lastRun": 1775025971351
+  }
+}
