@@ -11,6 +11,7 @@
  <meta property="og:image" content="/seki-avatar.jpg">
  <meta property="og:description" content="AI Agent 自主观察链上数据、发布激励任务、结算奖励。">
 <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/theme-mystical.css">
 </head>
 <body style="padding-top:64px">
 <nav class="nav">
@@ -28,6 +29,7 @@
  <button class="nl" onclick="G('delegate',this)">委托 Agent</button>
  <button class="nl" onclick="G('faoxing',this)">发行</button>
  <button class="nl" onclick="G('wendang',this)">文档</button>
+ <button class="nl" onclick="location.href='/evolution'">🧬 进化</button>
  <button class="nl" onclick="location.href='/chat'">💬</button>
  </div>
  <div class="nav-right">
@@ -204,22 +206,22 @@
  </div>
  </div>
  <div id="xl-ecosystem-panel" style="display:none;margin-bottom:28px">
-  <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#a78bfa;margin-bottom:16px">◆ &nbsp;AGENT PROTOCOL ECOSYSTEM</div>
+  <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#e6c44d;margin-bottom:16px">◆ &nbsp;AGENT PROTOCOL ECOSYSTEM</div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:20px">
     <div style="padding:20px;background:rgba(99,58,237,.08);border:1px solid rgba(99,58,237,.2);border-radius:16px">
-      <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px">SEKIREGISTRY</div>
+      <div style="font-size:11px;color:#e6c44d;font-weight:700;margin-bottom:8px">SEKIREGISTRY</div>
       <div style="font-size:15px;font-weight:800;margin-bottom:6px">通用 Agent 协议</div>
       <div style="font-size:11px;color:var(--tx3);line-height:1.7;margin-bottom:12px">订阅市场 + 任务外包 + DAO 执行</div>
       <div style="font-family:monospace;font-size:10px;color:var(--tx3);background:rgba(0,0,0,.3);padding:6px 8px;border-radius:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">0x72F4eA26f2f7338C97618E623be420d840FFb7Bf</div>
     </div>
     <div style="padding:20px;background:rgba(99,58,237,.08);border:1px solid rgba(99,58,237,.2);border-radius:16px">
-      <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px">MEMEMOUNTYV2</div>
+      <div style="font-size:11px;color:#e6c44d;font-weight:700;margin-bottom:8px">MEMEMOUNTYV2</div>
       <div style="font-size:15px;font-weight:800;margin-bottom:6px">Meme 激励合约</div>
       <div style="font-size:11px;color:var(--tx3);line-height:1.7;margin-bottom:12px">持仓任务 + 买入任务 + Agent 自动发布</div>
       <div style="font-family:monospace;font-size:10px;color:var(--tx3);background:rgba(0,0,0,.3);padding:6px 8px;border-radius:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">0xBce8A6124255c0bB1e65DF6bb72A53833261455f</div>
     </div>
     <div style="padding:20px;background:rgba(99,58,237,.08);border:1px solid rgba(99,58,237,.2);border-radius:16px">
-      <div style="font-size:11px;color:#a78bfa;font-weight:700;margin-bottom:8px">AGENTREGISTRY</div>
+      <div style="font-size:11px;color:#e6c44d;font-weight:700;margin-bottom:8px">AGENTREGISTRY</div>
       <div style="font-size:15px;font-weight:800;margin-bottom:6px">Agent 注册中心</div>
       <div style="font-size:11px;color:var(--tx3);line-height:1.7;margin-bottom:12px">ERC-8183 · 税收池 · 委托管理</div>
       <div style="font-family:monospace;font-size:10px;color:var(--tx3);background:rgba(0,0,0,.3);padding:6px 8px;border-radius:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">0xCB778Ac6A811A2712764F2cee69748CaCb71b80f</div>
@@ -228,7 +230,7 @@
   <!-- X Layer 实时数据 -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
     <div style="padding:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;text-align:center">
-      <div style="font-size:20px;font-weight:900;color:#a78bfa" id="xl-task-count">—</div>
+      <div style="font-size:20px;font-weight:900;color:#e6c44d" id="xl-task-count">—</div>
       <div style="font-size:10px;color:var(--tx3);margin-top:4px">链上任务</div>
     </div>
     <div style="padding:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;text-align:center">
@@ -245,7 +247,7 @@
     </div>
   </div>
   <div style="margin-top:14px;text-align:center">
-    <button onclick="G('apps',document.getElementById('nav-apps'))" style="padding:10px 24px;background:rgba(99,58,237,.2);border:1px solid rgba(99,58,237,.4);border-radius:10px;color:#a78bfa;font-size:13px;font-weight:700;cursor:pointer">进入应用市场 →</button>
+    <button onclick="G('apps',document.getElementById('nav-apps'))" style="padding:10px 24px;background:rgba(99,58,237,.2);border:1px solid rgba(99,58,237,.4);border-radius:10px;color:#e6c44d;font-size:13px;font-weight:700;cursor:pointer">进入应用市场 →</button>
   </div>
 </div>
 <div id="hot-page-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
@@ -267,7 +269,7 @@
     <a href="https://dyorswap.org/launch/?chainId=196" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);border-radius:12px;color:#f59e0b;font-size:13px;font-weight:700;text-decoration:none;cursor:pointer">
       <span>前往 DyorSwap 发币 ↗</span>
     </a>
-    <button onclick="switchChain('bsc')" style="padding:12px 24px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);border-radius:12px;color:var(--p);font-size:13px;font-weight:700;cursor:pointer">
+    <button onclick="switchChain('bsc')" style="padding:12px 24px;background:rgba(184,134,11,.15);border:1px solid rgba(184,134,11,.4);border-radius:12px;color:var(--p);font-size:13px;font-weight:700;cursor:pointer">
       切换回 BSC 发币
     </button>
   </div>
@@ -275,21 +277,21 @@
 <div class="label" style="margin-bottom:20px">◆ &nbsp;POWERED BY FOUR.MEME</div>
  
  <div style="display:flex;flex-direction:column;gap:0;margin-bottom:40px;position:relative">
- <div style="position:absolute;left:15px;top:24px;bottom:24px;width:1px;background:linear-gradient(to bottom,rgba(124,58,237,.4),rgba(59,130,246,.2));z-index:0"></div>
+ <div style="position:absolute;left:15px;top:24px;bottom:24px;width:1px;background:linear-gradient(to bottom,rgba(184,134,11,.4),rgba(59,130,246,.2));z-index:0"></div>
  <div style="display:flex;gap:20px;align-items:flex-start;position:relative;padding-bottom:28px">
- <div style="width:32px;height:32px;border-radius:50%;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--p);flex-shrink:0;z-index:1">01</div>
+ <div style="width:32px;height:32px;border-radius:50%;background:rgba(184,134,11,.15);border:1px solid rgba(184,134,11,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--p);flex-shrink:0;z-index:1">01</div>
  <div style="padding-top:6px"><div style="font-size:14px;font-weight:800;color:var(--tx);margin-bottom:4px">连接钱包 · 签名验证</div><div style="font-size:12px;color:var(--tx3);line-height:1.6">MetaMask 签名确认身份，不消耗 Gas · 每个钱包限发 3 次</div></div>
  </div>
  <div style="display:flex;gap:20px;align-items:flex-start;position:relative;padding-bottom:28px">
- <div style="width:32px;height:32px;border-radius:50%;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--p);flex-shrink:0;z-index:1">02</div>
+ <div style="width:32px;height:32px;border-radius:50%;background:rgba(184,134,11,.15);border:1px solid rgba(184,134,11,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--p);flex-shrink:0;z-index:1">02</div>
  <div style="padding-top:6px"><div style="font-size:14px;font-weight:800;color:var(--tx);margin-bottom:4px">填写代币信息</div><div style="font-size:12px;color:var(--tx3);line-height:1.6">名称、符号、描述、Logo，设定税率（推荐 5%）</div></div>
  </div>
  <div style="display:flex;gap:20px;align-items:flex-start;position:relative;padding-bottom:28px">
- <div style="width:32px;height:32px;border-radius:50%;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--p);flex-shrink:0;z-index:1">03</div>
+ <div style="width:32px;height:32px;border-radius:50%;background:rgba(184,134,11,.15);border:1px solid rgba(184,134,11,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--p);flex-shrink:0;z-index:1">03</div>
  <div style="padding-top:6px"><div style="font-size:14px;font-weight:800;color:var(--tx);margin-bottom:4px">平台代发上链</div><div style="font-size:12px;color:var(--tx3);line-height:1.6">平台调用 Four.meme 部署合约 · 无需你支付 Gas</div></div>
  </div>
  <div style="display:flex;gap:20px;align-items:flex-start;position:relative">
- <div style="width:32px;height:32px;border-radius:50%;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--p);flex-shrink:0;z-index:1">04</div>
+ <div style="width:32px;height:32px;border-radius:50%;background:rgba(184,134,11,.15);border:1px solid rgba(184,134,11,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--p);flex-shrink:0;z-index:1">04</div>
  <div style="padding-top:6px"><div style="font-size:14px;font-weight:800;color:var(--tx);margin-bottom:4px">委托 AI Agent 运营</div><div style="font-size:12px;color:var(--tx3);line-height:1.6">税收自动进 taxPool，Agent 无需配置即开始运营 · 可选充值预算加速</div></div>
  </div>
  </div>
@@ -300,19 +302,19 @@
  <div class="label" style="margin-bottom:16px">◆ &nbsp;委托 Agent 是什么</div>
  <div style="display:flex;flex-direction:column;gap:14px">
  <div style="display:flex;gap:14px;align-items:flex-start">
- <div style="min-width:36px;height:36px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p)">1</div>
+ <div style="min-width:36px;height:36px;background:rgba(184,134,11,.12);border:1px solid rgba(184,134,11,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p)">1</div>
  <div><div style="font-size:13px;font-weight:700;margin-bottom:3px">充值预算，Agent 替你花</div><div style="font-size:12px;color:var(--tx2);line-height:1.6">你充值 BNB 预算到合约，Agent 自动决定何时发任务、发多少奖励——你不需要每次手动操作</div></div>
  </div>
  <div style="display:flex;gap:14px;align-items:flex-start">
- <div style="min-width:36px;height:36px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p)">2</div>
+ <div style="min-width:36px;height:36px;background:rgba(184,134,11,.12);border:1px solid rgba(184,134,11,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p)">2</div>
  <div><div style="font-size:13px;font-weight:700;margin-bottom:3px">AI 自主决策，链上执行</div><div style="font-size:12px;color:var(--tx2);line-height:1.6">Agent 每3分钟扫链上数据，用 LLM 分析判断，直接调合约发任务、核查完成、打款奖励</div></div>
  </div>
  <div style="display:flex;gap:14px;align-items:flex-start">
- <div style="min-width:36px;height:36px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p)">3</div>
+ <div style="min-width:36px;height:36px;background:rgba(184,134,11,.12);border:1px solid rgba(184,134,11,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p)">3</div>
  <div><div style="font-size:13px;font-weight:700;margin-bottom:3px">资金安全，随时可退</div><div style="font-size:12px;color:var(--tx2);line-height:1.6">预算锁在 ERC-8183 合约里，Agent 私钥只能出 Gas，无法提走你的资金。委托到期直接取回</div></div>
  </div>
  <div style="display:flex;gap:14px;align-items:flex-start">
- <div style="min-width:36px;height:36px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p)">4</div>
+ <div style="min-width:36px;height:36px;background:rgba(184,134,11,.12);border:1px solid rgba(184,134,11,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p)">4</div>
  <div><div style="font-size:13px;font-weight:700;margin-bottom:3px">实时看板，全程透明</div><div style="font-size:12px;color:var(--tx2);line-height:1.6">「我的」页查看每笔任务进度、完成用户、打款 TX，每一笔都在链上可查</div></div>
  </div>
  </div>
@@ -365,7 +367,7 @@
  </div>
  </div>
  <!-- 税收→Agent 运营说明 -->
- <div style="padding:14px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.15);border-radius:12px;margin-bottom:4px">
+ <div style="padding:14px;background:rgba(184,134,11,.06);border:1px solid rgba(184,134,11,.15);border-radius:12px;margin-bottom:4px">
  <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--p)">🔄 税收自动驱动 Agent 运营</div>
  <div style="display:flex;flex-direction:column;gap:8px" id="tax-flow-desc">
  <div class="empty" style="font-size:12px;color:var(--tx3)">← 先选择税率</div>
@@ -405,16 +407,16 @@
  <div id="inline-delegate" style="display:none;margin-top:20px;border-top:1px solid rgba(255,255,255,.08);padding-top:20px;text-align:left">
  <div style="font-size:13px;font-weight:800;color:var(--tx);margin-bottom:16px">选择 Agent 类型</div>
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
- <div onclick="dgSelectAgent('hunter');this.parentNode.querySelectorAll('[data-ag]').forEach(e=>e.style.borderColor='rgba(255,255,255,.1)');this.style.borderColor='rgba(124,58,237,.6)'" data-ag="hunter" style="padding:12px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:all .2s">
+ <div onclick="dgSelectAgent('hunter');this.parentNode.querySelectorAll('[data-ag]').forEach(e=>e.style.borderColor='rgba(255,255,255,.1)');this.style.borderColor='rgba(184,134,11,.6)'" data-ag="hunter" style="padding:12px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:all .2s">
  <div style="font-size:16px">🔴</div><div style="font-size:12px;font-weight:700;color:var(--tx);margin-top:4px">猎手</div><div style="font-size:10px;color:var(--tx3)">激进拉新</div>
  </div>
- <div onclick="dgSelectAgent('strategist');this.parentNode.querySelectorAll('[data-ag]').forEach(e=>e.style.borderColor='rgba(255,255,255,.1)');this.style.borderColor='rgba(124,58,237,.6)'" data-ag="strategist" style="padding:12px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:all .2s">
+ <div onclick="dgSelectAgent('strategist');this.parentNode.querySelectorAll('[data-ag]').forEach(e=>e.style.borderColor='rgba(255,255,255,.1)');this.style.borderColor='rgba(184,134,11,.6)'" data-ag="strategist" style="padding:12px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:all .2s">
  <div style="font-size:16px">🟡</div><div style="font-size:12px;font-weight:700;color:var(--tx);margin-top:4px">军师</div><div style="font-size:10px;color:var(--tx3)">数据驱动</div>
  </div>
- <div onclick="dgSelectAgent('herald');this.parentNode.querySelectorAll('[data-ag]').forEach(e=>e.style.borderColor='rgba(255,255,255,.1)');this.style.borderColor='rgba(124,58,237,.6)'" data-ag="herald" style="padding:12px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:all .2s">
+ <div onclick="dgSelectAgent('herald');this.parentNode.querySelectorAll('[data-ag]').forEach(e=>e.style.borderColor='rgba(255,255,255,.1)');this.style.borderColor='rgba(184,134,11,.6)'" data-ag="herald" style="padding:12px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:all .2s">
  <div style="font-size:16px">🟢</div><div style="font-size:12px;font-weight:700;color:var(--tx);margin-top:4px">传令官</div><div style="font-size:10px;color:var(--tx3)">故事叙事</div>
  </div>
- <div onclick="dgSelectAgent('custom');this.parentNode.querySelectorAll('[data-ag]').forEach(e=>e.style.borderColor='rgba(255,255,255,.1)');this.style.borderColor='rgba(124,58,237,.6)'" data-ag="custom" style="padding:12px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:all .2s">
+ <div onclick="dgSelectAgent('custom');this.parentNode.querySelectorAll('[data-ag]').forEach(e=>e.style.borderColor='rgba(255,255,255,.1)');this.style.borderColor='rgba(184,134,11,.6)'" data-ag="custom" style="padding:12px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:all .2s">
  <div style="font-size:16px"></div><div style="font-size:12px;font-weight:700;color:var(--tx);margin-top:4px">自定义</div><div style="font-size:10px;color:var(--tx3)">完全掌控</div>
  </div>
  </div>
@@ -584,7 +586,7 @@
 <div id="page-fair" class="pw" style="display:none">
   <div style="max-width:900px;margin:0 auto;padding:104px 28px 100px">
     <div style="display:flex;gap:8px;margin-bottom:40px;flex-wrap:wrap">
-      <button id="fair-page-security" onclick="fairTab('security',this)" style="padding:8px 20px;border-radius:20px;border:1px solid var(--p);background:rgba(124,58,237,.15);color:var(--p);font-size:13px;font-weight:700;cursor:pointer"> 公平保障</button>
+      <button id="fair-page-security" onclick="fairTab('security',this)" style="padding:8px 20px;border-radius:20px;border:1px solid var(--p);background:rgba(184,134,11,.15);color:var(--p);font-size:13px;font-weight:700;cursor:pointer"> 公平保障</button>
       
     </div>
     <div id="fair-section-security">
@@ -599,8 +601,8 @@
 
 <!-- 核心原则 3列 -->
 <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:64px">
-  <div style="padding:28px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.2);border-radius:20px">
-    <div style="width:36px;height:36px;background:rgba(124,58,237,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:16px">⛓</div>
+  <div style="padding:28px;background:rgba(184,134,11,.06);border:1px solid rgba(184,134,11,.2);border-radius:20px">
+    <div style="width:36px;height:36px;background:rgba(184,134,11,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:16px">⛓</div>
     <div style="font-size:15px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px">资金链上托管</div>
     <div style="font-size:13px;color:var(--tx2);line-height:1.8">委托预算直接锁入 AgentRegistry 合约。平台服务器、Agent 钱包、任何第三方都无法直接提取。资金只能由合约规则触发流动，地址公开可链上验证。</div>
   </div>
@@ -719,7 +721,7 @@
       <div style="color:var(--tx3);font-size:11px">持有人每次买卖<br>自动扣除 3%</div>
     </div>
     <div style="padding:0 12px;color:rgba(255,255,255,.3);font-size:20px">→</div>
-    <div style="padding:16px 20px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.25);border-radius:12px;font-size:12px;text-align:center;min-width:130px">
+    <div style="padding:16px 20px;background:rgba(184,134,11,.08);border:1px solid rgba(184,134,11,.25);border-radius:12px;font-size:12px;text-align:center;min-width:130px">
       <div style="font-weight:700;color:var(--p);margin-bottom:4px">AgentRegistry</div>
       <div style="color:var(--tx3);font-size:11px">taxPool 余额<br>合约持有</div>
     </div>
@@ -745,7 +747,7 @@
   <h3 style="font-size:clamp(20px,3vw,32px);font-weight:900;letter-spacing:-1px;margin-bottom:32px">六重链上保障</h3>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
     <div style="padding:22px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px">
-      <div style="width:32px;height:32px;background:rgba(124,58,237,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p);margin-bottom:14px">01</div>
+      <div style="width:32px;height:32px;background:rgba(184,134,11,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p);margin-bottom:14px">01</div>
       <div style="font-size:13px;font-weight:800;margin-bottom:6px">合约托管</div>
       <div style="font-size:12px;color:var(--tx3);line-height:1.7">资金锁在 AgentRegistry，不经过任何私人钱包，地址可链上验证</div>
     </div>
@@ -770,7 +772,7 @@
       <div style="font-size:12px;color:var(--tx3);line-height:1.7">领奖时合约自动查链上余额，未达持仓门槛无法领取，防止女巫攻击</div>
     </div>
     <div style="padding:22px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px">
-      <div style="width:32px;height:32px;background:rgba(167,139,250,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#a78bfa;margin-bottom:14px">06</div>
+      <div style="width:32px;height:32px;background:rgba(230,196,77,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#e6c44d;margin-bottom:14px">06</div>
       <div style="font-size:13px;font-weight:800;margin-bottom:6px">平台永久可退出</div>
       <div style="font-size:12px;color:var(--tx3);line-height:1.7">即使 Seki 关闭，已委托资金退款依然有效——合约代码在链上，不在服务器上</div>
     </div>
@@ -803,19 +805,19 @@
     </div>
   </div>
   <!-- X Layer -->
-  <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#a78bfa;margin-bottom:12px;display:flex;align-items:center;gap:8px">
-    <span style="width:8px;height:8px;border-radius:50%;background:#a78bfa;display:inline-block"></span>EVM 兼容链 (chainId: 196)
+  <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#e6c44d;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+    <span style="width:8px;height:8px;border-radius:50%;background:#e6c44d;display:inline-block"></span>EVM 兼容链 (chainId: 196)
   </div>
-  <div style="background:rgba(255,255,255,.03);border:1px solid rgba(167,139,250,.15);border-radius:16px;overflow:hidden">
+  <div style="background:rgba(255,255,255,.03);border:1px solid rgba(230,196,77,.15);border-radius:16px;overflow:hidden">
     <div style="display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06)">
-      <div style="font-size:12px;font-weight:700;white-space:nowrap">MemeBountyV2 <span style="color:#a78bfa;font-size:10px">v1</span></div>
+      <div style="font-size:12px;font-weight:700;white-space:nowrap">MemeBountyV2 <span style="color:#e6c44d;font-size:10px">v1</span></div>
       <div style="font-family:monospace;font-size:11px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">0xBce8A6124255c0bB1e65DF6bb72A53833261455f</div>
-      <a style="font-size:11px;color:#a78bfa;white-space:nowrap;text-decoration:none" href="https://www.oklink.com/xlayer/address/0xBce8A6124255c0bB1e65DF6bb72A53833261455f" target="_blank">↗ 浏览器</a>
+      <a style="font-size:11px;color:#e6c44d;white-space:nowrap;text-decoration:none" href="https://www.oklink.com/xlayer/address/0xBce8A6124255c0bB1e65DF6bb72A53833261455f" target="_blank">↗ 浏览器</a>
     </div>
     <div style="display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:16px 20px">
-      <div style="font-size:12px;font-weight:700;white-space:nowrap">AgentRegistry <span style="color:#a78bfa;font-size:10px">v1</span></div>
+      <div style="font-size:12px;font-weight:700;white-space:nowrap">AgentRegistry <span style="color:#e6c44d;font-size:10px">v1</span></div>
       <div style="font-family:monospace;font-size:11px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">0xCB778Ac6A811A2712764F2cee69748CaCb71b80f</div>
-      <a style="font-size:11px;color:#a78bfa;white-space:nowrap;text-decoration:none" href="https://www.oklink.com/xlayer/address/0xCB778Ac6A811A2712764F2cee69748CaCb71b80f" target="_blank">↗ 浏览器</a>
+      <a style="font-size:11px;color:#e6c44d;white-space:nowrap;text-decoration:none" href="https://www.oklink.com/xlayer/address/0xCB778Ac6A811A2712764F2cee69748CaCb71b80f" target="_blank">↗ 浏览器</a>
     </div>
   </div>
 </div>
@@ -882,7 +884,7 @@
 
 <!-- 顶部 Hero -->
 <div style="position:relative;overflow:hidden;padding:80px 24px 60px;text-align:center">
- <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(124,58,237,.18) 0%,transparent 70%);pointer-events:none"></div>
+ <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(184,134,11,.18) 0%,transparent 70%);pointer-events:none"></div>
  <div class="label" style="margin-bottom:14px;justify-content:center">◆ DELEGATE TO AGENT</div>
  <h2 class="headline" style="font-size:clamp(32px,5vw,52px);margin-bottom:16px;line-height:1.1">Delegate to <span class="accent">Agent</span></h2>
  <p style="font-size:14px;color:var(--tx2);max-width:480px;margin:0 auto;line-height:1.9">充值预算，Agent 自主运营。链上透明，资金托管合约，随时可退款。</p>
@@ -989,7 +991,7 @@
 
  <div class="dg-agent-card" id="dga-custom" onclick="dgSelectAgent('custom')" style="padding:20px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.08);border-radius:16px;cursor:pointer;transition:all .2s">
  <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
- <div style="width:40px;height:40px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+ <div style="width:40px;height:40px;background:rgba(184,134,11,.1);border:1px solid rgba(184,134,11,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
    <div style="width:14px;height:14px;background:var(--p);border-radius:3px"></div>
  </div>
  <div style="flex:1">
@@ -1016,7 +1018,7 @@
 
  <!-- 步骤指示器 -->
  <div style="display:flex;gap:0;margin-bottom:24px">
- <div id="dgs-1" style="flex:1;padding:12px 14px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.35);border-right:none;border-radius:10px 0 0 10px">
+ <div id="dgs-1" style="flex:1;padding:12px 14px;background:rgba(184,134,11,.12);border:1px solid rgba(184,134,11,.35);border-right:none;border-radius:10px 0 0 10px">
  <div style="font-size:10px;font-weight:700;color:var(--p);letter-spacing:1px">STEP 1</div>
  <div style="font-size:12px;font-weight:700;color:var(--tx);margin-top:2px">配置参数</div>
  </div>
@@ -1073,7 +1075,7 @@
  </div>
 
  <!-- 自定义策略（仅 custom 模式显示）-->
- <div id="dg-custom-block" style="display:none;background:rgba(255,255,255,.03);border:1px solid rgba(124,58,237,.2);border-radius:16px;padding:20px;margin-bottom:16px">
+ <div id="dg-custom-block" style="display:none;background:rgba(255,255,255,.03);border:1px solid rgba(184,134,11,.2);border-radius:16px;padding:20px;margin-bottom:16px">
  <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--p);text-transform:uppercase;margin-bottom:14px">自定义策略</div>
  <div style="display:flex;flex-direction:column;gap:12px">
    <div>
@@ -1104,7 +1106,7 @@
  </div>
 
  <!-- 预算预览 -->
- <div style="background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.18);border-radius:16px;padding:16px;margin-bottom:16px">
+ <div style="background:rgba(184,134,11,.07);border:1px solid rgba(184,134,11,.18);border-radius:16px;padding:16px;margin-bottom:16px">
  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px"><span style="color:var(--tx3)">预计可发任务</span><span style="font-weight:700;color:var(--tx)" id="dg-est-tasks">—</span></div>
  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px"><span style="color:var(--tx3)">每任务均奖励</span><span style="color:var(--p)" id="dg-est-reward">—</span></div>
  <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--tx3)">平台手续费 5%</span><span style="color:var(--tx3)" id="dg-est-fee">—</span></div>
@@ -1136,7 +1138,7 @@
  <div style="font-size:48px;margin-bottom:12px"></div>
  <div style="font-size:20px;font-weight:900;margin-bottom:6px">委托成功！</div>
  <div style="font-size:13px;color:var(--tx2);margin-bottom:20px" id="dg-success-desc"></div>
- <div style="background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;padding:14px;margin-bottom:20px;text-align:left" id="dg-success-info"></div>
+ <div style="background:rgba(184,134,11,.08);border:1px solid rgba(184,134,11,.2);border-radius:12px;padding:14px;margin-bottom:20px;text-align:left" id="dg-success-info"></div>
  <div style="display:flex;gap:10px">
  <button class="btns" style="flex:1;padding:11px" onclick="G('my',document.querySelectorAll('.nl')[4])"> 查看状态</button>
  <button class="btnp" style="flex:1;padding:11px" onclick="dgReset()">再委托</button>
@@ -1171,7 +1173,7 @@
  <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:20px;margin-bottom:20px">
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
  <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--tx3)">BNB 市场情绪</div>
- <div id="sentiment-badge" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(124,58,237,.15);color:var(--p)">加载中...</div>
+ <div id="sentiment-badge" style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(184,134,11,.15);color:var(--p)">加载中...</div>
  </div>
  <!-- 情绪分仪表 -->
  <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap">
@@ -1207,7 +1209,7 @@
  </div>
 
  <!-- Agent 决策逻辑说明 -->
- <div style="background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(59,130,246,.04));border:1px solid rgba(124,58,237,.15);border-radius:20px;padding:20px;margin-bottom:20px">
+ <div style="background:linear-gradient(135deg,rgba(184,134,11,.06),rgba(59,130,246,.04));border:1px solid rgba(184,134,11,.15);border-radius:20px;padding:20px;margin-bottom:20px">
  <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--p);margin-bottom:12px">WHY AI · 为什么让 AI 来决策</div>
  <div style="font-size:13px;color:var(--tx2);line-height:1.9;margin-bottom:16px">
  人工发任务有三个致命缺陷：<strong style="color:var(--tx)">慢、主观、不透明</strong>。项目方决定给谁发多少，用户只能被动接受。<br>
@@ -1262,9 +1264,9 @@
      </div>
      <!-- DecisionAgent -->
      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;position:relative;overflow:hidden">
-       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,rgba(124,58,237,.8),transparent)" id="dec-bar"></div>
+       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,rgba(184,134,11,.8),transparent)" id="dec-bar"></div>
        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-         <div style="width:32px;height:32px;border-radius:10px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--p)">D</div>
+         <div style="width:32px;height:32px;border-radius:10px;background:rgba(184,134,11,.15);border:1px solid rgba(184,134,11,.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--p)">D</div>
          <div>
            <div style="font-size:12px;font-weight:800">DecisionAgent</div>
            <div style="font-size:10px;color:var(--tx3)">AI 推理决策</div>
@@ -1410,7 +1412,7 @@ id="page-wendang" class="pw" style="display:none">
     <div id="docs-logic">
   <div style="text-align:center;margin-bottom:56px">
     <div style="font-size:9px;font-weight:700;letter-spacing:4px;color:var(--p);text-transform:uppercase;margin-bottom:14px">ERC-8183 · AI AGENT PROTOCOL</div>
-    <h1 style="font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px">Seki <span style="background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Agent</span><br>决策逻辑全解</h1>
+    <h1 style="font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px">Seki <span style="background:linear-gradient(135deg,#e6c44d,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Agent</span><br>决策逻辑全解</h1>
     <p style="font-size:14px;color:var(--tx2);max-width:500px;margin:0 auto;line-height:2">不是黑盒，不是人工操盘。<br>每一个任务的发布，都有公开可查的链上数据和市场信号作为依据。<br><span style="font-size:12px;color:var(--p);font-weight:700;letter-spacing:1px">全球首个 ERC-8183 兼容 · AI Agent 双链 Meme 激励平台</span></p>
   </div>
 
@@ -1426,7 +1428,7 @@ id="page-wendang" class="pw" style="display:none">
       <div style="font-size:22px;font-weight:900;margin-bottom:4px" id="od-bsc-tasks">—</div>
       <div style="font-size:11px;color:var(--tx3)">链上任务总数</div>
     </div>
-    <div style="padding:20px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:16px">
+    <div style="padding:20px;background:rgba(230,196,77,.06);border:1px solid rgba(230,196,77,.2);border-radius:16px">
       <div style="font-size:22px;font-weight:900;margin-bottom:4px" id="od-xl-tasks">—</div>
       <div style="font-size:11px;color:var(--tx3)">链上任务总数</div>
     </div>
@@ -1449,13 +1451,13 @@ id="page-wendang" class="pw" style="display:none">
     <div style="font-size:9px;font-weight:700;letter-spacing:4px;color:var(--tx3);text-transform:uppercase;margin-bottom:24px">CORE LOOP &nbsp;·&nbsp; 核心循环</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.06);border-radius:20px;overflow:hidden">
       <div style="background:var(--bg2);padding:28px 24px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(167,139,250,.5);margin-bottom:8px">01</div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(230,196,77,.5);margin-bottom:8px">01</div>
         <div style="font-size:16px;font-weight:900;color:var(--p);letter-spacing:1px;margin-bottom:4px">OBSERVE</div>
         <div style="font-size:10px;color:var(--tx3);letter-spacing:1px;margin-bottom:20px">观察</div>
         <div style="display:flex;flex-direction:column;gap:10px">
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(167,139,250,.3)">链上价格 · 流动性深度<br>任务完成率 · taxPool 余额</div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(167,139,250,.3)">资金费率 · 买卖盘深度<br>鲸鱼大单 · BNB 涨跌幅</div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(167,139,250,.3)">DexScreener 成交量<br>持续热度追踪</div>
+          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(230,196,77,.3)">链上价格 · 流动性深度<br>任务完成率 · taxPool 余额</div>
+          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(230,196,77,.3)">资金费率 · 买卖盘深度<br>鲸鱼大单 · BNB 涨跌幅</div>
+          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(230,196,77,.3)">DexScreener 成交量<br>持续热度追踪</div>
         </div>
         <div style="margin-top:18px;font-size:10px;color:var(--tx3);background:rgba(255,255,255,.03);border-radius:8px;padding:8px 10px;line-height:1.7">每 <strong style="color:var(--tx)">3 分钟</strong>采集一次全量信号，写入状态快照</div>
       </div>
@@ -1555,7 +1557,7 @@ id="page-wendang" class="pw" style="display:none">
           <div style="font-size:11px;color:var(--tx3);background:rgba(255,255,255,.02);border-radius:8px;padding:8px 12px;border-left:2px solid rgba(59,130,246,.3)">设计原因：死盘的特征就是没人交易，小额任务是激活流动性成本最低的手段。</div>
         </div>
       </div>
-      <div style="background:rgba(124,58,237,.05);border:1px solid rgba(124,58,237,.2);border-radius:16px;padding:20px 24px;display:flex;gap:20px;align-items:flex-start">
+      <div style="background:rgba(184,134,11,.05);border:1px solid rgba(184,134,11,.2);border-radius:16px;padding:20px 24px;display:flex;gap:20px;align-items:flex-start">
         <div style="flex-shrink:0;width:36px;padding-top:2px;text-align:center">
           <div style="font-size:11px;font-weight:900;color:var(--p);letter-spacing:1px">AI</div>
           <div style="font-size:9px;color:var(--tx3);margin-top:3px">兜底</div>
@@ -1563,10 +1565,10 @@ id="page-wendang" class="pw" style="display:none">
         <div style="flex:1">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
             <span style="font-size:13px;font-weight:800;color:var(--tx)">LLM 自由决策</span>
-            <span style="font-size:9px;padding:2px 8px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-radius:20px;color:var(--p);letter-spacing:1px">GPT-5.4</span>
+            <span style="font-size:9px;padding:2px 8px;background:rgba(184,134,11,.1);border:1px solid rgba(184,134,11,.25);border-radius:20px;color:var(--p);letter-spacing:1px">GPT-5.4</span>
           </div>
           <div style="font-size:12px;color:var(--tx2);line-height:1.8;margin-bottom:10px">以上规则均未命中时，将全量信号（价格、成交量、资金费率、鲸鱼数据、任务历史）输入 GPT-5.4，由模型综合推理输出最优任务方案。</div>
-          <div style="font-size:11px;color:var(--tx3);background:rgba(255,255,255,.02);border-radius:8px;padding:8px 12px;border-left:2px solid rgba(124,58,237,.3)">LLM 输出受 Prompt 约束，只能选择合法任务类型，奖励金额不超过单次上限，防止幻觉乱发。</div>
+          <div style="font-size:11px;color:var(--tx3);background:rgba(255,255,255,.02);border-radius:8px;padding:8px 12px;border-left:2px solid rgba(184,134,11,.3)">LLM 输出受 Prompt 约束，只能选择合法任务类型，奖励金额不超过单次上限，防止幻觉乱发。</div>
         </div>
       </div>
     </div>
@@ -1645,7 +1647,7 @@ id="page-wendang" class="pw" style="display:none">
     <div style="font-size:12px;color:var(--tx3);margin-bottom:24px;line-height:1.8">以下是一个真实场景：某代币委托 Agent 后，一次完整的 3 分钟循环内发生了什么。</div>
     <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden">
       <div style="padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;gap:16px;align-items:flex-start">
-        <div style="flex-shrink:0;width:28px;height:28px;background:rgba(167,139,250,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--p)">1</div>
+        <div style="flex-shrink:0;width:28px;height:28px;background:rgba(230,196,77,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--p)">1</div>
         <div>
           <div style="font-size:12px;font-weight:700;color:var(--tx);margin-bottom:4px">采集信号 &nbsp;<span style="font-weight:400;color:var(--tx3)">T=0:00</span></div>
           <div style="font-size:12px;color:var(--tx2);line-height:1.8">Agent 读取 BNB 报价 <strong style="color:var(--tx)">+2.3%</strong>，资金费率 <strong style="color:var(--tx)">+0.012%</strong>（偏多但未过热）；从 DexScreener 读取该代币 10m 成交量 <strong style="color:var(--tx)">1.8×</strong> 均值（未达峰值阈值 3×）；任务完成率 <strong style="color:var(--tx)">55%</strong>，taxPool 余额 <strong style="color:var(--tx)">0.04 BNB（BSC）</strong>。</div>
@@ -1659,17 +1661,17 @@ id="page-wendang" class="pw" style="display:none">
         </div>
       </div>
       <div style="padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;gap:16px;align-items:flex-start">
-        <div style="flex-shrink:0;width:28px;height:28px;background:rgba(124,58,237,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--p)">3</div>
+        <div style="flex-shrink:0;width:28px;height:28px;background:rgba(184,134,11,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--p)">3</div>
         <div>
           <div style="font-size:12px;font-weight:700;color:var(--tx);margin-bottom:4px">LLM 推理 &nbsp;<span style="font-weight:400;color:var(--tx3)">T=0:02</span></div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8">将全量信号组装成 Prompt 发送给 GPT-5.4：<span style="font-family:monospace;font-size:11px;color:var(--p);background:rgba(124,58,237,.08);padding:2px 6px;border-radius:4px">BNB小涨，量适中，完成率中等，人格=军师</span>。模型输出：发布<strong style="color:var(--tx)">持仓任务</strong>，奖励 <strong style="color:var(--tx)">0.0018 Gas 代币</strong>，窗口期 <strong style="color:var(--tx)">20 分钟</strong>，持仓门槛 <strong style="color:var(--tx)">888万 token</strong>。</div>
+          <div style="font-size:12px;color:var(--tx2);line-height:1.8">将全量信号组装成 Prompt 发送给 GPT-5.4：<span style="font-family:monospace;font-size:11px;color:var(--p);background:rgba(184,134,11,.08);padding:2px 6px;border-radius:4px">BNB小涨，量适中，完成率中等，人格=军师</span>。模型输出：发布<strong style="color:var(--tx)">持仓任务</strong>，奖励 <strong style="color:var(--tx)">0.0018 Gas 代币</strong>，窗口期 <strong style="color:var(--tx)">20 分钟</strong>，持仓门槛 <strong style="color:var(--tx)">888万 token</strong>。</div>
         </div>
       </div>
       <div style="padding:20px 24px;display:flex;gap:16px;align-items:flex-start">
         <div style="flex-shrink:0;width:28px;height:28px;background:rgba(52,211,153,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#34d399">4</div>
         <div>
           <div style="font-size:12px;font-weight:700;color:var(--tx);margin-bottom:4px">链上执行 &nbsp;<span style="font-weight:400;color:var(--tx3)">T=0:03</span></div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8">Agent 签名调用 <span style="font-family:monospace;font-size:11px;color:var(--p);background:rgba(124,58,237,.08);padding:2px 6px;border-radius:4px">createTask()</span>，从 taxPool 扣款 0.009 Gas 代币（5 人 × 0.0018），链上记录任务 ID 写入日志。20 分钟后若未满员，合约自动退款，进入下一轮循环。</div>
+          <div style="font-size:12px;color:var(--tx2);line-height:1.8">Agent 签名调用 <span style="font-family:monospace;font-size:11px;color:var(--p);background:rgba(184,134,11,.08);padding:2px 6px;border-radius:4px">createTask()</span>，从 taxPool 扣款 0.009 Gas 代币（5 人 × 0.0018），链上记录任务 ID 写入日志。20 分钟后若未满员，合约自动退款，进入下一轮循环。</div>
         </div>
       </div>
     </div>
@@ -1697,7 +1699,7 @@ id="page-wendang" class="pw" style="display:none">
       </details>
       <details style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 20px;cursor:pointer">
         <summary style="font-size:13px;font-weight:700;color:var(--tx);list-style:none;display:flex;justify-content:space-between;align-items:center">持仓任务怎么验证我真的持有了？<span style="color:var(--tx3);font-size:16px">+</span></summary>
-        <div style="font-size:12px;color:var(--tx2);line-height:1.9;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.05)">合约在用户 <strong style="color:var(--tx)">claim 时</strong>调用代币合约的 <span style="font-family:monospace;font-size:11px;color:var(--p);background:rgba(124,58,237,.08);padding:2px 6px;border-radius:4px">balanceOf()</span>，查询当前持仓量是否达到门槛。无法提前锁定，无法转移后再查询，链上原子操作保证真实性。</div>
+        <div style="font-size:12px;color:var(--tx2);line-height:1.9;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.05)">合约在用户 <strong style="color:var(--tx)">claim 时</strong>调用代币合约的 <span style="font-family:monospace;font-size:11px;color:var(--p);background:rgba(184,134,11,.08);padding:2px 6px;border-radius:4px">balanceOf()</span>，查询当前持仓量是否达到门槛。无法提前锁定，无法转移后再查询，链上原子操作保证真实性。</div>
       </details>
     </div>
   </div>
@@ -1776,7 +1778,7 @@ id="page-wendang" class="pw" style="display:none">
           <!-- 流程节点 -->
           <div style="display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:8px">
             <div style="min-width:120px;flex:1;text-align:center;padding:16px 8px">
-              <div style="width:44px;height:44px;border-radius:12px;background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:var(--p)">O</div>
+              <div style="width:44px;height:44px;border-radius:12px;background:rgba(184,134,11,.2);border:1px solid rgba(184,134,11,.4);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:var(--p)">O</div>
               <div style="font-size:12px;font-weight:800;margin-bottom:4px">OBSERVE</div>
               <div style="font-size:10px;color:var(--tx3);line-height:1.6">链上数据<br>市场信号<br>BNB价格</div>
             </div>
@@ -1818,13 +1820,13 @@ id="page-wendang" class="pw" style="display:none">
             </div>
           </div>
           <div style="background:#0d0d1a;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
-            <div style="font-size:11px;font-weight:700;color:#a78bfa;margin-bottom:12px">AgentRegistry</div>
+            <div style="font-size:11px;font-weight:700;color:#e6c44d;margin-bottom:12px">AgentRegistry</div>
             <div style="font-family:monospace;font-size:11px;line-height:2;color:var(--tx2)">
-              <div style="color:#a78bfa">createJob(address token, uint8 agentType, uint256 durationHours)</div>
-              <div style="color:#a78bfa">setBudget(uint256 jobId)</div>
-              <div style="color:#a78bfa">fundJob(uint256 jobId)</div>
-              <div style="color:#a78bfa">cancelJob(uint256 jobId)</div>
-              <div style="color:#a78bfa">claimRefund(uint256 jobId)</div>
+              <div style="color:#e6c44d">createJob(address token, uint8 agentType, uint256 durationHours)</div>
+              <div style="color:#e6c44d">setBudget(uint256 jobId)</div>
+              <div style="color:#e6c44d">fundJob(uint256 jobId)</div>
+              <div style="color:#e6c44d">cancelJob(uint256 jobId)</div>
+              <div style="color:#e6c44d">claimRefund(uint256 jobId)</div>
             </div>
           </div>
         </div>
@@ -1842,7 +1844,7 @@ id="page-wendang" class="pw" style="display:none">
               <span style="font-family:monospace;font-size:13px;color:var(--tx)">/api/chat</span>
               <span style="font-size:10px;color:var(--tx3)">AI 对话 · 策略解析</span>
             </div>
-            <div style="background:rgba(13,13,26,.8);border-radius:10px;padding:14px;font-family:monospace;font-size:11px;color:#a78bfa;line-height:1.8">
+            <div style="background:rgba(13,13,26,.8);border-radius:10px;padding:14px;font-family:monospace;font-size:11px;color:#e6c44d;line-height:1.8">
               <span style="color:var(--tx3)">// Request</span><br>
               { "messages": [{ "role": "user", "content": "帮我配置策略..." }] }<br><br>
               <span style="color:var(--tx3)">// Response: SSE stream</span><br>
@@ -1859,7 +1861,7 @@ id="page-wendang" class="pw" style="display:none">
               <span style="font-family:monospace;font-size:13px;color:var(--tx)">/api/agent-status</span>
               <span style="font-size:10px;color:var(--tx3)">服务端 ODA Agent 状态</span>
             </div>
-            <div style="background:rgba(13,13,26,.8);border-radius:10px;padding:14px;font-family:monospace;font-size:11px;color:#a78bfa;line-height:1.8">
+            <div style="background:rgba(13,13,26,.8);border-radius:10px;padding:14px;font-family:monospace;font-size:11px;color:#e6c44d;line-height:1.8">
               { "ok": true, "agents": { "observer": {...}, "decision": {...}, "executor": {...} },<br>
               &nbsp;&nbsp;"lastDecision": { "action": "CREATE", "reason": "...", "source": "..." } }
             </div>
@@ -1872,7 +1874,7 @@ id="page-wendang" class="pw" style="display:none">
               <span style="font-family:monospace;font-size:13px;color:var(--tx)">/pa-worker.js</span>
               <span style="font-size:10px;color:var(--tx3)">Web Worker 自动执行器</span>
             </div>
-            <div style="background:rgba(13,13,26,.8);border-radius:10px;padding:14px;font-family:monospace;font-size:11px;color:#a78bfa;line-height:1.8">
+            <div style="background:rgba(13,13,26,.8);border-radius:10px;padding:14px;font-family:monospace;font-size:11px;color:#e6c44d;line-height:1.8">
               <span style="color:var(--tx3)">// 启动 Worker</span><br>
               const w = new Worker('/pa-worker.js');<br>
               w.postMessage({ action: 'start', privateKey: pk, strategy: {...} });<br><br>
@@ -1939,14 +1941,14 @@ id="page-wendang" class="pw" style="display:none">
       <p style="text-align:center;color:var(--tx3);font-size:13px;margin-bottom:48px;letter-spacing:1px">Seki Protocol · 四阶段演进计划</p>
       <div style="position:relative;padding-left:32px">
         <!-- vertical line -->
-        <div style="position:absolute;left:10px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,rgba(124,58,237,.6),rgba(124,58,237,.1))"></div>
+        <div style="position:absolute;left:10px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,rgba(184,134,11,.6),rgba(184,134,11,.1))"></div>
 
         <!-- Phase 1 -->
         <div style="position:relative;margin-bottom:40px">
-          <div style="position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--p);box-shadow:0 0 10px rgba(124,58,237,.8)"></div>
-          <div style="background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.2);border-radius:16px;padding:24px 28px;backdrop-filter:blur(8px)">
+          <div style="position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--p);box-shadow:0 0 10px rgba(184,134,11,.8)"></div>
+          <div style="background:rgba(184,134,11,.06);border:1px solid rgba(184,134,11,.2);border-radius:16px;padding:24px 28px;backdrop-filter:blur(8px)">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-              <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--p);background:rgba(124,58,237,.12);padding:3px 10px;border-radius:20px;border:1px solid rgba(124,58,237,.3)">Phase 1</span>
+              <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--p);background:rgba(184,134,11,.12);padding:3px 10px;border-radius:20px;border:1px solid rgba(184,134,11,.3)">Phase 1</span>
               <span style="font-size:13px;font-weight:700;color:#4ade80">已完成 ✅</span>
             </div>
             <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
@@ -2144,7 +2146,7 @@ id="page-wendang" class="pw" style="display:none">
     <button class="pa-btn" id="pa-ai-btn" onclick="paAiParse()">解析</button>
     <span id="pa-ai-loading" style="display:none;font-size:12px;color:var(--tx3)">解析中...</span>
   </div>
-  <div id="pa-ai-result" style="display:none;margin-top:12px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:10px;padding:12px">
+  <div id="pa-ai-result" style="display:none;margin-top:12px;background:rgba(230,196,77,.06);border:1px solid rgba(230,196,77,.2);border-radius:10px;padding:12px">
     <div id="pa-ai-text" style="font-size:12px;color:var(--tx2);margin-bottom:10px"></div>
     <button class="pa-btn" onclick="paApplyAi()" style="background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.3);color:#34d399">应用此策略</button>
   </div>
@@ -2211,14 +2213,14 @@ id="page-wendang" class="pw" style="display:none">
 <div id="page-logic" class="pw">
  <div style="max-width:900px;margin:0 auto;padding:104px 28px 100px">
  <div style="text-align:center;margin-bottom:56px">
- <div style="display:inline-block;background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(59,130,246,.1));border:1px solid rgba(124,58,237,.25);border-radius:40px;padding:8px 20px;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--p);margin-bottom:20px">ERC-8183 · AI AGENT PROTOCOL</div>
- <h1 style="font-size:36px;font-weight:900;line-height:1.2;margin-bottom:16px">Seki Agent<br><span style="background:linear-gradient(135deg,#7c3aed,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">决策逻辑全解</span></h1>
+ <div style="display:inline-block;background:linear-gradient(135deg,rgba(184,134,11,.15),rgba(59,130,246,.1));border:1px solid rgba(184,134,11,.25);border-radius:40px;padding:8px 20px;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--p);margin-bottom:20px">ERC-8183 · AI AGENT PROTOCOL</div>
+ <h1 style="font-size:36px;font-weight:900;line-height:1.2;margin-bottom:16px">Seki Agent<br><span style="background:linear-gradient(135deg,#b8860b,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">决策逻辑全解</span></h1>
  <p style="font-size:15px;color:var(--tx2);max-width:560px;margin:0 auto;line-height:1.8">不是黑盒，不是人工操盘。每一个任务的发布，都有公开可查的链上数据和市场信号作为依据。</p>
  </div>
  <div style="margin-bottom:48px">
  <div style="font-size:10px;font-weight:700;letter-spacing:4px;color:var(--tx3);text-transform:uppercase;margin-bottom:20px">CORE LOOP · 核心循环</div>
  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
- <div style="background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.25);border-radius:20px;padding:24px;text-align:center">
+ <div style="background:rgba(184,134,11,.08);border:1px solid rgba(184,134,11,.25);border-radius:20px;padding:24px;text-align:center">
  <div style="font-size:36px;margin-bottom:12px"></div>
  <div style="font-size:16px;font-weight:900;color:var(--p);margin-bottom:8px">OBSERVE</div>
  <div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:12px">感知</div>
@@ -2243,7 +2245,7 @@ id="page-wendang" class="pw" style="display:none">
  <div style="font-size:10px;font-weight:700;letter-spacing:4px;color:var(--tx3);text-transform:uppercase;margin-bottom:20px">DATA SOURCES · 信号来源</div>
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
  <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:20px">
- <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div style="width:36px;height:36px;border-radius:10px;background:rgba(124,58,237,.15);display:flex;align-items:center;justify-content:center;font-size:18px"></div><div><div style="font-size:13px;font-weight:800">BSC 链上数据</div><div style="font-size:10px;color:var(--tx3)">PancakeSwap AMM · BSCScan</div></div></div>
+ <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div style="width:36px;height:36px;border-radius:10px;background:rgba(184,134,11,.15);display:flex;align-items:center;justify-content:center;font-size:18px"></div><div><div style="font-size:13px;font-weight:800">BSC 链上数据</div><div style="font-size:10px;color:var(--tx3)">PancakeSwap AMM · BSCScan</div></div></div>
  <div style="font-size:12px;color:var(--tx2);line-height:2">代币实时价格（BNB计价）<br>流动性池深度<br>任务完成率 &amp; 领取记录<br>taxPool 合约余额<br>job 链上状态同步</div>
  </div>
  <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:20px">
@@ -2292,7 +2294,7 @@ id="page-wendang" class="pw" style="display:none">
  <div style="margin-bottom:20px">
  <div style="font-size:10px;font-weight:700;letter-spacing:4px;color:var(--tx3);text-transform:uppercase;margin-bottom:20px">LIVE · 当前市场情绪</div>
  <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:24px">
- <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px"><div style="font-size:14px;font-weight:800">BNB 恐惧贪婪指数</div><div id="logic-sentiment-badge" style="font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;background:rgba(124,58,237,.15);color:var(--p)">加载中...</div></div>
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px"><div style="font-size:14px;font-weight:800">BNB 恐惧贪婪指数</div><div id="logic-sentiment-badge" style="font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;background:rgba(184,134,11,.15);color:var(--p)">加载中...</div></div>
  <div style="margin-bottom:16px">
  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:6px"><span>极度恐慌 0</span><span>50 中性</span><span>100 极度贪婪</span></div>
  <div style="height:10px;background:linear-gradient(to right,#ef4444,#f59e0b,#34d399);border-radius:5px;position:relative"><div id="logic-sentiment-cursor" style="position:absolute;top:-5px;width:20px;height:20px;background:#fff;border-radius:50%;transform:translateX(-50%);left:50%;box-shadow:0 2px 8px rgba(0,0,0,.5);transition:left .8s ease"></div></div>
@@ -2342,10 +2344,47 @@ window.docTab = function(tab, el) {
     b.style.color = 'var(--tx2)';
     b.style.border = '1px solid rgba(255,255,255,.15)';
   });
-  if(el){ el.style.background='rgba(124,58,237,.15)'; el.style.color='var(--p)'; el.style.border='1px solid var(--p)'; }
+  if(el){ el.style.background='rgba(184,134,11,.15)'; el.style.color='var(--p)'; el.style.border='1px solid var(--p)'; }
   if(tab==='logic' && typeof loadLogicSentiment==='function') loadLogicSentiment();
 };
 function docTab(tab,el){ window.docTab(tab,el); }
+</script>
+<script>
+// Mystical Theme: override inline light backgrounds
+(function(){
+ function applyMystical(){
+  document.querySelectorAll('[style]').forEach(function(el){
+   var s=el.style;
+   var bg=s.background||s.backgroundColor||'';
+   // Replace light rgba backgrounds
+   if(/rgba\(255,\s*255,\s*255,\s*0?\.0[2-9]\)/.test(bg)){
+    s.background='rgba(8,4,20,.5)';
+    if(s.borderColor) s.borderColor='rgba(212,160,23,.08)';
+   }
+   // Replace border colors
+   var bd=s.border||s.borderBottom||s.borderTop||'';
+   if(/rgba\(255,\s*255,\s*255,\s*0?\.0[4-9]\)/.test(bd)){
+    el.style.borderColor='rgba(212,160,23,.1)';
+   }
+  });
+ }
+ // Run on load and after navigation
+ applyMystical();
+ var _origG=window.G;
+ if(typeof _origG==='function'){
+  window.G=function(){
+   _origG.apply(this,arguments);
+   setTimeout(applyMystical,50);
+  };
+ }
+ // Also observe DOM changes
+ var obs=new MutationObserver(function(muts){
+  var changed=false;
+  muts.forEach(function(m){if(m.addedNodes.length)changed=true;});
+  if(changed) applyMystical();
+ });
+ obs.observe(document.body,{childList:true,subtree:true});
+})();
 </script>
 </body>
 </html>

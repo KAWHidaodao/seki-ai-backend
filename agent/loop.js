@@ -17,6 +17,9 @@ const axios      = require('axios');
 const fs         = require('fs');
 const path       = require('path');
 
+// ── 自我进化系统 ──
+const evolver    = require('./evolver');
+
 // ── 配置 ──────────────────────────────────────
 const INTERVAL_MS  = parseInt(process.env.AGENT_INTERVAL_MIN || '3') * 60 * 1000;
 const STATE_FILE   = path.join(__dirname, '..', 'agent-state.json');
@@ -1063,6 +1066,37 @@ async function runOnce() {
       tkSt.lastRun = Date.now();
 
       results.push({ symbol: state.symbol, result });
+
+      // ── 进化系统：记录本次循环数据 ──
+      try {
+        await evolver.onCycleComplete({
+          token: tokenAddr,
+          symbol: state.symbol,
+          persona: decision.persona,
+          action: decision.action,
+          taskType: decision.task?.taskType,
+          rewardPerWinner: decision.task?.rewardPerWinner,
+          maxWinners: decision.task?.maxWinners,
+          txHash: result.txHash || null,
+          success: result.done !== false,
+          reason: decision.reason,
+          marketState: {
+            priceInBNB: state.priceInBNB,
+            liquidity: state.liquidity,
+            agentBNB: state.agentBNB,
+            taxPoolBNB: state.taxPoolBNB,
+            sellPressure: state.sellPressure,
+            activeTasks: state.activeTasks.length,
+            avgFillRate: state.avgFillRate,
+            bnbPrice: state.marketSignal?.bnbPrice,
+            sentiment: state.marketSignal?.sentiment,
+            signal: state.marketSignal?.signal,
+          },
+          gasCost: result.gasCost || 0,
+        });
+      } catch (evoErr) {
+        console.error('[evolver] cycle log error:', evoErr.message);
+      }
     } catch (e) {
       console.error(`[agent] error for ${tokenAddr}:`, e.message);
       results.push({ symbol: tokenAddr.slice(0, 8), result: { done: false, reason: e.message } });
@@ -1079,11 +1113,19 @@ async function main() {
   console.log(`[agent] wallet:  ${wallet.address}`);
   console.log(`[agent] tokens:  ${MANAGED_TOKENS.length ? MANAGED_TOKENS.join(', ') : '(none yet)'}`);
   console.log(`[agent] interval: ${INTERVAL_MS / 60000} min`);
+
+  // 启动自我进化系统
+  evolver.start();
+  console.log('[agent] 🧬 自我进化系统已启动');
+
   await runOnce();
   // 每次 runOnce 前先处理退款
 async function mainLoop() { await refundExpiredFallbackTasks().catch(()=>{}); await runOnce(); }
 setInterval(mainLoop, INTERVAL_MS);
 }
+
+// 导出进化系统供 server.js 使用
+module.exports = { evolver };
 
 main().catch(console.error);
 

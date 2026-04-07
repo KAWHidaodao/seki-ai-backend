@@ -162,7 +162,10 @@ async function callLLM(messages) {
 
 const tls = require('tls');
 
-// SNI 回调：根据域名返回不同证书（同时支持 bdmeme.xyz 和 shuifenqian.xyz）
+// SSL: auto-detect certs, fallback to plain HTTP if missing
+let _useHttps = false;
+let opts = {};
+
 function loadCert(domain) {
   return tls.createSecureContext({
     key:  fs.readFileSync(`/etc/letsencrypt/live/${domain}/privkey.pem`),
@@ -170,25 +173,33 @@ function loadCert(domain) {
   });
 }
 
-const opts = {
-  // 默认证书（bdmeme.xyz）
-  key:  fs.readFileSync('/etc/letsencrypt/live/bdmeme.xyz/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/bdmeme.xyz/fullchain.pem'),
-  // SNI：匹配到对应域名时换证书
-  SNICallback: (servername, cb) => {
-    try {
-      if (servername && servername.includes('shuifenqian.xyz')) {
-        cb(null, loadCert('shuifenqian.xyz'));
-      } else if (servername && (servername.includes('seki-ai.com'))) {
-        cb(null, loadCert('seki-ai.com'));
-      } else {
-        cb(null, loadCert('bdmeme.xyz'));
-      }
-    } catch(e) {
-      cb(e);
-    }
-  },
-};
+try {
+  const defaultCertPath = '/etc/letsencrypt/live/bdmeme.xyz/privkey.pem';
+  if (fs.existsSync(defaultCertPath)) {
+    opts = {
+      key:  fs.readFileSync('/etc/letsencrypt/live/bdmeme.xyz/privkey.pem'),
+      cert: fs.readFileSync('/etc/letsencrypt/live/bdmeme.xyz/fullchain.pem'),
+      SNICallback: (servername, cb) => {
+        try {
+          if (servername && servername.includes('shuifenqian.xyz')) {
+            cb(null, loadCert('shuifenqian.xyz'));
+          } else if (servername && servername.includes('seki-ai.com')) {
+            cb(null, loadCert('seki-ai.com'));
+          } else {
+            cb(null, loadCert('bdmeme.xyz'));
+          }
+        } catch(e) {
+          cb(e);
+        }
+      },
+    };
+    _useHttps = true;
+  } else {
+    console.warn('[server] SSL certs not found, will use HTTP fallback');
+  }
+} catch (e) {
+  console.warn('[server] SSL init error, falling back to HTTP:', e.message);
+}
 
 // 加载/初始化元数据
 function loadMeta() {
@@ -198,7 +209,7 @@ function saveMeta(data) {
   fs.writeFileSync(META_FILE, JSON.stringify(data, null, 2));
 }
 
-const _httpsServer = https.createServer(opts, async (req, res) => {
+const _serverHandler = async (req, res) => {
   try {
   const cors = {
     'Access-Control-Allow-Origin': '*',
@@ -1423,10 +1434,106 @@ a{color:#60a5fa;text-decoration:none}
     return;
   }
 
+  // ── Evolution Hall API endpoints ──────────────────────
+  if (req.url === '/api/evolution/dashboard' && req.method === 'GET') {
+    try {
+      const evolver = require('./agent/evolver');
+      const dashboard = evolver.getEvolutionDashboard();
+      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify(dashboard));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
+  if (req.url === '/api/evolution/reflections' && req.method === 'GET') {
+    try {
+      const reflDir = path.join(BASE, 'data', 'reflections');
+      if (!fs.existsSync(reflDir)) { res.writeHead(200, { ...cors }); res.end('[]'); return; }
+      const files = fs.readdirSync(reflDir).filter(f => f.endsWith('.json')).sort().reverse().slice(0, 30);
+      const reflections = files.map(f => {
+        try { return JSON.parse(fs.readFileSync(path.join(reflDir, f), 'utf8')); } catch { return null; }
+      }).filter(Boolean);
+      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify(reflections));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
+  if (req.url === '/api/evolution/skills' && req.method === 'GET') {
+    try {
+      const skillDir = path.join(BASE, 'data', 'skills');
+      if (!fs.existsSync(skillDir)) { res.writeHead(200, { ...cors }); res.end('[]'); return; }
+      const files = fs.readdirSync(skillDir).filter(f => f.endsWith('.json'));
+      const skills = files.map(f => {
+        try { return JSON.parse(fs.readFileSync(path.join(skillDir, f), 'utf8')); } catch { return null; }
+      }).filter(Boolean);
+      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify(skills));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
+  if (req.url === '/api/evolution/proposals' && req.method === 'GET') {
+    try {
+      const evolver = require('./agent/evolver');
+      const proposals = evolver.getPendingProposals();
+      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify(proposals));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
+  if (req.url === '/api/evolution/status' && req.method === 'GET') {
+    try {
+      const evolver = require('./agent/evolver');
+      const reflections = evolver.getRecentReflections ? evolver.getRecentReflections(100) : [];
+      const todayCycles = evolver.getTodayCycles ? evolver.getTodayCycles() : [];
+      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify({
+        version: evolver.versionString(),
+        totalCycles: todayCycles.length,
+        totalReflections: reflections.length,
+        lastReflection: reflections.length ? reflections[0].timestamp : null,
+        running: true
+      }));
+    } catch (e) {
+      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify({ version: 'v1.0.0', totalCycles: 0, totalReflections: 0, lastReflection: null, running: false }));
+    }
+    return;
+  }
+
+  if (req.url === '/api/evolution/cycles' && req.method === 'GET') {
+    try {
+      const taskLogger = require('./agent/evolver/task-logger');
+      const stats = taskLogger.getStats();
+      const recent = taskLogger.getRecentCycles(50);
+      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify({ stats, recent }));
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
+
   // ── 静态文件
   let p = req.url === '/' ? '/index.html' : req.url.split('?')[0];
   if (p === '/xlayer' || p === '/xlayer/') p = '/xlayer.html';
   if (p === '/chat' || p === '/chat/') p = '/chat.html';
+  if (p === '/evolution' || p === '/evolution/') p = '/evolution.html';
   if (p === '/contract') p = '/MemeBountyV2.sol';
   if (p === '/registry') p = '/AgentRegistry.sol';
   const full = path.join(BASE, p);
@@ -1449,34 +1556,42 @@ a{color:#60a5fa;text-decoration:none}
     res.writeHead(404); res.end('Not found');
   }
   } catch(e) { console.error('[server] unhandled:', e.message); try { res.writeHead(500); res.end(JSON.stringify({ok:false,error:e.message})); } catch {} }
-}).listen(443, () => console.log('HTTPS ok'));
+};
 
-// ── bdmeme.xyz WebSocket 升级代理 ──
-_httpsServer.on('upgrade', (req, socket, head) => {
-  const h = (req.headers.host || '').replace(/:\d+$/, '');
-  if (h === 'bdmeme.xyz' || h === 'www.bdmeme.xyz') {
-    const net = require('net');
-    const upstream = net.connect(4000, '127.0.0.1', () => {
-      upstream.write(
-        `${req.method} ${req.url} HTTP/1.1\r\n` +
-        Object.entries(req.headers).map(([k, v]) => `${k}: ${v}`).join('\r\n') +
-        '\r\n\r\n'
-      );
-      if (head && head.length) upstream.write(head);
-      upstream.pipe(socket);
-      socket.pipe(upstream);
-    });
-    upstream.on('error', () => socket.destroy());
-    socket.on('error', () => upstream.destroy());
-  }
-});
+let _mainServer;
+if (_useHttps) {
+  _mainServer = https.createServer(opts, _serverHandler);
+  _mainServer.listen(443, () => console.log('HTTPS ok on :443'));
 
-// ── 提供合约源码下载 ──
-// (appended)
+  // ── bdmeme.xyz WebSocket 升级代理 ──
+  _mainServer.on('upgrade', (req, socket, head) => {
+    const h = (req.headers.host || '').replace(/:\d+$/, '');
+    if (h === 'bdmeme.xyz' || h === 'www.bdmeme.xyz') {
+      const net = require('net');
+      const upstream = net.connect(4000, '127.0.0.1', () => {
+        upstream.write(
+          `${req.method} ${req.url} HTTP/1.1\r\n` +
+          Object.entries(req.headers).map(([k, v]) => `${k}: ${v}`).join('\r\n') +
+          '\r\n\r\n'
+        );
+        if (head && head.length) upstream.write(head);
+        upstream.pipe(socket);
+        socket.pipe(upstream);
+      });
+      upstream.on('error', () => socket.destroy());
+      socket.on('error', () => upstream.destroy());
+    }
+  });
 
-// HTTP → HTTPS 重定向
-require('http').createServer((req, res) => {
-  const host = req.headers.host || 'seki-ai.com';
-  res.writeHead(301, { Location: 'https://' + host + req.url });
-  res.end();
-}).listen(80, () => console.log('HTTP redirect ok'));
+  // HTTP → HTTPS 重定向
+  require('http').createServer((req, res) => {
+    const host = req.headers.host || 'seki-ai.com';
+    res.writeHead(301, { Location: 'https://' + host + req.url });
+    res.end();
+  }).listen(80, () => console.log('HTTP redirect ok on :80'));
+} else {
+  // No SSL — plain HTTP
+  const HTTP_PORT = process.env.PORT || 3000;
+  _mainServer = http.createServer(_serverHandler);
+  _mainServer.listen(HTTP_PORT, () => console.log(`HTTP ok on :${HTTP_PORT}`));
+}

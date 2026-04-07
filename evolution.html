@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seki — Evolution Hall · 进化大厅</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   Seki Evolution Hall — Dark Mystical Theme
+   ══════════════════════════════════════════════════════ */
+:root {
+  --gold: #d4a017; --gold-deep: #b8860b; --gold-light: #f0d060;
+  --bg-deep: #060610; --bg-card: rgba(212,160,23,0.04); --bg-card-hover: rgba(212,160,23,0.08);
+  --border: rgba(212,160,23,0.12); --border-glow: rgba(212,160,23,0.3);
+  --text: #f0e8d0; --text-dim: rgba(240,232,208,0.55); --text-muted: rgba(240,232,208,0.3);
+  --green: #00e676; --red: #ff5252; --blue: #448aff; --purple: #b388ff;
+  --green-dim: rgba(0,230,118,0.1); --red-dim: rgba(255,82,82,0.1);
+  --blue-dim: rgba(68,138,255,0.1); --purple-dim: rgba(179,136,255,0.1);
+  --gold-dim: rgba(212,160,23,0.1);
+  --radius: 14px; --radius-sm: 8px;
+  --font-d: 'Cinzel', serif;
+  --font-b: 'Inter', 'Noto Serif SC', sans-serif;
+  --font-m: 'JetBrains Mono', 'Fira Code', monospace;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-b); background: var(--bg-deep);
+  color: var(--text); min-height: 100vh; overflow-x: hidden;
+}
+body::before {
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 800px 500px at 15% 10%, rgba(212,160,23,0.06), transparent),
+    radial-gradient(ellipse 600px 600px at 85% 80%, rgba(212,160,23,0.04), transparent),
+    radial-gradient(ellipse 400px 400px at 50% 40%, rgba(68,138,255,0.02), transparent);
+}
+
+/* ── Nav ──────────────────────────────────────── */
+.nav{display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:56px;background:rgba(6,6,16,0.92);
+  border-bottom:1px solid var(--border);backdrop-filter:blur(16px);
+  position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
+.nav-logo img{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border-glow);box-shadow:0 0 12px rgba(212,160,23,0.15)}
+.nav-logo-text{display:flex;flex-direction:column}
+.nav-logo-name{font-family:var(--font-d);font-size:1rem;font-weight:700;color:var(--gold);letter-spacing:1px}
+.nav-logo-sub{font-size:0.55rem;color:var(--text-muted);letter-spacing:3px;text-transform:uppercase}
+.nav-links{display:flex;gap:4px}
+.nav-links a{padding:6px 14px;border-radius:6px;color:var(--text-dim);text-decoration:none;font-size:0.82rem;font-weight:500;transition:all 0.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);background:var(--gold-dim)}
+
+/* ── Container ────────────────────────────────── */
+.container{max-width:1100px;margin:0 auto;padding:40px 24px 80px;position:relative;z-index:1}
+
+/* ── Hero ─────────────────────────────────────── */
+.hero{text-align:center;padding:48px 0 32px;position:relative}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,160,23,0.08),transparent 70%);pointer-events:none}
+.title{font-family:var(--font-d);font-size:2.4rem;font-weight:900;
+  color:var(--gold);letter-spacing:6px;margin-bottom:8px;
+  text-shadow:0 0 40px rgba(212,160,23,0.2)}
+.subtitle{font-size:1rem;color:var(--text-dim);font-weight:300;letter-spacing:2px}
+.subtitle .hl{color:var(--gold);font-weight:600}
+.desc{font-size:0.8rem;color:var(--text-muted);margin-top:6px;letter-spacing:1px}
+.ver-badge{display:inline-flex;align-items:center;gap:8px;margin-top:16px;
+  padding:6px 18px;border-radius:20px;background:var(--gold-dim);border:1px solid var(--border);
+  font-family:var(--font-m);font-size:0.78rem;color:var(--gold)}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--green);
+  animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,230,118,0.4)}50%{opacity:0.7;box-shadow:0 0 0 6px rgba(0,230,118,0)}}
+
+/* ── Status Bar ───────────────────────────────── */
+.status-bar{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;
+  margin:24px 0;padding:16px 24px;border-radius:var(--radius);
+  background:var(--bg-card);border:1px solid var(--border)}
+.stat{display:flex;flex-direction:column;align-items:center;gap:2px}
+.stat-label{font-size:0.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px}
+.stat-val{font-family:var(--font-m);font-size:0.95rem;font-weight:600;color:var(--text)}
+.stat-live{color:var(--green)}
+.stat-sep{width:1px;height:28px;background:var(--border)}
+
+/* ── KPI Cards ─────────────────────────────────── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.kpi{padding:20px;border-radius:var(--radius);background:var(--bg-card);border:1px solid var(--border);transition:all 0.3s}
+.kpi:hover{border-color:var(--border-glow);transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,160,23,0.08)}
+.kpi-label{font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.kpi-val{font-family:var(--font-m);font-size:1.6rem;font-weight:700;color:var(--text)}
+.kpi-change{font-size:0.72rem;font-family:var(--font-m);margin-top:4px}
+.kpi-change.up{color:var(--green)}
+.kpi-change.down{color:var(--red)}
+.kpi-change.neutral{color:var(--text-muted)}
+
+/* ── Section ──────────────────────────────────── */
+.sec{margin-bottom:32px}
+.sec-title{font-family:var(--font-d);font-size:1.1rem;font-weight:700;color:var(--gold);
+  letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-badge{font-family:var(--font-m);font-size:0.7rem;padding:2px 10px;border-radius:10px;
+  background:var(--gold-dim);color:var(--gold);font-weight:600}
+
+/* ── Flow Diagram ─────────────────────────────── */
+.flow{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  padding:28px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius)}
+.flow-node{text-align:center;padding:16px 20px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:rgba(255,255,255,0.01);transition:all 0.4s;min-width:120px}
+.flow-node.active{border-color:var(--gold);background:var(--gold-dim);
+  box-shadow:0 0 20px rgba(212,160,23,0.12)}
+.flow-icon{font-size:1.8rem;margin-bottom:6px}
+.flow-name{font-family:var(--font-d);font-size:0.85rem;font-weight:700;color:var(--text);letter-spacing:1px}
+.flow-desc{font-size:0.68rem;color:var(--text-muted);margin-top:4px}
+.flow-arrow{font-size:1.2rem;color:var(--text-muted)}
+.flow-loop{color:var(--gold);font-weight:700}
+
+/* ── Two-Column ───────────────────────────────── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px}
+
+/* ── Timeline ─────────────────────────────────── */
+.timeline{display:flex;flex-direction:column;gap:12px;max-height:500px;overflow-y:auto;
+  padding-right:8px}
+.timeline::-webkit-scrollbar{width:4px}
+.timeline::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.tl-item{position:relative;padding:16px 16px 16px 28px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius-sm);transition:all 0.3s}
+.tl-item:hover{border-color:var(--border-glow);transform:translateX(4px)}
+.tl-item::before{content:'';position:absolute;left:12px;top:22px;width:6px;height:6px;
+  border-radius:50%;background:var(--gold)}
+.tl-ver{font-family:var(--font-m);font-size:0.72rem;color:var(--gold);margin-bottom:4px}
+.tl-summary{font-size:0.85rem;color:var(--text);line-height:1.5}
+.tl-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tl-tag{font-size:0.65rem;padding:2px 8px;border-radius:4px;font-family:var(--font-m);font-weight:500}
+.tl-tag.insight{background:var(--blue-dim);color:var(--blue)}
+.tl-tag.success{background:var(--green-dim);color:var(--green)}
+.tl-tag.warning{background:var(--gold-dim);color:var(--gold)}
+.tl-tag.error{background:var(--red-dim);color:var(--red)}
+.tl-time{font-size:0.65rem;color:var(--text-muted);font-family:var(--font-m);margin-top:6px}
+
+/* ── Skills ────────────────────────────────────── */
+.skills{display:flex;flex-direction:column;gap:12px;max-height:500px;overflow-y:auto;padding-right:8px}
+.skills::-webkit-scrollbar{width:4px}
+.skills::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.skill{padding:16px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius-sm);transition:all 0.3s}
+.skill:hover{border-color:var(--green);box-shadow:0 0 12px rgba(0,230,118,0.06)}
+.skill-name{font-weight:600;font-size:0.88rem;color:var(--green)}
+.skill-desc{font-size:0.78rem;color:var(--text-dim);margin-top:4px;line-height:1.4}
+.skill-meta{display:flex;gap:12px;margin-top:8px;font-size:0.68rem;color:var(--text-muted);font-family:var(--font-m)}
+
+/* ── Proposals ─────────────────────────────────── */
+.proposals{display:flex;flex-direction:column;gap:12px}
+.prop{padding:20px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);transition:all 0.3s}
+.prop:hover{border-color:var(--border-glow);transform:translateX(4px)}
+.prop-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.prop-type{padding:4px 12px;border-radius:6px;font-size:0.68rem;font-family:var(--font-m);
+  font-weight:600;text-transform:uppercase;white-space:nowrap}
+.prop-type.rule{background:var(--blue-dim);color:var(--blue)}
+.prop-type.persona{background:var(--purple-dim);color:var(--purple)}
+.prop-type.skill{background:var(--green-dim);color:var(--green)}
+.prop-type.prompt{background:var(--gold-dim);color:var(--gold)}
+.prop-conf{font-size:0.68rem;color:var(--text-muted);font-family:var(--font-m);margin-left:auto;display:flex;align-items:center;gap:6px}
+.conf-bar{width:60px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;display:inline-block}
+.conf-fill{height:100%;border-radius:2px;background:var(--gold);transition:width 0.6s}
+.prop-desc{font-size:0.85rem;color:var(--text);line-height:1.5}
+.prop-reason{margin-top:8px;padding:10px 14px;background:rgba(255,255,255,0.02);
+  border-radius:6px;font-size:0.76rem;font-family:var(--font-m);color:var(--text-dim);
+  border-left:2px solid var(--gold-dim)}
+.prop-actions{display:flex;gap:8px;margin-top:12px}
+.prop-btn{padding:6px 16px;border-radius:6px;border:1px solid var(--border);background:transparent;
+  font-size:0.76rem;font-family:var(--font-b);cursor:pointer;transition:all 0.2s}
+.prop-btn.approve{color:var(--green);border-color:rgba(0,230,118,0.3)}
+.prop-btn.approve:hover{background:var(--green-dim);border-color:var(--green)}
+.prop-btn.reject{color:var(--red);border-color:rgba(255,82,82,0.3)}
+.prop-btn.reject:hover{background:var(--red-dim);border-color:var(--red)}
+
+/* ── Personas ──────────────────────────────────── */
+.personas{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.persona{padding:20px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);text-align:center;transition:all 0.3s}
+.persona:hover{border-color:var(--border-glow);transform:translateY(-2px)}
+.persona-icon{font-size:1.6rem;margin-bottom:6px}
+.persona-name{font-size:1rem;font-weight:700}
+.persona.hunter .persona-name{color:var(--red)}
+.persona.strategist .persona-name{color:var(--blue)}
+.persona.herald .persona-name{color:var(--purple)}
+.persona-pct{font-size:2rem;font-weight:700;font-family:var(--font-m);margin:8px 0}
+.persona-bar{width:100%;height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:8px}
+.persona-fill{height:100%;border-radius:3px;transition:width 0.8s}
+.persona.hunter .persona-fill{background:var(--red)}
+.persona.strategist .persona-fill{background:var(--blue)}
+.persona.herald .persona-fill{background:var(--purple)}
+.persona-stat{font-size:0.72rem;color:var(--text-muted);margin-top:6px;font-family:var(--font-m)}
+
+/* ── Reflection ────────────────────────────────── */
+.refl{padding:24px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius)}
+.refl-summary{font-size:0.92rem;line-height:1.7;color:var(--text);margin-bottom:16px}
+.refl-label{font-size:0.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;font-weight:600}
+.refl-list{list-style:none;padding:0}
+.refl-list li{padding:8px 0 8px 20px;position:relative;font-size:0.82rem;color:var(--text-dim);
+  border-bottom:1px solid rgba(255,255,255,0.03);line-height:1.5}
+.refl-list li::before{content:'\25C6';position:absolute;left:0;color:var(--gold);font-size:0.55rem;top:11px}
+
+/* ── Empty ─────────────────────────────────────── */
+.empty{padding:32px;text-align:center;color:var(--text-muted);font-size:0.85rem;
+  background:var(--bg-card);border:1px dashed var(--border);border-radius:var(--radius-sm)}
+
+/* ── Footer ────────────────────────────────────── */
+.footer{text-align:center;padding:40px 0 20px;font-size:0.72rem;color:var(--text-muted);
+  letter-spacing:1px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+
+/* ── Flow animation ───────────────────────────── */
+@keyframes flow-pulse{0%,100%{box-shadow:0 0 0 0 rgba(212,160,23,0.2)}50%{box-shadow:0 0 16px 4px rgba(212,160,23,0.1)}}
+.flow-node.animating{animation:flow-pulse 1s ease}
+
+/* ── Toast ─────────────────────────────────────── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 24px;
+  border-radius:8px;font-size:0.82rem;z-index:200;opacity:0;transition:opacity 0.3s;
+  pointer-events:none}
+.toast.show{opacity:1}
+.toast.success{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,230,118,0.3)}
+.toast.error{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,82,82,0.3)}
+
+/* ── Responsive ───────────────────────────────── */
+@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.personas{grid-template-columns:1fr}.flow{flex-wrap:wrap}}
+@media(max-width:520px){.kpis{grid-template-columns:1fr}.title{font-size:1.6rem}.status-bar{flex-direction:column;gap:8px}.stat-sep{display:none}}
+</style>
+</head>
+<body>
+
+<!-- ═══ Navigation ═══ -->
+<nav class="nav">
+  <a class="nav-logo" href="/">
+    <img src="/seki-avatar.jpg" alt="Seki">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Seki</span>
+      <span class="nav-logo-sub">AI Agent</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="/">首页</a>
+    <a href="/chat">对话</a>
+    <a href="/evolution" class="active">进化大厅</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- Hero -->
+  <header class="hero">
+    <h1 class="title">EVOLUTION HALL</h1>
+    <p class="subtitle">Observe · Think · Act · <span class="hl">Evolve</span></p>
+    <p class="desc">自我进化引擎 — 第四层闭环</p>
+    <div class="ver-badge"><span class="pulse"></span> Agent <span id="agent-version">v1.0.0</span></div>
+  </header>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="stat"><span class="stat-label">上次反思</span><span class="stat-val" id="last-reflection">--</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat"><span class="stat-label">总反思</span><span class="stat-val" id="total-reflections">0</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat"><span class="stat-label">进化周期</span><span class="stat-val" id="total-cycles">0</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat"><span class="stat-label">状态</span><span class="stat-val stat-live" id="evo-status">运行中</span></div>
+  </div>
+
+  <!-- KPI Grid -->
+  <section class="kpis" id="kpi-grid"></section>
+
+  <!-- Evolution Flow -->
+  <section class="sec">
+    <h2 class="sec-title">进化闭环</h2>
+    <div class="flow" id="evo-flow">
+      <div class="flow-node" data-step="0"><div class="flow-icon">👁</div><div class="flow-name">Observe</div><div class="flow-desc">链上 + 市场信号采集</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" data-step="1"><div class="flow-icon">🧠</div><div class="flow-name">Think</div><div class="flow-desc">LLM 多人格决策</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" data-step="2"><div class="flow-icon">⚡</div><div class="flow-name">Act</div><div class="flow-desc">ERC-8183 执行</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node active" data-step="3"><div class="flow-icon">🧬</div><div class="flow-name">Evolve</div><div class="flow-desc">Meta-Agent 反思进化</div></div>
+      <div class="flow-arrow flow-loop">↩</div>
+    </div>
+  </section>
+
+  <!-- Two-column: Timeline + Skills -->
+  <div class="two-col">
+    <section class="sec">
+      <h2 class="sec-title">进化日志</h2>
+      <div class="timeline" id="evo-timeline"><div class="empty">等待首次反思...</div></div>
+    </section>
+    <section class="sec">
+      <h2 class="sec-title">技能库</h2>
+      <div class="skills" id="evo-skills"><div class="empty">尚无提取技能...</div></div>
+    </section>
+  </div>
+
+  <!-- Proposals -->
+  <section class="sec">
+    <h2 class="sec-title">进化提案 <span class="sec-badge" id="proposal-count">0</span></h2>
+    <div class="proposals" id="evo-proposals"><div class="empty">暂无待审提案...</div></div>
+  </section>
+
+  <!-- Persona Performance -->
+  <section class="sec">
+    <h2 class="sec-title">人格表现</h2>
+    <div class="personas" id="evo-personas"></div>
+  </section>
+
+  <!-- Latest Reflection -->
+  <section class="sec">
+    <h2 class="sec-title">最新反思报告</h2>
+    <div id="evo-reflection"><div class="empty">等待首次反思...</div></div>
+  </section>
+
+  <footer class="footer">
+    <span>Seki Evolution Engine</span>
+    <span>·</span>
+    <span>Observe-Think-Act-Evolve</span>
+    <span>·</span>
+    <span id="footer-ver">v1.0</span>
+  </footer>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   Seki Evolution Hall — Frontend Logic
+   ══════════════════════════════════════════════════════ */
+const API = {
+  status:      '/api/evolution/status',
+  dashboard:   '/api/evolution/dashboard',
+  reflections: '/api/evolution/reflections',
+  skills:      '/api/evolution/skills',
+  proposals:   '/api/evolution/proposals',
+  cycles:      '/api/evolution/cycles'
+};
+
+// ── Helpers ──────────────────────────────────────
+const $ = id => document.getElementById(id);
+
+function timeAgo(iso) {
+  if (!iso) return '--';
+  const d = Date.now() - new Date(iso).getTime();
+  if (d < 60000) return '刚刚';
+  if (d < 3600000) return Math.floor(d/60000) + ' 分钟前';
+  if (d < 86400000) return Math.floor(d/3600000) + ' 小时前';
+  return Math.floor(d/86400000) + ' 天前';
+}
+
+function toast(msg, type) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || 'success');
+  setTimeout(() => t.className = 'toast', 2500);
+}
+
+async function api(url) {
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(r.status);
+    return await r.json();
+  } catch (e) {
+    console.warn('API error:', url, e);
+    return null;
+  }
+}
+
+// ── Flow Animation ──────────────────────────────
+let flowStep = 0;
+function animateFlow() {
+  const nodes = document.querySelectorAll('.flow-node');
+  nodes.forEach(n => n.classList.remove('animating', 'active'));
+  const idx = flowStep % nodes.length;
+  nodes[idx].classList.add('animating', 'active');
+  flowStep++;
+}
+setInterval(animateFlow, 2000);
+
+// ── Render: Status ──────────────────────────────
+async function loadStatus() {
+  const d = await api(API.status);
+  if (!d) return;
+  $('agent-version').textContent = d.version || 'v1.0.0';
+  $('footer-ver').textContent = d.version || 'v1.0';
+  $('last-reflection').textContent = timeAgo(d.lastReflection);
+  $('total-reflections').textContent = d.totalReflections || 0;
+  $('total-cycles').textContent = d.totalCycles || 0;
+  $('evo-status').textContent = d.running ? '运行中' : '已停止';
+  $('evo-status').className = d.running ? 'stat-val stat-live' : 'stat-val';
+}
+
+// ── Render: KPIs ────────────────────────────────
+async function loadDashboard() {
+  const d = await api(API.dashboard);
+  if (!d) return;
+  const kpis = [
+    { label: '任务完成率', val: (d.completionRate != null ? (d.completionRate * 100).toFixed(1) + '%' : '--'), change: d.completionRateChange, icon: '📊' },
+    { label: '资金效率',   val: (d.fundEfficiency != null ? (d.fundEfficiency * 100).toFixed(1) + '%' : '--'), change: d.fundEfficiencyChange, icon: '💰' },
+    { label: '总任务数',   val: d.totalTasks != null ? d.totalTasks : '--', change: null, icon: '⚡' },
+    { label: '活跃技能',   val: d.activeSkills != null ? d.activeSkills : '--', change: null, icon: '🧬' }
+  ];
+  $('kpi-grid').innerHTML = kpis.map(k => {
+    let changeCls = 'neutral', changeStr = '';
+    if (k.change != null) {
+      changeCls = k.change > 0 ? 'up' : k.change < 0 ? 'down' : 'neutral';
+      changeStr = (k.change > 0 ? '+' : '') + (k.change * 100).toFixed(1) + '%';
+    }
+    return `<div class="kpi">
+      <div class="kpi-label">${k.icon} ${k.label}</div>
+      <div class="kpi-val">${k.val}</div>
+      ${changeStr ? `<div class="kpi-change ${changeCls}">${changeStr}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  // Persona stats
+  if (d.personaStats) renderPersonas(d.personaStats);
+}
+
+// ── Render: Timeline ────────────────────────────
+async function loadReflections() {
+  const list = await api(API.reflections);
+  if (!list || !list.length) { $('evo-timeline').innerHTML = '<div class="empty">等待首次反思...</div>'; return; }
+  $('evo-timeline').innerHTML = list.slice(0, 20).map(r => {
+    const tags = (r.insights || []).slice(0, 3).map(t =>
+      `<span class="tl-tag insight">${esc(t.substring(0, 40))}</span>`
+    ).join('');
+    return `<div class="tl-item">
+      <div class="tl-ver">${esc(r.version || 'v?')}</div>
+      <div class="tl-summary">${esc(r.summary || r.content || '(无摘要)')}</div>
+      ${tags ? `<div class="tl-tags">${tags}</div>` : ''}
+      <div class="tl-time">${timeAgo(r.timestamp)}</div>
+    </div>`;
+  }).join('');
+
+  // Show latest reflection detail
+  renderReflectionDetail(list[0]);
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+// ── Render: Skills ──────────────────────────────
+async function loadSkills() {
+  const list = await api(API.skills);
+  if (!list || !list.length) { $('evo-skills').innerHTML = '<div class="empty">尚无提取技能...</div>'; return; }
+  $('evo-skills').innerHTML = list.map(s => `<div class="skill">
+    <div class="skill-name">${esc(s.name || s.id || '?')}</div>
+    <div class="skill-desc">${esc(s.description || '')}</div>
+    <div class="skill-meta">
+      ${s.source ? `<span>来源: ${esc(s.source)}</span>` : ''}
+      ${s.confidence ? `<span>置信: ${(s.confidence * 100).toFixed(0)}%</span>` : ''}
+      ${s.timestamp ? `<span>${timeAgo(s.timestamp)}</span>` : ''}
+    </div>
+  </div>`).join('');
+}
+
+// ── Render: Proposals ───────────────────────────
+async function loadProposals() {
+  const list = await api(API.proposals);
+  if (!list || !list.length) {
+    $('evo-proposals').innerHTML = '<div class="empty">暂无待审提案...</div>';
+    $('proposal-count').textContent = '0';
+    return;
+  }
+  $('proposal-count').textContent = list.length;
+  $('evo-proposals').innerHTML = list.map((p, i) => {
+    const typeCls = p.type === 'persona' ? 'persona' : p.type === 'skill' ? 'skill' : p.type === 'prompt' ? 'prompt' : 'rule';
+    const conf = p.confidence != null ? p.confidence : 0.5;
+    return `<div class="prop">
+      <div class="prop-head">
+        <span class="prop-type ${typeCls}">${esc(p.type || 'rule')}</span>
+        <span style="font-weight:600;font-size:0.9rem">${esc(p.title || p.description || '提案 #' + (i+1))}</span>
+        <span class="prop-conf">
+          <span class="conf-bar"><span class="conf-fill" style="width:${conf*100}%"></span></span>
+          ${(conf*100).toFixed(0)}%
+        </span>
+      </div>
+      ${p.description ? `<div class="prop-desc">${esc(p.description)}</div>` : ''}
+      ${p.reason ? `<div class="prop-reason">${esc(p.reason)}</div>` : ''}
+      <div class="prop-actions">
+        <button class="prop-btn approve" onclick="proposalAction(${i},'approve')">批准</button>
+        <button class="prop-btn reject" onclick="proposalAction(${i},'reject')">拒绝</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function proposalAction(idx, action) {
+  try {
+    const r = await fetch(`/api/evolution/proposals/${idx}/${action}`, { method: 'POST' });
+    if (r.ok) {
+      toast(action === 'approve' ? '提案已批准' : '提案已拒绝', 'success');
+      loadProposals();
+    } else {
+      toast('操作失败: ' + r.status, 'error');
+    }
+  } catch (e) {
+    toast('网络错误', 'error');
+  }
+}
+
+// ── Render: Personas ────────────────────────────
+const PERSONA_META = {
+  hunter:     { icon: '🗡️', label: '猎手', cls: 'hunter' },
+  strategist: { icon: '🧠', label: '策略师', cls: 'strategist' },
+  herald:     { icon: '📢', label: '先知', cls: 'herald' }
+};
+
+function renderPersonas(stats) {
+  if (!stats) { $('evo-personas').innerHTML = '<div class="empty">暂无数据...</div>'; return; }
+  const total = Object.values(stats).reduce((s, v) => s + (v.count || 0), 0) || 1;
+  $('evo-personas').innerHTML = Object.entries(stats).map(([key, val]) => {
+    const m = PERSONA_META[key] || { icon: '❓', label: key, cls: '' };
+    const pct = ((val.count || 0) / total * 100).toFixed(0);
+    return `<div class="persona ${m.cls}">
+      <div class="persona-icon">${m.icon}</div>
+      <div class="persona-name">${m.label}</div>
+      <div class="persona-pct">${pct}%</div>
+      <div class="persona-bar"><div class="persona-fill" style="width:${pct}%"></div></div>
+      <div class="persona-stat">${val.count || 0} 次 · 成功率 ${val.successRate != null ? (val.successRate * 100).toFixed(0) + '%' : '--'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Render: Reflection Detail ───────────────────
+function renderReflectionDetail(r) {
+  if (!r) { $('evo-reflection').innerHTML = '<div class="empty">等待首次反思...</div>'; return; }
+  let html = '<div class="refl">';
+  if (r.summary) html += `<div class="refl-summary">${esc(r.summary)}</div>`;
+
+  if (r.insights && r.insights.length) {
+    html += '<div class="refl-label">洞察</div><ul class="refl-list">';
+    r.insights.forEach(i => html += `<li>${esc(i)}</li>`);
+    html += '</ul>';
+  }
+  if (r.improvements && r.improvements.length) {
+    html += '<div class="refl-label">改进建议</div><ul class="refl-list">';
+    r.improvements.forEach(i => html += `<li>${esc(i)}</li>`);
+    html += '</ul>';
+  }
+  if (r.risks && r.risks.length) {
+    html += '<div class="refl-label">风险警示</div><ul class="refl-list">';
+    r.risks.forEach(i => html += `<li>${esc(i)}</li>`);
+    html += '</ul>';
+  }
+
+  html += '</div>';
+  $('evo-reflection').innerHTML = html;
+}
+
+// ── Init & Auto Refresh ─────────────────────────
+async function loadAll() {
+  await Promise.all([
+    loadStatus(),
+    loadDashboard(),
+    loadReflections(),
+    loadSkills(),
+    loadProposals()
+  ]);
+}
+
+loadAll();
+setInterval(loadAll, 30000);
+</script>
+</body>
+</html>

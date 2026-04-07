@@ -5,8 +5,8 @@ function applyWorld(chainKey) {
 
   // ── 1. 强制背景色 ──
   document.body.style.cssText = isXL
-    ? 'background:#08050f !important;background-image:radial-gradient(ellipse 100% 60% at 50% -10%,rgba(88,28,220,.3) 0%,transparent 65%),radial-gradient(ellipse 60% 40% at 90% 100%,rgba(99,58,237,.15) 0%,transparent 60%) !important;color:#f0f0f8;font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh'
-    : 'background:#0d0d1a;background-image:radial-gradient(ellipse 80% 50% at 20% 0%,rgba(124,58,237,.2) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(59,130,246,.12) 0%,transparent 60%);color:#f0f0f8;font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh';
+    ? 'background:#08050f !important;background-image:radial-gradient(ellipse 100% 60% at 50% -10%,rgba(139,105,20,.3) 0%,transparent 65%),radial-gradient(ellipse 60% 40% at 90% 100%,rgba(99,58,237,.15) 0%,transparent 60%) !important;color:#f0f0f8;font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh'
+    : 'background:#0d0d1a;background-image:radial-gradient(ellipse 80% 50% at 20% 0%,rgba(184,134,11,.2) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(59,130,246,.12) 0%,transparent 60%);color:#f0f0f8;font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh';
 
   // ── 2. 导航栏强制样式 ──
   const nav = document.querySelector('.nav');
@@ -22,9 +22,9 @@ function applyWorld(chainKey) {
     root.style.setProperty('--p2', '#4f46e5');
     root.style.setProperty('--pl', 'rgba(129,140,248,.12)');
   } else {
-    root.style.setProperty('--p', '#a78bfa');
-    root.style.setProperty('--p2', '#7c3aed');
-    root.style.setProperty('--pl', 'rgba(167,139,250,.12)');
+    root.style.setProperty('--p', '#e6c44d');
+    root.style.setProperty('--p2', '#b8860b');
+    root.style.setProperty('--pl', 'rgba(230,196,77,.12)');
   }
 
   // ── 4. URL hash ──
@@ -65,7 +65,7 @@ function applyWorld(chainKey) {
       : () => G('faoxing', el('nav-launch'));
     btn.style.cssText = isXL
       ? 'display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:linear-gradient(135deg,#4f46e5,#3730a3);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 24px rgba(79,70,229,.5)'
-      : 'display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 24px rgba(124,58,237,.4)';
+      : 'display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:linear-gradient(135deg,#b8860b,#8b6914);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 24px rgba(184,134,11,.4)';
   }
   if (el('hero-btn-text')) el('hero-btn-text').textContent = w.btnText;
 
@@ -545,7 +545,7 @@ window.paLoadTasks = async function() {
         const rewardPerWinner = Number(BigInt('0x'+sl(3))) / 1e18;
         if (!active || deadline < now) continue;
         const types = ['持仓','交互','早鸟'];
-        const colors = ['#a78bfa','#34d399','#f59e0b'];
+        const colors = ['#e6c44d','#34d399','#f59e0b'];
         const match = strat.taskTypes ? strat.taskTypes.includes(taskType) : true;
         html += `<div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px">
           <span style="color:${colors[taskType]||'var(--p)'}">${types[taskType]||'未知'}</span>

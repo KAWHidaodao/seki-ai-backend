@@ -53,7 +53,7 @@ async function loadAgentReport() {
  if (!d.ok) return;
  el.innerHTML = [
  {label:'总发布任务',val:d.total.tasks,color:'#34d399'},
- {label:'日志总条数',val:d.total.logs,color:'#7c3aed'},
+ {label:'日志总条数',val:d.total.logs,color:'#b8860b'},
  {label:'运营天数',val:Object.keys(d.days).length,color:'#3b82f6'},
  ].map(s=>`<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;text-align:center"><div style="font-size:24px;font-weight:900;color:${s.color}">${s.val}</div><div style="font-size:11px;color:var(--tx3);margin-top:4px">${s.label}</div></div>`).join('');
  if (elD && Object.keys(d.days).length) {
@@ -252,10 +252,10 @@ async function renderHotPage(tokens, isXLayer) {
  const chgStr = chg != null ? (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%' : '—';
  const chgColor = chg >= 0 ? '#34d399' : '#f87171';
  const vol = t.volume ? (t.volume >= 1e6 ? '$'+(t.volume/1e6).toFixed(1)+'M' : '$'+(t.volume/1e3).toFixed(0)+'K') : '—';
- const avatar = t.image ? `<img src="${t.image}" style="width:36px;height:36px;border-radius:50%;object-fit:cover" onerror="this.style.display='none'">` : `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(59,130,246,.2));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--p)">${escH((t.symbol||'?').slice(0,2))}</div>`;
+ const avatar = t.image ? `<img src="${t.image}" style="width:36px;height:36px;border-radius:50%;object-fit:cover" onerror="this.style.display='none'">` : `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(184,134,11,.3),rgba(59,130,246,.2));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--p)">${escH((t.symbol||'?').slice(0,2))}</div>`;
  const chainId = isXLayer ? 196 : 56;
  const link = t.addr ? `https://www.okx.com/web3/dex-swap#inputChain=${chainId}&inputCurrency=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&outputChain=${chainId}&outputCurrency=${t.addr}` : (t.pairUrl || '#');
- return `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(124,58,237,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'" onclick="window.open('${link}','_blank')">
+ return `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(184,134,11,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'" onclick="window.open('${link}','_blank')">
  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
  ${avatar}
  <div style="overflow:hidden;flex:1">
@@ -357,7 +357,7 @@ function fairTab(tab, el) {
   if(ps && ph) {
     [ps,ph].forEach(function(b){ b.style.background='transparent'; b.style.color='var(--tx2)'; b.style.border='1px solid rgba(255,255,255,.15)'; });
     var active = tab==='security' ? ps : ph;
-    active.style.background='rgba(124,58,237,.15)'; active.style.color='var(--p)'; active.style.border='1px solid var(--p)';
+    active.style.background='rgba(184,134,11,.15)'; active.style.color='var(--p)'; active.style.border='1px solid var(--p)';
   }
  document.querySelectorAll('[id^="fair-tab-"]').forEach(b=>b.classList.remove('on'));
  el.classList.add('on');
@@ -469,7 +469,7 @@ function showAppModal(type) {
           <input id="svc-price" type="number" step="0.001" placeholder="0.01" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--tx);font-size:13px;box-sizing:border-box"></div>
         <div><label style="font-size:11px;color:var(--tx3);font-weight:700;display:block;margin-bottom:6px">周期时长（分钟）</label>
           <input id="svc-cycle" type="number" placeholder="1440" value="1440" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--tx);font-size:13px;box-sizing:border-box"></div>
-        <button onclick="submitCreateService()" style="padding:14px;background:rgba(124,58,237,.8);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px">注册服务</button>
+        <button onclick="submitCreateService()" style="padding:14px;background:rgba(184,134,11,.8);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px">注册服务</button>
         <div id="svc-status" style="font-size:12px;color:var(--tx3);text-align:center"></div>
       </div>`;
   } else if (type === 'bounty') {
@@ -648,7 +648,7 @@ async function loadAgentStatus() {
     // Decision
     const dec = d.agents.decision;
     const decDot = document.getElementById('dec-dot');
-    if (decDot) decDot.style.background = dec.alive ? '#a78bfa' : '#ef4444';
+    if (decDot) decDot.style.background = dec.alive ? '#e6c44d' : '#ef4444';
     const decLast = document.getElementById('dec-last');
     if (decLast && d.lastDecision) {
       const act = d.lastDecision.action;
@@ -733,7 +733,7 @@ const TAG_STYLE={
  CANCEL:{bg:'#fee2e2',color:'#dc2626',label:'取消'},
  WAIT: {bg:'#f3f4f6',color:'#6b7280',label:'观察'},
  ERROR: {bg:'#fee2e2',color:'#dc2626',label:'错误'},
- STORY: {bg:'#ede9fe',color:'#7c3aed',label:'故事线'},
+ STORY: {bg:'#ede9fe',color:'#b8860b',label:'故事线'},
 };
 
 async function loadLog(){
@@ -747,13 +747,13 @@ async function loadLog(){
  const lc=document.getElementById('logc');if(lc)lc.textContent=logs.length+' 条记录';
  const lb0=document.getElementById('logb');if(!logs.length){if(lb0)lb0.innerHTML='<div style="text-align:center;padding:48px;color:#9ca3af">等待 Agent 活动...</div>';return}
  const lb=document.getElementById('logb');if(lb)lb.innerHTML=logs.slice().reverse().slice(0,100).map(l=>{
- const pm=PERSONA_META[l.persona]||{emoji:'',name:'Agent',color:'#7c3aed',bg:'rgba(124,58,237,.08)'};
+ const pm=PERSONA_META[l.persona]||{emoji:'',name:'Agent',color:'#b8860b',bg:'rgba(184,134,11,.08)'};
  const ts=TAG_STYLE[l.tag]||TAG_STYLE.WAIT;
  const time=new Date(l.ts).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
  const moodTag=l.mood?'<span style="font-size:10px;color:'+pm.color+';background:'+pm.bg+';padding:1px 6px;border-radius:10px;margin-left:4px">'+escH(l.mood)+'</span>':'';
  const personaBadge='<span style="font-size:11px;font-weight:700;color:'+pm.color+'">'+pm.emoji+pm.name+'</span>'+moodTag;
  const tagBadge='<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:'+ts.bg+';color:'+ts.color+';font-weight:700">'+ts.label+'</span>';
- const sym=l.symbol?'<span style="font-size:11px;font-weight:700;color:#7c3aed;background:#f5f3ff;padding:1px 6px;border-radius:6px;margin-right:6px">$'+escH(l.symbol)+'</span>':'';
+ const sym=l.symbol?'<span style="font-size:11px;font-weight:700;color:#b8860b;background:#f5f3ff;padding:1px 6px;border-radius:6px;margin-right:6px">$'+escH(l.symbol)+'</span>':'';
  return '<div class="le" style="display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:14px 12px">'
  +'<div style="text-align:right">'
  +'<div style="font-size:11px;color:#9ca3af;white-space:nowrap">'+time+'</div>'
