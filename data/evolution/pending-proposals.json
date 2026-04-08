@@ -1,0 +1,35 @@
+[
+  {
+    "id": "prop-001",
+    "type": "threshold",
+    "title": "缩短反思间隔至20分钟",
+    "description": "当前30分钟反思间隔在快速行情中响应不够及时",
+    "confidence": 0.78,
+    "source": "refl-4",
+    "createdAt": "2026-04-07T15:30:53.265Z",
+    "status": "pending",
+    "reason": "最近4轮反思数据显示，行情变化在15-20分钟内发生关键转折"
+  },
+  {
+    "id": "prop-002",
+    "type": "strategy",
+    "title": "Strategist快速响应模式",
+    "description": "当价格波动超过5%/5min时，临时缩短决策周期",
+    "confidence": 0.82,
+    "source": "refl-4",
+    "createdAt": "2026-04-07T15:35:53.265Z",
+    "status": "pending",
+    "reason": "Strategist在3次快速行情中因等待完整周期数据而延迟决策"
+  },
+  {
+    "id": "prop-003",
+    "type": "prompt",
+    "title": "优化Hunter入场提示词",
+    "description": "在Hunter的LLM提示词中增加sellPressure<60的硬性前置条件",
+    "confidence": 0.91,
+    "source": "refl-1",
+    "createdAt": "2026-04-07T15:40:53.265Z",
+    "status": "pending",
+    "reason": "Hunter在sellPressure>60时的买入成功率仅为25%"
+  }
+]

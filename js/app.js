@@ -4,15 +4,14 @@ function applyWorld(chainKey) {
   const isXL = chainKey === 'xlayer';
 
   // ── 1. 强制背景色 ──
-  document.body.style.cssText = isXL
-    ? 'background:#08050f !important;background-image:radial-gradient(ellipse 100% 60% at 50% -10%,rgba(139,105,20,.3) 0%,transparent 65%),radial-gradient(ellipse 60% 40% at 90% 100%,rgba(99,58,237,.15) 0%,transparent 60%) !important;color:#f0f0f8;font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh'
-    : 'background:#0d0d1a;background-image:radial-gradient(ellipse 80% 50% at 20% 0%,rgba(184,134,11,.2) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(59,130,246,.12) 0%,transparent 60%);color:#f0f0f8;font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh';
+  document.body.style.cssText = 'background:#ffffff;color:#1a1a2e;font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh';
 
   // ── 2. 导航栏强制样式 ──
   const nav = document.querySelector('.nav');
   if (nav) {
-    nav.style.background = isXL ? 'rgba(4,2,14,.97)' : 'rgba(13,13,26,.9)';
-    nav.style.borderBottom = isXL ? '2px solid rgba(99,58,237,.6)' : '1px solid rgba(245,158,11,.2)';
+    nav.style.background = 'rgba(255,255,255,.9)';
+    nav.style.backdropFilter = 'blur(20px)';
+    nav.style.borderBottom = isXL ? '2px solid rgba(99,102,241,.3)' : '1px solid rgba(0,0,0,.06)';
   }
 
   // ── 3. CSS 变量覆盖（全局主色切换）──
@@ -22,9 +21,9 @@ function applyWorld(chainKey) {
     root.style.setProperty('--p2', '#4f46e5');
     root.style.setProperty('--pl', 'rgba(129,140,248,.12)');
   } else {
-    root.style.setProperty('--p', '#e6c44d');
-    root.style.setProperty('--p2', '#b8860b');
-    root.style.setProperty('--pl', 'rgba(230,196,77,.12)');
+    root.style.setProperty('--p', '#1a1a2e');
+    root.style.setProperty('--p2', '#2d2d5e');
+    root.style.setProperty('--pl', 'rgba(99,102,241,.1)');
   }
 
   // ── 4. URL hash ──
@@ -65,7 +64,7 @@ function applyWorld(chainKey) {
       : () => G('faoxing', el('nav-launch'));
     btn.style.cssText = isXL
       ? 'display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:linear-gradient(135deg,#4f46e5,#3730a3);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 24px rgba(79,70,229,.5)'
-      : 'display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:linear-gradient(135deg,#b8860b,#8b6914);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 24px rgba(184,134,11,.4)';
+      : 'display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 24px rgba(99,102,241,.3)';
   }
   if (el('hero-btn-text')) el('hero-btn-text').textContent = w.btnText;
 
@@ -73,7 +72,7 @@ function applyWorld(chainKey) {
   const sw = el('chain-switcher');
   if (sw) {
     sw.style.borderColor = isXL ? 'rgba(99,58,237,.6)' : 'rgba(245,158,11,.4)';
-    sw.style.background = isXL ? 'rgba(79,70,229,.1)' : 'rgba(255,255,255,.05)';
+    sw.style.background = isXL ? 'rgba(79,70,229,.1)' : 'rgba(0,0,0,.03)';
   }
 
   // ── 10. 热门页切换 ──
@@ -545,9 +544,9 @@ window.paLoadTasks = async function() {
         const rewardPerWinner = Number(BigInt('0x'+sl(3))) / 1e18;
         if (!active || deadline < now) continue;
         const types = ['持仓','交互','早鸟'];
-        const colors = ['#e6c44d','#34d399','#f59e0b'];
+        const colors = ['#6366f1','#10b981','#f59e0b'];
         const match = strat.taskTypes ? strat.taskTypes.includes(taskType) : true;
-        html += `<div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px">
+        html += `<div style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:12px">
           <span style="color:${colors[taskType]||'var(--p)'}">${types[taskType]||'未知'}</span>
           任务#${i} · <b>${rewardPerWinner.toFixed(4)} BNB</b> · ${claimedCount}/${maxWinners}名额
           ${match ? '<span style="color:#34d399;font-size:10px"> ✓策略匹配</span>' : ''}

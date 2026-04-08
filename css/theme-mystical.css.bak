@@ -1,0 +1,574 @@
+/* ═══════════════════════════════════════════════
+   SEKI — Mystical Dark Theme Overlay
+   Art direction: Deep void + ethereal glow + sacred geometry
+   ═══════════════════════════════════════════════ */
+
+/* ── Google Fonts import ── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+SC:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ── Override root palette: deep void ── */
+:root{
+ --bg:rgba(8,4,20,.6);
+ --bg2:rgba(255,255,255,.03);
+ --bg3:rgba(255,255,255,.06);
+ --bd:rgba(230,196,77,.08);
+ --bd2:rgba(230,196,77,.15);
+ --tx:#f5edd6;
+ --tx2:#b0a080;
+ --tx3:#7a7060;
+ --p:#e6c44d;
+ --p2:#d4a017;
+ --pl:rgba(212,160,23,.12);
+ --gr:#6ee7b7;
+ --re:#fca5a5;
+ --chain-accent:#d4a017;
+ --font:'Inter','Noto Serif SC',-apple-system,BlinkMacSystemFont,sans-serif;
+ --font-display:'Cinzel','Noto Serif SC',serif;
+ --glow-primary:rgba(212,160,23,.35);
+ --glow-secondary:rgba(59,130,246,.25);
+ --glow-accent:rgba(240,216,120,.2);
+ --void-deep:#030108;
+ --void-mid:#0a0518;
+ --void-surface:#120b24;
+}
+
+/* ── Body: the void canvas ── */
+html,body{
+ background:var(--void-deep) !important;
+ color:var(--tx);
+ font-family:var(--font);
+}
+body{
+ background-image:
+   /* nebula core */
+   radial-gradient(ellipse 120% 80% at 50% -20%,rgba(139,105,20,.20) 0%,transparent 55%),
+   /* side whisper */
+   radial-gradient(ellipse 50% 60% at -5% 60%,rgba(212,160,23,.08) 0%,transparent 50%),
+   /* bottom abyss glow */
+   radial-gradient(ellipse 70% 40% at 80% 110%,rgba(59,130,246,.06) 0%,transparent 50%),
+   /* star dust noise */
+   url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E") !important;
+ background-attachment:fixed !important;
+}
+
+/* ── Animated background orbs: ethereal mist ── */
+.hero-bg-orb.orb1{
+ background:radial-gradient(circle,rgba(212,160,23,.30) 0%,rgba(139,105,20,.10) 40%,transparent 70%) !important;
+ filter:blur(100px) !important;
+ animation:orbDrift1 20s ease-in-out infinite !important;
+}
+.hero-bg-orb.orb2{
+ background:radial-gradient(circle,rgba(59,130,246,.18) 0%,rgba(99,58,237,.08) 40%,transparent 70%) !important;
+ filter:blur(90px) !important;
+ animation:orbDrift2 25s ease-in-out infinite !important;
+}
+.hero-bg-orb.orb3{
+ background:radial-gradient(circle,rgba(240,216,120,.12) 0%,transparent 70%) !important;
+ filter:blur(70px) !important;
+ animation:orbDrift1 30s ease-in-out infinite reverse !important;
+}
+@keyframes orbDrift1{
+ 0%,100%{transform:translate(0,0) scale(1) rotate(0deg);}
+ 25%{transform:translate(40px,-50px) scale(1.08) rotate(2deg);}
+ 50%{transform:translate(-15px,-25px) scale(.96) rotate(-1deg);}
+ 75%{transform:translate(-30px,30px) scale(1.03) rotate(1deg);}
+}
+@keyframes orbDrift2{
+ 0%,100%{transform:translate(0,0) scale(1);}
+ 33%{transform:translate(-50px,-40px) scale(1.12);}
+ 66%{transform:translate(30px,20px) scale(.94);}
+}
+/* ═══════════════════════════════════════════════
+   SEKI Mystical Theme — Part 2: Navigation & Cards
+   ═══════════════════════════════════════════════ */
+
+/* ── Navigation bar: obsidian glass ── */
+.nav{
+ background:rgba(3,1,8,.85) !important;
+ backdrop-filter:blur(24px) saturate(180%) !important;
+ border-bottom:1px solid rgba(212,160,23,.10) !important;
+ box-shadow:0 1px 40px rgba(139,105,20,.06) !important;
+}
+.nav::after{
+ content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;
+ background:linear-gradient(90deg,transparent,rgba(212,160,23,.3),rgba(240,216,120,.15),rgba(212,160,23,.3),transparent);
+ pointer-events:none;
+}
+
+/* Nav logo text — serif elegance */
+.nav-logo-txt{
+ font-family:var(--font-display) !important;
+ font-weight:700 !important;
+ letter-spacing:2px !important;
+ text-transform:uppercase;
+ background:linear-gradient(135deg,#f5edd6 0%,#e6c44d 50%,#d4a017 100%) !important;
+ -webkit-background-clip:text !important;
+ -webkit-text-fill-color:transparent !important;
+ background-clip:text !important;
+}
+.nav-logo img{
+ border:1.5px solid rgba(212,160,23,.35) !important;
+ box-shadow:0 0 12px rgba(212,160,23,.25) !important;
+}
+.nav-logo-sub{
+ color:rgba(240,216,120,.5) !important;
+ font-family:var(--font-display) !important;
+ letter-spacing:3px !important;
+ font-size:8px !important;
+}
+
+/* Nav links */
+.nl{
+ color:var(--tx3) !important;
+ font-weight:500 !important;
+ letter-spacing:.5px;
+ transition:color .3s,text-shadow .3s !important;
+}
+.nl:hover,.nl.on{
+ color:var(--p) !important;
+ text-shadow:0 0 20px rgba(212,160,23,.4) !important;
+}
+.nl.on{
+ border-bottom-color:var(--p) !important;
+}
+
+/* Connect wallet button */
+.nav .bpri,
+button[onclick*="connectWallet"]{
+ background:linear-gradient(135deg,rgba(212,160,23,.25),rgba(59,130,246,.2)) !important;
+ border:1px solid rgba(212,160,23,.35) !important;
+ color:var(--p) !important;
+ backdrop-filter:blur(10px) !important;
+ box-shadow:0 0 20px rgba(212,160,23,.15) !important;
+ transition:all .3s !important;
+}
+.nav .bpri:hover,
+button[onclick*="connectWallet"]:hover{
+ background:linear-gradient(135deg,rgba(212,160,23,.35),rgba(59,130,246,.3)) !important;
+ box-shadow:0 0 30px rgba(212,160,23,.25) !important;
+}
+
+/* ── Cards: glass portals ── */
+.card,.tc,.pn,
+[style*="background:rgba(255,255,255,.04)"],
+[style*="background:rgba(255,255,255,.05)"]{
+ background:rgba(8,4,20,.5) !important;
+ backdrop-filter:blur(16px) saturate(150%) !important;
+ border:1px solid rgba(212,160,23,.08) !important;
+ box-shadow:
+   0 4px 32px rgba(0,0,0,.3),
+   inset 0 1px 0 rgba(255,255,255,.04),
+   0 0 0 1px rgba(212,160,23,.04) !important;
+ transition:border-color .3s,box-shadow .3s,transform .3s !important;
+}
+.card:hover,.tc:hover,.pn:hover{
+ border-color:rgba(212,160,23,.20) !important;
+ box-shadow:
+   0 8px 48px rgba(139,105,20,.12),
+   inset 0 1px 0 rgba(255,255,255,.06),
+   0 0 60px rgba(212,160,23,.06) !important;
+ transform:translateY(-2px) !important;
+}
+
+/* Hero panel — sacred vessel */
+.hero-panel{
+ background:linear-gradient(160deg,rgba(12,6,30,.8) 0%,rgba(20,10,40,.6) 100%) !important;
+ backdrop-filter:blur(40px) saturate(200%) !important;
+ border:1px solid rgba(212,160,23,.12) !important;
+ border-top:1px solid rgba(240,216,120,.15) !important;
+ box-shadow:
+   0 24px 80px rgba(0,0,0,.5),
+   0 0 120px rgba(212,160,23,.05),
+   inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+
+/* Hero title — mystic serif */
+.hero-title,
+h1,h2,h3,.hero-panel h2{
+ font-family:var(--font-display) !important;
+ letter-spacing:1px;
+}
+.hero-title{
+ background:linear-gradient(135deg,#faf3e0 0%,#e6c44d 40%,#d4a017 80%,#8b6914 100%) !important;
+ -webkit-background-clip:text !important;
+ -webkit-text-fill-color:transparent !important;
+ background-clip:text !important;
+ text-shadow:none !important;
+}
+.hero-sub{
+ color:var(--tx2) !important;
+ font-weight:300 !important;
+ letter-spacing:.5px;
+}
+
+/* Hero buttons */
+.hero-btn-primary{
+ background:linear-gradient(135deg,#b8860b,#8b6914,#705812) !important;
+ box-shadow:0 4px 30px rgba(184,134,11,.4),0 0 60px rgba(184,134,11,.15) !important;
+ border:1px solid rgba(240,216,120,.2) !important;
+ transition:all .3s !important;
+}
+.hero-btn-primary:hover{
+ box-shadow:0 6px 40px rgba(184,134,11,.5),0 0 80px rgba(184,134,11,.2) !important;
+ transform:translateY(-2px) !important;
+}
+.hero-btn-secondary{
+ background:rgba(212,160,23,.08) !important;
+ border:1px solid rgba(212,160,23,.25) !important;
+ color:var(--p) !important;
+ backdrop-filter:blur(10px) !important;
+}
+.hero-btn-secondary:hover{
+ background:rgba(212,160,23,.15) !important;
+ border-color:rgba(212,160,23,.4) !important;
+}
+/* ═══════════════════════════════════════════════
+   SEKI Mystical Theme — Part 3: Buttons, Inputs, Sections
+   ═══════════════════════════════════════════════ */
+
+/* ── Buttons: glowing runes ── */
+.bpri{
+ background:linear-gradient(135deg,#b8860b,#8b6914) !important;
+ border:1px solid rgba(240,216,120,.2) !important;
+ box-shadow:0 2px 20px rgba(184,134,11,.3) !important;
+ text-shadow:0 1px 2px rgba(0,0,0,.3);
+ transition:all .3s !important;
+}
+.bpri:hover{
+ box-shadow:0 4px 30px rgba(184,134,11,.4),0 0 40px rgba(184,134,11,.1) !important;
+}
+.bsec{
+ background:rgba(212,160,23,.06) !important;
+ border:1px solid rgba(212,160,23,.18) !important;
+ color:var(--p) !important;
+ transition:all .3s !important;
+}
+.bsec:hover{
+ background:rgba(212,160,23,.12) !important;
+ border-color:rgba(212,160,23,.3) !important;
+ box-shadow:0 0 20px rgba(212,160,23,.1) !important;
+}
+.bsm{
+ border-color:rgba(212,160,23,.15) !important;
+ color:var(--tx2) !important;
+ transition:all .3s !important;
+}
+.bsm:hover{
+ border-color:rgba(212,160,23,.3) !important;
+ color:var(--p) !important;
+ box-shadow:0 0 12px rgba(212,160,23,.1) !important;
+}
+
+/* ── Form inputs: void portals ── */
+.ip,input[type="text"],input[type="number"],select,textarea{
+ background:rgba(8,4,20,.6) !important;
+ border:1px solid rgba(212,160,23,.12) !important;
+ color:var(--tx) !important;
+ transition:border-color .3s,box-shadow .3s !important;
+}
+.ip:focus,input:focus,select:focus,textarea:focus{
+ border-color:rgba(212,160,23,.4) !important;
+ box-shadow:0 0 20px rgba(212,160,23,.1),inset 0 0 12px rgba(212,160,23,.04) !important;
+ outline:none !important;
+}
+.ip::placeholder,input::placeholder,textarea::placeholder{
+ color:var(--tx3) !important;
+}
+
+/* ── Section headers ── */
+.sec-hdr,.sec-hdr h2,.sec-hdr h3{
+ font-family:var(--font-display) !important;
+}
+
+/* ── Tabs: whisper selection ── */
+.tab{
+ color:var(--tx3) !important;
+ border-bottom-color:transparent !important;
+ transition:color .3s,border-color .3s,text-shadow .3s !important;
+}
+.tab:hover{
+ color:var(--tx2) !important;
+}
+.tab.on{
+ color:var(--p) !important;
+ border-bottom-color:var(--p) !important;
+ text-shadow:0 0 12px rgba(212,160,23,.3) !important;
+}
+
+/* ── Task cards: arcane containers ── */
+.tc{
+ border-radius:16px !important;
+ position:relative;
+ overflow:hidden;
+}
+.tc::before{
+ content:'';position:absolute;top:0;left:0;right:0;height:2px;
+ background:linear-gradient(90deg,transparent,rgba(212,160,23,.4),rgba(240,216,120,.2),rgba(212,160,23,.4),transparent);
+ opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.tc:hover::before{opacity:1;}
+.tc-name{
+ font-family:var(--font-display) !important;
+ letter-spacing:.5px;
+}
+
+/* ── Badge / Pills: ethereal tags ── */
+.badge,.pill,[class*="badge"]{
+ border-color:rgba(212,160,23,.2) !important;
+ backdrop-filter:blur(8px) !important;
+}
+.chain-badge{
+ background:rgba(212,160,23,.1) !important;
+ border:1px solid rgba(212,160,23,.25) !important;
+ box-shadow:0 0 8px rgba(212,160,23,.1) !important;
+}
+
+/* ── Stats: luminous numbers ── */
+.stat-val,.stat-num,[style*="font-weight:900"][style*="font-size:2"]{
+ font-family:var(--font-display) !important;
+ text-shadow:0 0 20px currentColor !important;
+}
+
+/* ── Dialog / Modal: portal overlay ── */
+.dlg-overlay{
+ background:rgba(3,1,8,.8) !important;
+ backdrop-filter:blur(8px) !important;
+}
+.dlg{
+ background:linear-gradient(160deg,rgba(12,6,30,.95),rgba(18,11,36,.92)) !important;
+ backdrop-filter:blur(30px) saturate(180%) !important;
+ border:1px solid rgba(212,160,23,.15) !important;
+ box-shadow:
+   0 32px 100px rgba(0,0,0,.6),
+   0 0 80px rgba(212,160,23,.08),
+   inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+.dlg-cap{
+ font-family:var(--font-display) !important;
+}
+
+/* ── Toast: spirit notification ── */
+.toast{
+ background:rgba(12,6,30,.9) !important;
+ border:1px solid rgba(212,160,23,.2) !important;
+ backdrop-filter:blur(20px) !important;
+ box-shadow:0 8px 40px rgba(0,0,0,.4),0 0 40px rgba(212,160,23,.06) !important;
+}
+.toast.s{border-left:3px solid #6ee7b7 !important;}
+.toast.e{border-left:3px solid #fca5a5 !important;}
+.toast.w{border-left:3px solid #fbbf24 !important;}
+
+/* ── Scrollbar: void ink ── */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(212,160,23,.2);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(212,160,23,.35);}
+
+/* ── Selection: branded highlight ── */
+::selection{
+ background:rgba(212,160,23,.3);
+ color:#faf3e0;
+}
+/* ═══════════════════════════════════════════════
+   SEKI Mystical Theme — Part 4: Sacred Geometry & Particles
+   ═══════════════════════════════════════════════ */
+
+/* ── Sacred geometry background pattern ── */
+body::before{
+ content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+ pointer-events:none;z-index:0;opacity:.03;
+ background-image:
+   /* concentric sacred circles */
+   radial-gradient(circle at 50% 30%,rgba(212,160,23,.5) 0px,transparent 1px),
+   radial-gradient(circle at 50% 30%,transparent 79px,rgba(212,160,23,.3) 80px,transparent 81px),
+   radial-gradient(circle at 50% 30%,transparent 159px,rgba(212,160,23,.2) 160px,transparent 161px),
+   radial-gradient(circle at 50% 30%,transparent 239px,rgba(212,160,23,.15) 240px,transparent 241px),
+   /* subtle grid */
+   linear-gradient(rgba(212,160,23,.1) 1px,transparent 1px),
+   linear-gradient(90deg,rgba(212,160,23,.1) 1px,transparent 1px);
+ background-size:100% 100%,100% 100%,100% 100%,100% 100%,60px 60px,60px 60px;
+}
+
+/* ── Floating particles via pseudo-elements ── */
+body::after{
+ content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+ pointer-events:none;z-index:0;
+ background-image:
+   radial-gradient(1px 1px at 10% 20%,rgba(240,216,120,.4) 0%,transparent 100%),
+   radial-gradient(1px 1px at 30% 50%,rgba(212,160,23,.3) 0%,transparent 100%),
+   radial-gradient(1.5px 1.5px at 55% 15%,rgba(240,216,120,.5) 0%,transparent 100%),
+   radial-gradient(1px 1px at 70% 65%,rgba(212,160,23,.3) 0%,transparent 100%),
+   radial-gradient(1.5px 1.5px at 85% 35%,rgba(240,216,120,.4) 0%,transparent 100%),
+   radial-gradient(1px 1px at 20% 80%,rgba(59,130,246,.3) 0%,transparent 100%),
+   radial-gradient(1px 1px at 45% 90%,rgba(212,160,23,.25) 0%,transparent 100%),
+   radial-gradient(1.5px 1.5px at 65% 45%,rgba(240,216,120,.35) 0%,transparent 100%),
+   radial-gradient(1px 1px at 90% 80%,rgba(59,130,246,.3) 0%,transparent 100%),
+   radial-gradient(1px 1px at 5% 55%,rgba(240,216,120,.3) 0%,transparent 100%),
+   radial-gradient(1.5px 1.5px at 40% 25%,rgba(212,160,23,.4) 0%,transparent 100%),
+   radial-gradient(1px 1px at 75% 10%,rgba(240,216,120,.3) 0%,transparent 100%);
+ animation:starDrift 60s linear infinite;
+}
+@keyframes starDrift{
+ 0%{transform:translateY(0);}
+ 100%{transform:translateY(-20px);}
+}
+
+/* ── Page content sits above background layers ── */
+.nav,#main,.hero-panel,.sidebar,.chat-area,.input-area,
+.msgs,.welcome,.page,[id*="pg-"]{
+ position:relative;z-index:1;
+}
+
+/* ── Section transitions: fade in ── */
+.page,[id*="pg-"]{
+ animation:sectionReveal .5s ease-out;
+}
+@keyframes sectionReveal{
+ from{opacity:0;transform:translateY(12px);}
+ to{opacity:1;transform:translateY(0);}
+}
+
+/* ── Card entrance animation ── */
+.tc,.card,.pn{
+ animation:cardFloat .4s ease-out both;
+}
+@keyframes cardFloat{
+ from{opacity:0;transform:translateY(16px) scale(.98);}
+ to{opacity:1;transform:translateY(0) scale(1);}
+}
+
+/* ── Glowing separator lines ── */
+hr,[style*="border-bottom:1px solid"]{
+ border-color:rgba(212,160,23,.1) !important;
+ box-shadow:0 1px 10px rgba(212,160,23,.05);
+}
+
+/* ── Agent card mystical treatment ── */
+.agent-card{
+ background:linear-gradient(160deg,rgba(12,6,30,.7),rgba(8,4,20,.5)) !important;
+ border:1px solid rgba(212,160,23,.12) !important;
+ box-shadow:0 8px 40px rgba(0,0,0,.3),0 0 40px rgba(212,160,23,.04) !important;
+}
+.agent-card:hover{
+ border-color:rgba(212,160,23,.25) !important;
+ box-shadow:0 12px 50px rgba(0,0,0,.35),0 0 60px rgba(212,160,23,.08) !important;
+}
+
+/* ── Token address & mono text: subtle glow ── */
+[style*="font-family:monospace"],code,.mono{
+ color:rgba(240,216,120,.7) !important;
+}
+
+/* ── Mobile responsive adjustments ── */
+@media(max-width:768px){
+ body::before{opacity:.015;}
+ .hero-panel{
+   border-radius:16px !important;
+ }
+ .nav::after{left:5%;right:5%;}
+}
+
+/* ── Loading spinner: arcane circle ── */
+.loading,.spinner{
+ border-color:rgba(212,160,23,.15) !important;
+ border-top-color:var(--p) !important;
+}
+
+/* ── Empty state text ── */
+.empty{
+ color:var(--tx3) !important;
+ font-style:italic;
+}
+
+/* ── Links: spirit-touched ── */
+a{
+ color:var(--p);
+ transition:color .3s,text-shadow .3s;
+}
+a:hover{
+ color:#e6d5a8;
+ text-shadow:0 0 12px rgba(212,160,23,.3);
+}
+/* ═══════════════════════════════════════════════
+   SEKI Mystical Theme — Part 5: Inline Style Overrides
+   Force dark mystical backgrounds over inline rgba(255,255,255,...) styles
+   ═══════════════════════════════════════════════ */
+
+/* Override specific elements with known inline background patterns */
+/* Main page background override */
+body #main,
+body .hero-section,
+body [id*="pg-"]{
+ background:transparent !important;
+}
+
+/* Force all divs with light rgba backgrounds to dark */
+div[style*="background:rgba(255,255,255,.04)"],
+div[style*="background:rgba(255,255,255,.05)"],
+div[style*="background:rgba(255,255,255,.06)"],
+div[style*="background:rgba(255,255,255,.08)"],
+div[style*="background:rgba(255,255,255,.1)"],
+div[style*="background:rgba(255,255,255,.03)"],
+div[style*="background:rgba(255,255,255,.02)"]{
+ background:rgba(8,4,20,.5) !important;
+ border-color:rgba(212,160,23,.08) !important;
+}
+
+/* Border overrides for light rgba borders */
+div[style*="border:1px solid rgba(255,255,255"],
+div[style*="border-bottom:1px solid rgba(255,255,255"],
+div[style*="border-top:1px solid rgba(255,255,255"],
+span[style*="border:1px solid rgba(255,255,255"],
+button[style*="border:1px solid rgba(255,255,255"]{
+ border-color:rgba(212,160,23,.1) !important;
+}
+
+/* Bright accent backgrounds — keep but deepen */
+div[style*="background:linear-gradient(135deg,#b8860b"],
+div[style*="background:linear-gradient(135deg,rgba(184,134,11"],
+span[style*="background:linear-gradient(135deg,#b8860b"],
+button[style*="background:linear-gradient(135deg,#b8860b"]{
+ box-shadow:0 0 30px rgba(184,134,11,.25) !important;
+}
+
+/* Text color overrides for subtle text */
+span[style*="color:rgba(255,255,255,.5)"],
+span[style*="color:rgba(255,255,255,.4)"],
+div[style*="color:rgba(255,255,255,.5)"],
+div[style*="color:rgba(255,255,255,.4)"]{
+ color:var(--tx3) !important;
+}
+
+/* Grid backgrounds in sections */
+div[style*="display:grid"] > div[style*="background:rgba(255,255,255"]{
+ background:rgba(12,6,30,.5) !important;
+ border-color:rgba(212,160,23,.1) !important;
+ transition:border-color .3s,box-shadow .3s !important;
+}
+div[style*="display:grid"] > div[style*="background:rgba(255,255,255"]:hover{
+ border-color:rgba(212,160,23,.2) !important;
+ box-shadow:0 4px 24px rgba(139,105,20,.1) !important;
+}
+
+/* Slider track */
+input[type="range"]{
+ accent-color:#d4a017;
+}
+input[type="range"]::-webkit-slider-runnable-track{
+ background:rgba(212,160,23,.15) !important;
+}
+
+/* Dropdown/select styling */
+select option{
+ background:var(--void-surface) !important;
+ color:var(--tx) !important;
+}
+
+/* Progress bars */
+.progress-bar,[role="progressbar"]{
+ background:rgba(212,160,23,.1) !important;
+}
+.progress-bar-fill,[role="progressbar"]>div{
+ background:linear-gradient(90deg,#b8860b,#d4a017) !important;
+ box-shadow:0 0 10px rgba(212,160,23,.4) !important;
+}

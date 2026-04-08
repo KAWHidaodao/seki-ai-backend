@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing Skills | SEKI Docs</title>
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+<div class="doc-layout">
+<aside class="doc-sidebar">
+<div class="sb-logo"><a href="../">SEKI<span class="accent">.</span>DOCS</a></div>
+<div class="sb-section">Getting Started</div>
+<div class="sb-links">
+<a href="../getting-started/quickstart.html" class="sb-link">Quick Start</a>
+<a href="../getting-started/installation.html" class="sb-link">Installation</a>
+<a href="../getting-started/configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">User Guide</div>
+<div class="sb-links">
+<a href="../user-guide/features/memory.html" class="sb-link">Memory System</a>
+<a href="../user-guide/features/skills.html" class="sb-link">Skill Engine</a>
+<a href="../user-guide/features/tools.html" class="sb-link">Tool Registry</a>
+<a href="../user-guide/features/self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">Developer Guide</div>
+<div class="sb-links">
+<a href="architecture.html" class="sb-link">Architecture</a>
+<a href="writing-skills.html" class="sb-link active">Writing Skills</a>
+</div>
+<div class="sb-section">Reference</div>
+<div class="sb-links">
+<a href="../reference/skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="../reference/api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../">Home</a><span class="sep">/</span>
+<a href="#">Developer Guide</a><span class="sep">/</span>
+Writing Skills
+</div>
+
+<h1>Writing Skills</h1>
+<p class="doc-subtitle">Build custom skills to extend Seki's capabilities.</p>
+
+<h2>Skill Structure</h2>
+<p>A skill is a self-contained module with a manifest, entry point, and optional resources.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Skill Directory</div>
+<pre><code>skills/my-skill/
+├── skill.yaml        # Manifest — metadata, triggers, permissions
+├── index.ts          # Entry point — main logic
+├── lib/              # Helper modules (optional)
+│   └── analyzer.ts
+├── models/           # ML models (optional)
+│   └── sentiment.onnx
+└── tests/
+    └── my-skill.test.ts</code></pre>
+</div>
+
+<h2>Step 1: Create the Manifest</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>skill.yaml</div>
+<pre><code><span class="ck">name:</span> whale-tracker
+<span class="ck">version:</span> 1.0.0
+<span class="ck">description:</span> Track large wallet movements and alert on significant transfers
+
+<span class="ck">triggers:</span>
+  <span class="ck">events:</span>
+    - chain.transfer       # On-chain transfer events
+    - chain.contract_call  # Contract interactions
+  <span class="ck">schedule:</span>
+    - cron: "*/5 * * * *"  # Every 5 minutes
+  <span class="ck">conditions:</span>
+    - event.value_usd > 100000  # Only large transfers
+
+<span class="ck">tools:</span>
+  <span class="ck">required:</span>
+    - etherscan: [read_transactions, read_balances]
+    - telegram: [send_message]
+  <span class="ck">optional:</span>
+    - twitter: [post_tweet]
+
+<span class="ck">memory:</span>
+  <span class="ck">read:</span> [watched_wallets, transfer_history]
+  <span class="ck">write:</span> [transfer_history, alerts_sent]
+
+<span class="ck">config:</span>
+  <span class="ck">min_value_usd:</span>
+    <span class="ck">type:</span> number
+    <span class="ck">default:</span> 100000
+    <span class="ck">description:</span> Minimum transfer value to track
+  <span class="ck">alert_channel:</span>
+    <span class="ck">type:</span> string
+    <span class="ck">default:</span> "alerts"
+    <span class="ck">description:</span> Telegram channel for notifications</code></pre>
+</div>
+
+<h2>Step 2: Write the Entry Point</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>index.ts</div>
+<pre><code>import { Skill, SkillContext, Event, SkillResult } from '@seki/sdk';
+
+export default class WhaleTracker extends Skill {
+  name = 'whale-tracker';
+
+  async onEvent(ctx: SkillContext, event: Event): Promise&lt;SkillResult&gt; {
+    const minValue = ctx.config.get('min_value_usd', 100000);
+
+    // Skip small transfers
+    if (event.data.value_usd &lt; minValue) {
+      return { action: 'skip', reason: 'below_threshold' };
+    }
+
+    // Check if wallet is already watched
+    const watched = await ctx.memory.get('watched_wallets');
+    const isWatched = watched.includes(event.data.from) ||
+                      watched.includes(event.data.to);
+
+    // Build alert message
+    const alert = this.formatAlert(event, isWatched);
+
+    // Send notification
+    await ctx.tools.telegram.sendMessage({
+      channel: ctx.config.get('alert_channel'),
+      text: alert,
+      parse_mode: 'HTML'
+    });
+
+    // Store in memory for pattern analysis
+    await ctx.memory.append('transfer_history', {
+      timestamp: event.timestamp,
+      from: event.data.from,
+      to: event.data.to,
+      value_usd: event.data.value_usd,
+      token: event.data.token,
+      tx_hash: event.data.tx_hash
+    });
+
+    return {
+      action: 'alert_sent',
+      confidence: isWatched ? 0.9 : 0.6,
+      data: { tx_hash: event.data.tx_hash }
+    };
+  }
+
+  private formatAlert(event: Event, isWatched: boolean): string {
+    const emoji = isWatched ? '🐋' : '🔔';
+    const tag = isWatched ? '[WATCHED WALLET]' : '[NEW WHALE]';
+    return `
+      ${emoji} &lt;b&gt;${tag} Large Transfer Detected&lt;/b&gt;
+      Amount: $${event.data.value_usd.toLocaleString()}
+      Token: ${event.data.token}
+      From: &lt;code&gt;${event.data.from}&lt;/code&gt;
+      To: &lt;code&gt;${event.data.to}&lt;/code&gt;
+      TX: &lt;a href="https://etherscan.io/tx/${event.data.tx_hash}"&gt;View&lt;/a&gt;
+    `.trim();
+  }
+}</code></pre>
+</div>
+
+<h2>Step 3: Lifecycle Hooks</h2>
+<p>Skills can implement lifecycle methods for initialization and cleanup:</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Lifecycle Methods</div>
+<pre><code>export default class MySkill extends Skill {
+  // Called once when skill is loaded
+  async onLoad(ctx: SkillContext): Promise&lt;void&gt; {
+    this.model = await ctx.loadModel('models/sentiment.onnx');
+  }
+
+  // Called on each matching event
+  async onEvent(ctx: SkillContext, event: Event): Promise&lt;SkillResult&gt; {
+    // Main logic
+  }
+
+  // Called on scheduled triggers
+  async onSchedule(ctx: SkillContext, schedule: string): Promise&lt;SkillResult&gt; {
+    // Periodic tasks
+  }
+
+  // Called when skill is being unloaded
+  async onUnload(ctx: SkillContext): Promise&lt;void&gt; {
+    await this.model.dispose();
+  }
+
+  // Called when evolution engine mutates parameters
+  async onMutate(ctx: SkillContext, mutations: Mutation[]): Promise&lt;void&gt; {
+    // Adapt to new parameters
+  }
+}</code></pre>
+</div>
+
+<h2>Step 4: Testing</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>seki skill test whale-tracker</div>
+<pre><code>Running tests for whale-tracker...
+
+  ✓ Should skip transfers below threshold (12ms)
+  ✓ Should alert on large transfers (45ms)
+  ✓ Should flag watched wallets (23ms)
+  ✓ Should store transfer in memory (18ms)
+  ✓ Should handle missing tool gracefully (8ms)
+
+  5 passed, 0 failed
+  Coverage: 94.2%</code></pre>
+</div>
+
+<h2>Step 5: Install & Deploy</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>CLI Commands</div>
+<pre><code># Validate manifest and code
+seki skill validate ./skills/whale-tracker
+
+# Install locally
+seki skill install ./skills/whale-tracker
+
+# Publish to Seki skill marketplace
+seki skill publish ./skills/whale-tracker
+
+# Check status
+seki skill status whale-tracker</code></pre>
+</div>
+
+<h2>Best Practices</h2>
+<ul>
+<li><strong>Single Responsibility</strong> — One skill, one job. Compose complex behavior from multiple skills.</li>
+<li><strong>Declare Everything</strong> — All tools, memory keys, and events must be declared in the manifest.</li>
+<li><strong>Handle Failures</strong> — Tools can go offline. Always handle tool unavailability gracefully.</li>
+<li><strong>Return Confidence</strong> — The evolution engine uses confidence scores to optimize strategies.</li>
+<li><strong>Test with Replay</strong> — Use <code>seki skill replay</code> to test against historical event data.</li>
+<li><strong>Keep State in Memory</strong> — Don't use local files. Use the memory API for persistence.</li>
+</ul>
+
+<div class="doc-info">
+<strong>Skill SDK:</strong> Full TypeScript SDK reference at <code>@seki/sdk</code>. Install with <code>npm install @seki/sdk</code> for type definitions and testing utilities.
+</div>
+
+</main>
+</div>
+<script src="../js/docs.js"></script>
+</body>
+</html>

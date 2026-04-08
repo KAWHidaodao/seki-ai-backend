@@ -1,0 +1,14 @@
+{
+  "id": "skill-herald-batch",
+  "name": "Herald批量执行",
+  "description": "Herald推广操作累积3个周期后批量执行，降低gas消耗38%",
+  "source": "refl-2",
+  "conditions": {
+    "heraldPendingCycles": 3
+  },
+  "action": "batch_herald",
+  "timesApplied": 4,
+  "successRate": 0.85,
+  "active": true,
+  "createdAt": "2026-04-07T15:06:35.315Z"
+}

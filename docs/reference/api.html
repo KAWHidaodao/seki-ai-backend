@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Reference | SEKI Docs</title>
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+<div class="doc-layout">
+<aside class="doc-sidebar">
+<div class="sb-logo"><a href="../">SEKI<span class="accent">.</span>DOCS</a></div>
+<div class="sb-section">Getting Started</div>
+<div class="sb-links">
+<a href="../getting-started/quickstart.html" class="sb-link">Quick Start</a>
+<a href="../getting-started/installation.html" class="sb-link">Installation</a>
+<a href="../getting-started/configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">User Guide</div>
+<div class="sb-links">
+<a href="../user-guide/features/memory.html" class="sb-link">Memory System</a>
+<a href="../user-guide/features/skills.html" class="sb-link">Skill Engine</a>
+<a href="../user-guide/features/tools.html" class="sb-link">Tool Registry</a>
+<a href="../user-guide/features/self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">Developer Guide</div>
+<div class="sb-links">
+<a href="../developer-guide/architecture.html" class="sb-link">Architecture</a>
+<a href="../developer-guide/writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">Reference</div>
+<div class="sb-links">
+<a href="skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="api.html" class="sb-link active">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../">Home</a><span class="sep">/</span>
+<a href="#">Reference</a><span class="sep">/</span>
+API Reference
+</div>
+
+<h1>API Reference</h1>
+<p class="doc-subtitle">REST API endpoints for monitoring, controlling, and integrating with your Seki agent.</p>
+
+<h2>Base URL</h2>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Default</div>
+<pre><code>http://localhost:3000/api/v1</code></pre>
+</div>
+
+<h2>Authentication</h2>
+<p>All endpoints require a Bearer token. Generate one via the CLI:</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Token Setup</div>
+<pre><code>seki auth token --generate
+
+# Use in requests:
+curl -H "Authorization: Bearer sk_live_..." http://localhost:3000/api/v1/status</code></pre>
+</div>
+
+<h2>Agent</h2>
+
+<h3><span class="method get">GET</span> /status</h3>
+<p>Returns agent health, uptime, and current state.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Response 200</div>
+<pre><code>{
+  "status": "running",
+  "uptime": "14d 6h 32m",
+  "version": "0.8.2",
+  "generation": 848,
+  "active_skills": 12,
+  "active_tools": 7,
+  "memory_usage": "1.2 GB",
+  "events_per_sec": 847
+}</code></pre>
+</div>
+
+<h3><span class="method post">POST</span> /pause</h3>
+<p>Pause all agent activity. Active trades are held, no new positions opened.</p>
+
+<h3><span class="method post">POST</span> /resume</h3>
+<p>Resume agent activity after pause.</p>
+
+<h3><span class="method post">POST</span> /emergency-stop</h3>
+<p>Immediately halt all operations and close open positions.</p>
+<div class="doc-info">
+<strong>Warning:</strong> Emergency stop will market-sell all open positions. Use only in critical situations.
+</div>
+
+<h2>Skills</h2>
+
+<h3><span class="method get">GET</span> /skills</h3>
+<p>List all installed skills with status and fitness scores.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Response 200</div>
+<pre><code>{
+  "skills": [
+    {
+      "name": "meme-launch",
+      "version": "2.3.1",
+      "status": "active",
+      "fitness": 0.84,
+      "executions_24h": 47,
+      "last_triggered": "2025-01-15T10:32:00Z"
+    },
+    {
+      "name": "cex-trading",
+      "version": "3.1.0",
+      "status": "active",
+      "fitness": 0.79,
+      "executions_24h": 312,
+      "last_triggered": "2025-01-15T10:34:12Z"
+    }
+  ]
+}</code></pre>
+</div>
+
+<h3><span class="method get">GET</span> /skills/:name</h3>
+<p>Get detailed information about a specific skill.</p>
+
+<h3><span class="method post">POST</span> /skills/:name/enable</h3>
+<p>Enable a disabled skill.</p>
+
+<h3><span class="method post">POST</span> /skills/:name/disable</h3>
+<p>Disable a skill. Running executions complete, no new triggers processed.</p>
+
+<h3><span class="method put">PUT</span> /skills/:name/config</h3>
+<p>Update skill configuration parameters.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Request Body</div>
+<pre><code>{
+  "max_position": 1000,
+  "stop_loss": 0.03,
+  "entry_threshold": 0.85
+}</code></pre>
+</div>
+
+<h2>Memory</h2>
+
+<h3><span class="method get">GET</span> /memory/stats</h3>
+<p>Memory system statistics.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Response 200</div>
+<pre><code>{
+  "short_term": { "entries": 1247, "size": "48 MB", "window": "24h" },
+  "long_term": { "entries": 8923, "size": "312 MB", "oldest": "2024-11-01" },
+  "episodic": { "episodes": 2341, "size": "856 MB" }
+}</code></pre>
+</div>
+
+<h3><span class="method get">GET</span> /memory/search</h3>
+<p>Search memory with semantic query.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Query Parameters</div>
+<pre><code>?q=large+whale+transfer&amp;tier=all&amp;limit=20&amp;from=2025-01-01</code></pre>
+</div>
+
+<h3><span class="method delete">DELETE</span> /memory/short-term</h3>
+<p>Clear short-term memory buffer.</p>
+
+<h2>Evolution</h2>
+
+<h3><span class="method get">GET</span> /evolution/status</h3>
+<p>Current evolution engine state.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Response 200</div>
+<pre><code>{
+  "generation": 848,
+  "avg_fitness": 0.71,
+  "best_fitness": 0.91,
+  "active_strategies": 12,
+  "total_pruned": 47,
+  "mutations_today": 23,
+  "mutation_success_rate": 0.61
+}</code></pre>
+</div>
+
+<h3><span class="method get">GET</span> /evolution/history</h3>
+<p>Evolution history with fitness progression.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Query Parameters</div>
+<pre><code>?generations=50&amp;include_mutations=true</code></pre>
+</div>
+
+<h3><span class="method post">POST</span> /evolution/force-cycle</h3>
+<p>Trigger an immediate evolution cycle outside the normal schedule.</p>
+
+<h2>Tools</h2>
+
+<h3><span class="method get">GET</span> /tools</h3>
+<p>List registered tools with health status.</p>
+
+<h3><span class="method get">GET</span> /tools/:name/health</h3>
+<p>Detailed health check for a specific tool.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Response 200</div>
+<pre><code>{
+  "name": "binance",
+  "status": "healthy",
+  "latency_ms": 42,
+  "uptime_pct": 99.97,
+  "last_check": "2025-01-15T10:35:00Z",
+  "rate_limit": { "used": 340, "limit": 1200, "reset_in": "38s" }
+}</code></pre>
+</div>
+
+<h3><span class="method post">POST</span> /tools/:name/reconnect</h3>
+<p>Force reconnect a tool (useful after credential rotation).</p>
+
+<h2>WebSocket</h2>
+<p>Real-time event stream for dashboards and integrations.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>WebSocket Connection</div>
+<pre><code>ws://localhost:3000/ws?token=sk_live_...
+
+// Subscribe to channels
+{ "subscribe": ["events", "trades", "evolution", "alerts"] }
+
+// Event format
+{
+  "channel": "trades",
+  "type": "order_filled",
+  "data": {
+    "skill": "meme-launch",
+    "pair": "PEPE/USDT",
+    "side": "buy",
+    "amount": 500,
+    "price": 0.00001234
+  },
+  "timestamp": "2025-01-15T10:36:00Z"
+}</code></pre>
+</div>
+
+<h2>Rate Limits</h2>
+<table class="doc-table">
+<thead><tr><th>Endpoint</th><th>Limit</th><th>Window</th></tr></thead>
+<tbody>
+<tr><td>GET endpoints</td><td>100 req</td><td>1 minute</td></tr>
+<tr><td>POST/PUT endpoints</td><td>30 req</td><td>1 minute</td></tr>
+<tr><td>Emergency stop</td><td>No limit</td><td>—</td></tr>
+<tr><td>WebSocket</td><td>5 connections</td><td>—</td></tr>
+</tbody>
+</table>
+
+<h2>Error Responses</h2>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Error Format</div>
+<pre><code>{
+  "error": {
+    "code": "SKILL_NOT_FOUND",
+    "message": "Skill 'xyz' is not installed",
+    "status": 404
+  }
+}</code></pre>
+</div>
+
+<table class="doc-table">
+<thead><tr><th>Code</th><th>Status</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>UNAUTHORIZED</td><td>401</td><td>Missing or invalid token</td></tr>
+<tr><td>FORBIDDEN</td><td>403</td><td>Insufficient permissions</td></tr>
+<tr><td>NOT_FOUND</td><td>404</td><td>Resource not found</td></tr>
+<tr><td>AGENT_PAUSED</td><td>409</td><td>Agent is paused, action not available</td></tr>
+<tr><td>RATE_LIMITED</td><td>429</td><td>Too many requests</td></tr>
+<tr><td>INTERNAL</td><td>500</td><td>Internal server error</td></tr>
+</tbody>
+</table>
+
+</main>
+</div>
+<script src="../js/docs.js"></script>
+</body>
+</html>

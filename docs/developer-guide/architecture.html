@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture | SEKI Docs</title>
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+<div class="doc-layout">
+<aside class="doc-sidebar">
+<div class="sb-logo"><a href="../">SEKI<span class="accent">.</span>DOCS</a></div>
+<div class="sb-section">Getting Started</div>
+<div class="sb-links">
+<a href="../getting-started/quickstart.html" class="sb-link">Quick Start</a>
+<a href="../getting-started/installation.html" class="sb-link">Installation</a>
+<a href="../getting-started/configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">User Guide</div>
+<div class="sb-links">
+<a href="../user-guide/features/memory.html" class="sb-link">Memory System</a>
+<a href="../user-guide/features/skills.html" class="sb-link">Skill Engine</a>
+<a href="../user-guide/features/tools.html" class="sb-link">Tool Registry</a>
+<a href="../user-guide/features/self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">Developer Guide</div>
+<div class="sb-links">
+<a href="architecture.html" class="sb-link active">Architecture</a>
+<a href="writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">Reference</div>
+<div class="sb-links">
+<a href="../reference/skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="../reference/api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../">Home</a><span class="sep">/</span>
+<a href="#">Developer Guide</a><span class="sep">/</span>
+Architecture
+</div>
+
+<h1>Architecture</h1>
+<p class="doc-subtitle">System design overview — how Seki's components fit together.</p>
+
+<h2>High-Level Overview</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>System Architecture</div>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│                    SEKI AGENT                        │
+│                                                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │
+│  │  BRAIN   │  │ MEMORY   │  │  EVOLUTION ENGINE │  │
+│  │          │  │          │  │                   │  │
+│  │ Decision │◄─┤ Short    │  │ Fitness Scoring   │  │
+│  │ Engine   │  │ Long     │  │ Mutation           │  │
+│  │          │  │ Episodic │  │ Selection          │  │
+│  └────┬─────┘  └──────────┘  └────────┬──────────┘  │
+│       │                               │             │
+│  ┌────▼──────────────────────────────▼──────────┐  │
+│  │              SKILL ENGINE                      │  │
+│  │                                               │  │
+│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐        │  │
+│  │  │ meme-   │ │ cex-    │ │ market- │  ...    │  │
+│  │  │ launch  │ │ trading │ │ sense   │        │  │
+│  │  └────┬────┘ └────┬────┘ └────┬────┘        │  │
+│  └───────┼───────────┼───────────┼──────────────┘  │
+│          │           │           │                  │
+│  ┌───────▼───────────▼───────────▼──────────────┐  │
+│  │              TOOL REGISTRY                     │  │
+│  │                                               │  │
+│  │  binance │ twitter │ etherscan │ web3-rpc     │  │
+│  └───────────────────────────────────────────────┘  │
+│                                                     │
+│  ┌──────────────────────────────────────────────┐  │
+│  │              EVENT BUS (Redis Streams)         │  │
+│  └──────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────┘
+                         │
+              ┌──────────▼──────────┐
+              │   BLOCKCHAIN LAYER   │
+              │  X Layer / EVM       │
+              │  Agent Registry      │
+              │  On-chain State      │
+              └─────────────────────┘</code></pre>
+</div>
+
+<h2>Core Components</h2>
+
+<h3>Brain (Decision Engine)</h3>
+<p>The central coordinator. Receives processed signals, consults memory, evaluates available strategies, and dispatches actions through the skill engine.</p>
+<ul>
+<li><strong>Input:</strong> Processed events from observation pipeline</li>
+<li><strong>Processing:</strong> Multi-factor decision matrix with configurable weights</li>
+<li><strong>Output:</strong> Action signals to skill engine with priority and confidence</li>
+</ul>
+
+<h3>Memory System</h3>
+<p>Three-tier memory architecture providing context at different time scales. See <a href="../user-guide/features/memory.html">Memory System</a> for details.</p>
+
+<h3>Evolution Engine</h3>
+<p>Runs the observe-learn-evolve-act loop. Manages strategy populations, fitness scoring, and mutation cycles. See <a href="../user-guide/features/self-evolution.html">Self-Evolution</a> for details.</p>
+
+<h3>Skill Engine</h3>
+<p>Loads, validates, and executes skill modules. Manages skill lifecycle and inter-skill communication. See <a href="../user-guide/features/skills.html">Skill Engine</a> for details.</p>
+
+<h3>Tool Registry</h3>
+<p>Manages authenticated connections to external services. See <a href="../user-guide/features/tools.html">Tool Registry</a> for details.</p>
+
+<h2>Data Flow</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Request Lifecycle</div>
+<pre><code>External Event (e.g., token launch detected)
+  │
+  ├─→ Event Bus ─→ Observation Pipeline
+  │                    │
+  │                    ▼
+  │              Pattern Matching
+  │                    │
+  │                    ▼
+  │              Brain evaluates signal
+  │                ├─ Query Memory (similar past events)
+  │                ├─ Check active strategies
+  │                └─ Score confidence
+  │                    │
+  │                    ▼
+  │              Skill Dispatch (e.g., meme-launch)
+  │                    │
+  │                    ▼
+  │              Tool Execution (e.g., binance.place_order)
+  │                    │
+  │                    ▼
+  │              Result → Memory Store → Fitness Update
+  │
+  └─→ Evolution Engine processes outcome next cycle</code></pre>
+</div>
+
+<h2>Technology Stack</h2>
+
+<table class="doc-table">
+<thead><tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>Runtime</td><td>Node.js 20 + TypeScript</td><td>Agent core, skill execution</td></tr>
+<tr><td>Messaging</td><td>Redis Streams</td><td>Internal event bus, pub/sub</td></tr>
+<tr><td>Storage</td><td>SQLite + LevelDB</td><td>Memory persistence, state snapshots</td></tr>
+<tr><td>Blockchain</td><td>ethers.js v6</td><td>On-chain interaction, contract calls</td></tr>
+<tr><td>ML/Stats</td><td>ONNX Runtime</td><td>Anomaly detection, sentiment models</td></tr>
+<tr><td>Process</td><td>PM2</td><td>Process management, auto-restart</td></tr>
+<tr><td>Web</td><td>Express.js</td><td>API server, dashboard</td></tr>
+</tbody>
+</table>
+
+<h2>Directory Structure</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Project Layout</div>
+<pre><code>seki/
+├── src/
+│   ├── brain/           # Decision engine
+│   │   ├── evaluator.ts
+│   │   └── dispatcher.ts
+│   ├── memory/          # Memory subsystem
+│   │   ├── short-term.ts
+│   │   ├── long-term.ts
+│   │   └── episodic.ts
+│   ├── evolution/       # Evolution engine
+│   │   ├── fitness.ts
+│   │   ├── mutation.ts
+│   │   └── selection.ts
+│   ├── skills/          # Skill engine + built-in skills
+│   │   ├── engine.ts
+│   │   ├── loader.ts
+│   │   └── builtin/
+│   ├── tools/           # Tool registry
+│   │   ├── registry.ts
+│   │   ├── adapters/
+│   │   └── health.ts
+│   ├── events/          # Event bus
+│   │   └── bus.ts
+│   └── api/             # REST API
+│       └── server.ts
+├── skills/              # User-defined skills
+├── tools/               # Tool configurations
+├── config/
+│   └── default.yaml
+├── data/                # Runtime data (memory, state)
+└── package.json</code></pre>
+</div>
+
+<h2>Deployment</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Docker Compose</div>
+<pre><code>services:
+  seki:
+    build: .
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./config:/app/config
+      - ./skills:/app/skills
+      - ./data:/app/data
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data</code></pre>
+</div>
+
+<div class="doc-info">
+<strong>Minimum Requirements:</strong> 2 vCPU, 4GB RAM, 20GB SSD. For full evolution with multiple concurrent strategies, recommend 4 vCPU and 8GB RAM.
+</div>
+
+</main>
+</div>
+<script src="../js/docs.js"></script>
+</body>
+</html>

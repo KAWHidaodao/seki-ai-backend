@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Quick Start — Seki Agent Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+
+<nav class="nav">
+<div class="nav-inner">
+<a href="../" class="nav-logo"><span class="logo-glyph">S</span><span class="logo-text">SEKI</span></a>
+<div class="nav-links">
+<a href="../#architecture">Architecture</a>
+<a href="../#evolution">Evolution</a>
+<a href="../#skills">Skills</a>
+<a href="quickstart.html" class="active">Docs</a>
+<a href="https://github.com/seki-agent" class="nav-gh" target="_blank">GitHub</a>
+</div>
+<button class="nav-menu" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+</nav>
+
+<div class="docs-layout">
+<aside class="sidebar">
+<div class="sb-section">
+<div class="sb-heading">Getting Started</div>
+<a href="quickstart.html" class="sb-link active">Quick Start</a>
+<a href="installation.html" class="sb-link">Installation</a>
+<a href="configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">User Guide</div>
+<a href="../user-guide/features/memory.html" class="sb-link">Memory System</a>
+<a href="../user-guide/features/skills.html" class="sb-link">Skill Engine</a>
+<a href="../user-guide/features/tools.html" class="sb-link">Tools & Toolsets</a>
+<a href="../user-guide/features/self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Developer Guide</div>
+<a href="../developer-guide/architecture.html" class="sb-link">Architecture</a>
+<a href="../developer-guide/writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Reference</div>
+<a href="../reference/skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="../reference/api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../">Home</a><span class="sep">/</span>
+<a href="quickstart.html">Getting Started</a><span class="sep">/</span>
+Quick Start
+</div>
+
+<h1>Quick Start</h1>
+<p class="doc-subtitle">Get Seki Agent running in under 5 minutes. From zero to a self-evolving on-chain agent.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>Node.js 18+ or Python 3.10+</li>
+<li>A BSC or Base RPC endpoint (Alchemy, QuickNode, or public)</li>
+<li>Binance API key (optional — for CEX trading skill)</li>
+</ul>
+
+<h2>Install</h2>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Terminal</div>
+<pre><code><span class="ck">$</span> npm install -g @seki/agent
+
+<span class="ck"># or with pip</span>
+<span class="ck">$</span> pip install seki-agent</code></pre>
+</div>
+
+<h2>Initialize</h2>
+<p>Create a new Seki agent workspace. This sets up the memory system, skill registry, and tool configuration.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Terminal</div>
+<pre><code><span class="ck">$</span> seki init --chain bsc
+
+Initializing Seki Agent v0.8.3...
+Creating workspace at ~/.seki/
+├── memory/          → Persistent memory store
+├── skills/          → Skill modules
+├── tools/           → Tool configurations
+├── strategies/      → Evolved strategies
+└── config.yaml      → Agent configuration
+
+✓ Workspace initialized
+✓ Memory system ready
+✓ Default skills loaded (3)
+✓ BSC RPC connected</code></pre>
+</div>
+
+<h2>Configure</h2>
+<p>Edit <code>~/.seki/config.yaml</code> to set your chain, API keys, and enabled skills.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>~/.seki/config.yaml</div>
+<pre><code><span class="ck">chain:</span> bsc
+<span class="ck">rpc:</span> https://bsc-dataseed1.binance.org
+
+<span class="ck">skills:</span>
+  - meme-launch
+  - cex-trading
+  - market-sense
+
+<span class="ck">tools:</span>
+  <span class="ck">binance:</span>
+    <span class="ck">api_key:</span> ${BINANCE_API_KEY}
+    <span class="ck">secret:</span> ${BINANCE_SECRET}
+    <span class="ck">sandbox:</span> true   <span class="ck"># use testnet first</span>
+
+<span class="ck">evolution:</span>
+  <span class="ck">enabled:</span> true
+  <span class="ck">cycles_per_hour:</span> 60
+  <span class="ck">memory_consolidation:</span> every_100_cycles</code></pre>
+</div>
+
+<h2>Run</h2>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Terminal</div>
+<pre><code><span class="ck">$</span> seki start
+
+[SEKI] Agent online
+[SEKI] Evolution loop started — cycle #1
+[SEKI] Observing: 14,283 pending transactions
+[SEKI] Pattern detected: whale_accumulation
+[SEKI] Strategy pool: 3 active, 0 deprecated
+[SEKI] Listening for signals...</code></pre>
+</div>
+
+<div class="doc-note">
+<strong>Tip:</strong> Use <code>seki start --dry-run</code> to observe and learn without executing any trades. The agent still evolves — it just doesn't act on the market.
+</div>
+
+<h2>What Happens Next?</h2>
+<p>Once running, Seki enters the <strong>Evolution Loop</strong>:</p>
+<ol>
+<li><strong>Observe</strong> — Ingests on-chain data, price feeds, and social signals</li>
+<li><strong>Learn</strong> — Detects patterns, builds internal market models</li>
+<li><strong>Evolve</strong> — Mutates strategies, promotes winners, prunes losers</li>
+<li><strong>Act</strong> — Executes trades or token launches, then feeds results back</li>
+</ol>
+<p>Each cycle makes the agent smarter. Read more in <a href="../user-guide/features/self-evolution.html">Self-Evolution</a>.</p>
+
+<h2>Next Steps</h2>
+<ul>
+<li><a href="installation.html">Detailed Installation</a> — Platform-specific setup</li>
+<li><a href="configuration.html">Configuration</a> — All config options explained</li>
+<li><a href="../user-guide/features/memory.html">Memory System</a> — How the agent remembers</li>
+<li><a href="../user-guide/features/skills.html">Skill Engine</a> — Build and extend capabilities</li>
+</ul>
+
+<div class="doc-nav">
+<div></div>
+<a href="installation.html" class="next">
+<span class="nav-label">NEXT →</span>
+<span class="nav-title">Installation</span>
+</a>
+</div>
+
+</main>
+</div>
+
+<script src="../js/docs.js"></script>
+</body>
+</html>

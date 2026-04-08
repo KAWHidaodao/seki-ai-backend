@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Configuration — Seki Agent Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+
+<nav class="nav">
+<div class="nav-inner">
+<a href="../" class="nav-logo"><span class="logo-glyph">S</span><span class="logo-text">SEKI</span></a>
+<div class="nav-links">
+<a href="../#architecture">Architecture</a>
+<a href="../#evolution">Evolution</a>
+<a href="../#skills">Skills</a>
+<a href="quickstart.html" class="active">Docs</a>
+<a href="https://github.com/seki-agent" class="nav-gh" target="_blank">GitHub</a>
+</div>
+<button class="nav-menu" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+</nav>
+
+<div class="docs-layout">
+<aside class="sidebar">
+<div class="sb-section">
+<div class="sb-heading">Getting Started</div>
+<a href="quickstart.html" class="sb-link">Quick Start</a>
+<a href="installation.html" class="sb-link">Installation</a>
+<a href="configuration.html" class="sb-link active">Configuration</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">User Guide</div>
+<a href="../user-guide/features/memory.html" class="sb-link">Memory System</a>
+<a href="../user-guide/features/skills.html" class="sb-link">Skill Engine</a>
+<a href="../user-guide/features/tools.html" class="sb-link">Tools & Toolsets</a>
+<a href="../user-guide/features/self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Developer Guide</div>
+<a href="../developer-guide/architecture.html" class="sb-link">Architecture</a>
+<a href="../developer-guide/writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Reference</div>
+<a href="../reference/skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="../reference/api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../">Home</a><span class="sep">/</span>
+<a href="quickstart.html">Getting Started</a><span class="sep">/</span>
+Configuration
+</div>
+
+<h1>Configuration</h1>
+<p class="doc-subtitle">Fine-tune your Seki Agent. Environment variables, config files, and runtime settings.</p>
+
+<h2>Config File</h2>
+<p>The primary configuration lives at <code>~/.seki/config.yaml</code>. This file is created by <code>seki init</code> and controls every aspect of agent behavior.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>~/.seki/config.yaml</div>
+<pre><code><span class="ck"># === Chain & Network ===</span>
+<span class="ck">chain:</span> bsc                          <span class="ck"># bsc | base | xlayer</span>
+<span class="ck">rpc_url:</span> https://bsc-dataseed1.binance.org
+
+<span class="ck"># === Wallet ===</span>
+<span class="ck">wallet:</span>
+  <span class="ck">private_key:</span> ${SEKI_PRIVATE_KEY}   <span class="ck"># always use env vars!</span>
+
+<span class="ck"># === Persona ===</span>
+<span class="ck">persona:</span> hunter                      <span class="ck"># hunter | strategist | herald</span>
+
+<span class="ck"># === Memory ===</span>
+<span class="ck">memory:</span>
+  <span class="ck">provider:</span> chroma                   <span class="ck"># chroma | pinecone | weaviate</span>
+  <span class="ck">max_episodes:</span> 1000
+  <span class="ck">consolidation_interval:</span> 24h
+
+<span class="ck"># === Skills ===</span>
+<span class="ck">skills:</span>
+  <span class="ck">auto_discover:</span> true
+  <span class="ck">marketplace_url:</span> https://skills.seki-ai.com
+
+<span class="ck"># === Evolution ===</span>
+<span class="ck">evolution:</span>
+  <span class="ck">enabled:</span> true
+  <span class="ck">reflection_interval:</span> 30m
+  <span class="ck">mutation_rate:</span> 0.15
+  <span class="ck">min_confidence:</span> 0.7</code></pre>
+</div>
+
+<div class="doc-info">
+<strong>Validate:</strong> Run <code>seki config validate</code> to check your configuration for errors before starting the agent.
+</div>
+
+<h2>Environment Variables</h2>
+<p>Sensitive values should be set as environment variables rather than stored in config files directly.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>.env</div>
+<pre><code><span class="ck"># Core</span>
+SEKI_CHAIN=bsc
+SEKI_RPC_URL=https://bsc-dataseed1.binance.org
+SEKI_PRIVATE_KEY=0x...
+
+<span class="ck"># Persona</span>
+SEKI_PERSONA=hunter
+
+<span class="ck"># AI Provider</span>
+SEKI_OPENAI_KEY=sk-...
+
+<span class="ck"># CEX Integration</span>
+SEKI_BINANCE_KEY=...
+SEKI_BINANCE_SECRET=...
+
+<span class="ck"># Feature Flags</span>
+SEKI_EVOLUTION=true</code></pre>
+</div>
+<p>Environment variables override config.yaml values. Load them via <code>seki start --env-file .env</code> or export them in your shell.</p>
+
+<h2>Network Configuration</h2>
+<p>Seki supports multiple EVM chains. Set the chain and RPC endpoint for your target network.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>BSC Mainnet</div>
+<pre><code><span class="ck">chain:</span> bsc
+<span class="ck">rpc_url:</span> https://bsc-dataseed1.binance.org
+<span class="ck">chain_id:</span> 56</code></pre>
+</div>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>BSC Testnet</div>
+<pre><code><span class="ck">chain:</span> bsc-testnet
+<span class="ck">rpc_url:</span> https://data-seed-prebsc-1-s1.binance.org:8545
+<span class="ck">chain_id:</span> 97</code></pre>
+</div>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Base</div>
+<pre><code><span class="ck">chain:</span> base
+<span class="ck">rpc_url:</span> https://mainnet.base.org
+<span class="ck">chain_id:</span> 8453</code></pre>
+</div>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>X Layer</div>
+<pre><code><span class="ck">chain:</span> xlayer
+<span class="ck">rpc_url:</span> https://rpc.xlayer.tech
+<span class="ck">chain_id:</span> 196</code></pre>
+</div>
+
+<h2>Memory Configuration</h2>
+<p>The memory subsystem supports multiple vector database providers. Chroma is the default (local, zero-config). For production workloads, consider Pinecone or Weaviate.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Memory — Chroma (default)</div>
+<pre><code><span class="ck">memory:</span>
+  <span class="ck">provider:</span> chroma
+  <span class="ck">path:</span> ~/.seki/memory/chroma
+  <span class="ck">max_episodes:</span> 1000
+  <span class="ck">embedding_model:</span> text-embedding-3-small
+  <span class="ck">consolidation_interval:</span> 24h</code></pre>
+</div>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Memory — Pinecone</div>
+<pre><code><span class="ck">memory:</span>
+  <span class="ck">provider:</span> pinecone
+  <span class="ck">api_key:</span> ${PINECONE_API_KEY}
+  <span class="ck">environment:</span> us-east-1
+  <span class="ck">index:</span> seki-memory
+  <span class="ck">embedding_model:</span> text-embedding-3-small</code></pre>
+</div>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Memory — Weaviate</div>
+<pre><code><span class="ck">memory:</span>
+  <span class="ck">provider:</span> weaviate
+  <span class="ck">url:</span> http://localhost:8080
+  <span class="ck">class_name:</span> SekiEpisode
+  <span class="ck">embedding_model:</span> text-embedding-3-small</code></pre>
+</div>
+
+<h2>Evolution Settings</h2>
+<p>Control how aggressively the agent evolves its strategies.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Evolution Config</div>
+<pre><code><span class="ck">evolution:</span>
+  <span class="ck">enabled:</span> true
+  <span class="ck">reflection_interval:</span> 30m     <span class="ck"># how often the meta-agent reflects</span>
+  <span class="ck">mutation_rate:</span> 0.15           <span class="ck"># probability of strategy mutation</span>
+  <span class="ck">min_confidence:</span> 0.7           <span class="ck"># minimum confidence to execute</span>
+  <span class="ck">max_active_strategies:</span> 10     <span class="ck"># concurrent strategy cap</span>
+  <span class="ck">auto_prune:</span> true              <span class="ck"># remove underperforming strategies</span>
+  <span class="ck">prune_threshold:</span> 0.3          <span class="ck"># prune if fitness drops below this</span></code></pre>
+</div>
+
+<ul>
+<li><strong>reflection_interval</strong> — How often the meta-agent reviews recent performance. Shorter = more adaptive, higher compute cost.</li>
+<li><strong>mutation_rate</strong> — Probability a strategy parameter is randomly adjusted during evolution. Range: 0.0–1.0.</li>
+<li><strong>min_confidence</strong> — The agent won't execute a strategy below this confidence threshold.</li>
+<li><strong>max_active_strategies</strong> — Hard cap on concurrent live strategies to limit resource usage.</li>
+<li><strong>auto_prune</strong> — When enabled, strategies with fitness below <code>prune_threshold</code> are automatically deprecated.</li>
+</ul>
+
+<h2>Security</h2>
+
+<div class="doc-warn">
+<strong>Never commit private keys to version control.</strong> Always use environment variables or <code>.env</code> files for sensitive data.
+</div>
+
+<p>Create a <code>.gitignore</code> to protect sensitive files:</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>.gitignore</div>
+<pre><code>.env
+*.key
+~/.seki/config.yaml
+node_modules/</code></pre>
+</div>
+
+<p>Additional security recommendations:</p>
+<ul>
+<li>Use a dedicated wallet for the agent — never your main wallet</li>
+<li>Start with <code>sandbox: true</code> for CEX tools to use testnet</li>
+<li>Set <code>max_trade_size</code> limits in tool configuration</li>
+<li>Enable <code>human_approval: true</code> for trades above a threshold</li>
+<li>Rotate API keys regularly</li>
+</ul>
+
+<div class="doc-nav">
+<a href="installation.html" class="prev">
+<span class="nav-label">← PREV</span>
+<span class="nav-title">Installation</span>
+</a>
+<a href="../user-guide/features/memory.html" class="next">
+<span class="nav-label">NEXT →</span>
+<span class="nav-title">Memory System</span>
+</a>
+</div>
+
+</main>
+</div>
+
+<script src="../js/docs.js"></script>
+</body>
+</html>

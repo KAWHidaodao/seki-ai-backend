@@ -1534,6 +1534,7 @@ a{color:#60a5fa;text-decoration:none}
   if (p === '/xlayer' || p === '/xlayer/') p = '/xlayer.html';
   if (p === '/chat' || p === '/chat/') p = '/chat.html';
   if (p === '/evolution' || p === '/evolution/') p = '/evolution.html';
+  if (p === '/docs' || p === '/docs/') p = '/docs/index.html';
   if (p === '/contract') p = '/MemeBountyV2.sol';
   if (p === '/registry') p = '/AgentRegistry.sol';
   const full = path.join(BASE, p);

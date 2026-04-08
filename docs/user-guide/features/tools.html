@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Registry | SEKI Docs</title>
+<link rel="stylesheet" href="../../css/docs.css">
+</head>
+<body>
+<div class="doc-layout">
+<aside class="doc-sidebar">
+<div class="sb-logo"><a href="../../">SEKI<span class="accent">.</span>DOCS</a></div>
+<div class="sb-section">Getting Started</div>
+<div class="sb-links">
+<a href="../../getting-started/quickstart.html" class="sb-link">Quick Start</a>
+<a href="../../getting-started/installation.html" class="sb-link">Installation</a>
+<a href="../../getting-started/configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">User Guide</div>
+<div class="sb-links">
+<a href="memory.html" class="sb-link">Memory System</a>
+<a href="skills.html" class="sb-link">Skill Engine</a>
+<a href="tools.html" class="sb-link active">Tool Registry</a>
+<a href="self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">Developer Guide</div>
+<div class="sb-links">
+<a href="../../developer-guide/architecture.html" class="sb-link">Architecture</a>
+<a href="../../developer-guide/writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">Reference</div>
+<div class="sb-links">
+<a href="../../reference/skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="../../reference/api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../../">Home</a><span class="sep">/</span>
+<a href="#">User Guide</a><span class="sep">/</span>
+Tool Registry
+</div>
+
+<h1>Tool Registry</h1>
+<p class="doc-subtitle">External service integrations that give Seki hands to interact with the real world.</p>
+
+<h2>What is a Tool?</h2>
+<p>A tool is an authenticated connection to an external service — an exchange, a blockchain RPC, a social platform, or any API. While skills define <em>what</em> to do, tools define <em>how</em> to reach the outside world.</p>
+<ul>
+<li><strong>Authenticated</strong> — Each tool stores encrypted credentials</li>
+<li><strong>Rate-Limited</strong> — Built-in throttling respects API limits</li>
+<li><strong>Health-Checked</strong> — Continuous connectivity monitoring</li>
+<li><strong>Hot-Swappable</strong> — Replace or upgrade without restarting the agent</li>
+</ul>
+
+<h2>Built-in Tools</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>seki tools list</div>
+<pre><code>┌────────────────┬──────────┬─────────────────────────────────────┐
+│ TOOL           │ STATUS   │ DESCRIPTION                         │
+├────────────────┼──────────┼─────────────────────────────────────┤
+│ binance        │ ACTIVE   │ Spot & futures trading via REST/WS  │
+│ twitter        │ ACTIVE   │ Post, read, search tweets           │
+│ telegram       │ ACTIVE   │ Channel & group messaging           │
+│ etherscan      │ ACTIVE   │ EVM chain explorer queries          │
+│ dexscreener    │ ACTIVE   │ DEX pair & token analytics          │
+│ coingecko      │ ACTIVE   │ Market data & token metadata        │
+│ web3-rpc       │ ACTIVE   │ Direct blockchain RPC calls         │
+│ ipfs           │ STANDBY  │ Decentralized storage               │
+└────────────────┴──────────┴─────────────────────────────────────┘</code></pre>
+</div>
+
+<h2>Registering a Tool</h2>
+<p>Tools are registered via the CLI or configuration file. Credentials are encrypted at rest using AES-256-GCM.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>CLI Registration</div>
+<pre><code># Interactive setup with credential prompts
+seki tools add binance
+
+# From environment variables
+BINANCE_API_KEY=xxx BINANCE_SECRET=yyy seki tools add binance --from-env
+
+# From config file
+seki tools add --config tools/binance.yaml</code></pre>
+</div>
+
+<h3>Tool Configuration</h3>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>tools/binance.yaml</div>
+<pre><code><span class="ck">name:</span> binance
+<span class="ck">type:</span> exchange
+<span class="ck">version:</span> 1.0.0
+
+<span class="ck">connection:</span>
+  <span class="ck">rest_url:</span> https://api.binance.com
+  <span class="ck">ws_url:</span> wss://stream.binance.com:9443
+  <span class="ck">timeout:</span> 10s
+  <span class="ck">retry:</span> 3
+
+<span class="ck">auth:</span>
+  <span class="ck">type:</span> hmac-sha256
+  <span class="ck">credentials:</span>
+    <span class="ck">api_key:</span> ${env.BINANCE_API_KEY}
+    <span class="ck">secret:</span> ${env.BINANCE_SECRET}
+
+<span class="ck">rate_limits:</span>
+  <span class="ck">orders:</span> 10/s
+  <span class="ck">weight:</span> 1200/min
+  <span class="ck">websocket:</span> 5 connections
+
+<span class="ck">permissions:</span>
+  - spot_trade
+  - futures_trade
+  - read_balance
+  <span class="ck">deny:</span>
+  - withdrawal
+  - transfer</code></pre>
+</div>
+
+<h2>Permission Model</h2>
+<p>Tools use a least-privilege permission model. Each skill must declare which tool capabilities it needs, and the agent validates permissions before execution.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Permission Check Flow</div>
+<pre><code>Skill Request ──→ Permission Validator ──→ Tool Executor
+                        │
+                  ┌─────┴─────┐
+                  │ ALLOWED?  │
+                  ├───────────┤
+                  │ YES → Execute
+                  │ NO  → Deny + Log
+                  └───────────┘</code></pre>
+</div>
+
+<ul>
+<li><strong>Explicit Allow</strong> — Only declared permissions are granted</li>
+<li><strong>Deny Override</strong> — Critical operations (withdrawal, transfer) require manual approval</li>
+<li><strong>Audit Trail</strong> — Every tool invocation is logged with caller, params, and result</li>
+</ul>
+
+<h2>Health Monitoring</h2>
+<p>Tools are continuously monitored. If a tool becomes unhealthy, the agent automatically falls back to alternatives or pauses dependent skills.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>seki tools health</div>
+<pre><code>┌────────────────┬──────────┬─────────┬──────────┐
+│ TOOL           │ STATUS   │ LATENCY │ UPTIME   │
+├────────────────┼──────────┼─────────┼──────────┤
+│ binance        │ HEALTHY  │ 42ms    │ 99.97%   │
+│ twitter        │ HEALTHY  │ 189ms   │ 99.81%   │
+│ telegram       │ HEALTHY  │ 67ms    │ 99.99%   │
+│ etherscan      │ DEGRADED │ 1.2s    │ 97.30%   │
+│ dexscreener    │ HEALTHY  │ 95ms    │ 99.90%   │
+│ coingecko      │ HEALTHY  │ 112ms   │ 99.85%   │
+│ web3-rpc       │ HEALTHY  │ 38ms    │ 99.95%   │
+│ ipfs           │ STANDBY  │ —       │ —        │
+└────────────────┴──────────┴─────────┴──────────┘</code></pre>
+</div>
+
+<h2>Custom Tool Development</h2>
+<p>Create custom tools by implementing the <code>ToolAdapter</code> interface:</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>TypeScript</div>
+<pre><code>import { ToolAdapter, ToolContext, ToolResult } from '@seki/core';
+
+export class CustomExchangeTool implements ToolAdapter {
+  name = 'my-exchange';
+  version = '1.0.0';
+
+  async connect(ctx: ToolContext): Promise&lt;void&gt; {
+    // Initialize connection
+    this.client = new ExchangeClient(ctx.credentials);
+    await this.client.ping();
+  }
+
+  async execute(action: string, params: Record&lt;string, any&gt;): Promise&lt;ToolResult&gt; {
+    switch (action) {
+      case 'place_order':
+        return this.placeOrder(params);
+      case 'get_balance':
+        return this.getBalance(params);
+      default:
+        throw new Error(`Unknown action: ${action}`);
+    }
+  }
+
+  async healthCheck(): Promise&lt;boolean&gt; {
+    return this.client.ping();
+  }
+
+  async disconnect(): Promise&lt;void&gt; {
+    await this.client.close();
+  }
+}</code></pre>
+</div>
+
+<div class="doc-info">
+<strong>Plugin Directory:</strong> Custom tools are loaded from <code>~/.seki/tools/</code>. Each tool is a directory with an <code>index.ts</code> entry point and a <code>tool.yaml</code> manifest.
+</div>
+
+</main>
+</div>
+<script src="../../js/docs.js"></script>
+</body>
+</html>

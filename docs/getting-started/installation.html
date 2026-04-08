@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Installation — Seki Agent Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+
+<nav class="nav">
+<div class="nav-inner">
+<a href="../" class="nav-logo"><span class="logo-glyph">S</span><span class="logo-text">SEKI</span></a>
+<div class="nav-links">
+<a href="../#architecture">Architecture</a>
+<a href="../#evolution">Evolution</a>
+<a href="../#skills">Skills</a>
+<a href="quickstart.html">Docs</a>
+<a href="https://github.com/seki-agent" class="nav-gh" target="_blank">GitHub</a>
+</div>
+<button class="nav-menu" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+</nav>
+
+<div class="docs-layout">
+<aside class="sidebar">
+<div class="sb-section">
+<div class="sb-heading">Getting Started</div>
+<a href="quickstart.html" class="sb-link">Quick Start</a>
+<a href="installation.html" class="sb-link active">Installation</a>
+<a href="configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">User Guide</div>
+<a href="../user-guide/features/memory.html" class="sb-link">Memory System</a>
+<a href="../user-guide/features/skills.html" class="sb-link">Skill Engine</a>
+<a href="../user-guide/features/tools.html" class="sb-link">Tools & Toolsets</a>
+<a href="../user-guide/features/self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Developer Guide</div>
+<a href="../developer-guide/architecture.html" class="sb-link">Architecture</a>
+<a href="../developer-guide/writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Reference</div>
+<a href="../reference/skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="../reference/api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../">Home</a><span class="sep">/</span>
+<a href="quickstart.html">Getting Started</a><span class="sep">/</span>
+Installation
+</div>
+
+<h1>Installation</h1>
+<p class="doc-subtitle">Platform-specific installation guides and system requirements.</p>
+
+<h2>System Requirements</h2>
+<table class="doc-table">
+<thead>
+<tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr>
+</thead>
+<tbody>
+<tr><td>CPU</td><td>2 cores</td><td>4+ cores</td></tr>
+<tr><td>RAM</td><td>2 GB</td><td>8 GB</td></tr>
+<tr><td>Disk</td><td>500 MB</td><td>2 GB (for memory store)</td></tr>
+<tr><td>Node.js</td><td>18.0+</td><td>20 LTS</td></tr>
+<tr><td>Python</td><td>3.10+</td><td>3.12+</td></tr>
+<tr><td>Network</td><td>Stable connection</td><td>Low-latency RPC</td></tr>
+</tbody>
+</table>
+
+<h2>NPM (Recommended)</h2>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Terminal</div>
+<pre><code><span class="ck">$</span> npm install -g @seki/agent
+
+<span class="ck"># verify installation</span>
+<span class="ck">$</span> seki --version
+seki-agent v0.8.3</code></pre>
+</div>
+
+<h2>Python (pip)</h2>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Terminal</div>
+<pre><code><span class="ck">$</span> pip install seki-agent
+
+<span class="ck"># or with uv for faster install</span>
+<span class="ck">$</span> uv pip install seki-agent</code></pre>
+</div>
+
+<h2>Docker</h2>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Terminal</div>
+<pre><code><span class="ck">$</span> docker pull sekiagent/seki:latest
+<span class="ck">$</span> docker run -d \
+    --name seki \
+    -v ~/.seki:/root/.seki \
+    -e BINANCE_API_KEY=$BINANCE_API_KEY \
+    -e BINANCE_SECRET=$BINANCE_SECRET \
+    sekiagent/seki:latest</code></pre>
+</div>
+
+<h2>From Source</h2>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Terminal</div>
+<pre><code><span class="ck">$</span> git clone https://github.com/seki-agent/seki.git
+<span class="ck">$</span> cd seki
+<span class="ck">$</span> npm install
+<span class="ck">$</span> npm link
+
+<span class="ck"># now available globally</span>
+<span class="ck">$</span> seki --version</code></pre>
+</div>
+
+<h2>Chain-Specific Setup</h2>
+
+<h3>BSC (BNB Smart Chain)</h3>
+<p>Default chain. Uses public BSC RPC by default, but a dedicated endpoint is recommended for production.</p>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Terminal</div>
+<pre><code><span class="ck">$</span> seki init --chain bsc --rpc https://your-bsc-rpc.com</code></pre>
+</div>
+
+<h3>Base</h3>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Terminal</div>
+<pre><code><span class="ck">$</span> seki init --chain base --rpc https://your-base-rpc.com</code></pre>
+</div>
+
+<div class="doc-note">
+<strong>Note:</strong> Multi-chain support is on the roadmap. Currently, Seki runs one chain per instance. Run multiple instances for multi-chain coverage.
+</div>
+
+<h2>Verify Installation</h2>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Terminal</div>
+<pre><code><span class="ck">$</span> seki doctor
+
+[✓] Node.js 20.11.0
+[✓] Workspace ~/.seki/ exists
+[✓] Memory system operational
+[✓] Skill engine loaded (3 skills)
+[✓] BSC RPC reachable (latency: 42ms)
+[✓] Binance API connected (sandbox mode)
+
+All checks passed.</code></pre>
+</div>
+
+<div class="doc-nav">
+<a href="quickstart.html">
+<span class="nav-label">← PREV</span>
+<span class="nav-title">Quick Start</span>
+</a>
+<a href="configuration.html" class="next">
+<span class="nav-label">NEXT →</span>
+<span class="nav-title">Configuration</span>
+</a>
+</div>
+
+</main>
+</div>
+
+<script src="../js/docs.js"></script>
+</body>
+</html>

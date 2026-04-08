@@ -1,0 +1,17 @@
+{
+  "id": "skill-night-mode",
+  "name": "夜间保守模式",
+  "description": "UTC 0-6时段自动切换为Strategist-only",
+  "source": "refl-2",
+  "conditions": {
+    "utcHourRange": [
+      0,
+      6
+    ]
+  },
+  "action": "force_strategist",
+  "timesApplied": 12,
+  "successRate": 0.92,
+  "active": true,
+  "createdAt": "2026-04-07T14:48:41.260Z"
+}

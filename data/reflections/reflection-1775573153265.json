@@ -1,0 +1,28 @@
+{
+  "id": "refl-1775573153265",
+  "timestamp": "2026-04-07T14:45:53.265Z",
+  "version": "v1.2",
+  "cyclesAnalyzed": 7,
+  "summary": "发现关键模式：当liquidity低于10 BNB且sentiment高于80时，大概率出现pump后dump。Agent在此模式下的3次买入全部亏损。已提取为新技能。",
+  "strengths": [
+    "成功识别出流动性陷阱模式",
+    "总体盈利0.12 BNB",
+    "人格切换逻辑运行平稳"
+  ],
+  "weaknesses": [
+    "流动性陷阱模式下亏损0.04 BNB",
+    "gasCost在高峰期未做限制",
+    "技能库利用率为0"
+  ],
+  "suggestions": [
+    "新增流动性陷阱检测规则",
+    "设置gasCost上限为0.008 BNB/cycle",
+    "建立技能自动应用机制"
+  ],
+  "metrics": {
+    "completionRate": 0.75,
+    "fundEfficiency": 0.72,
+    "avgProfit": 0.026,
+    "totalCycles": 18
+  }
+}

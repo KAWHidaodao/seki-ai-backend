@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills Catalog | SEKI Docs</title>
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+<div class="doc-layout">
+<aside class="doc-sidebar">
+<div class="sb-logo"><a href="../">SEKI<span class="accent">.</span>DOCS</a></div>
+<div class="sb-section">Getting Started</div>
+<div class="sb-links">
+<a href="../getting-started/quickstart.html" class="sb-link">Quick Start</a>
+<a href="../getting-started/installation.html" class="sb-link">Installation</a>
+<a href="../getting-started/configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">User Guide</div>
+<div class="sb-links">
+<a href="../user-guide/features/memory.html" class="sb-link">Memory System</a>
+<a href="../user-guide/features/skills.html" class="sb-link">Skill Engine</a>
+<a href="../user-guide/features/tools.html" class="sb-link">Tool Registry</a>
+<a href="../user-guide/features/self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">Developer Guide</div>
+<div class="sb-links">
+<a href="../developer-guide/architecture.html" class="sb-link">Architecture</a>
+<a href="../developer-guide/writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">Reference</div>
+<div class="sb-links">
+<a href="skills-catalog.html" class="sb-link active">Skills Catalog</a>
+<a href="api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../">Home</a><span class="sep">/</span>
+<a href="#">Reference</a><span class="sep">/</span>
+Skills Catalog
+</div>
+
+<h1>Skills Catalog</h1>
+<p class="doc-subtitle">All built-in and community skills available for Seki agents.</p>
+
+<h2>Built-in Skills</h2>
+
+<div class="skill-catalog">
+
+<div class="skill-card">
+<div class="skill-header">
+<h3>meme-launch</h3>
+<span class="status-badge live">LIVE</span>
+</div>
+<p>Detects new meme token launches across DEXes, evaluates initial liquidity, social buzz, and contract safety. Executes early entry with configurable position sizing.</p>
+<table class="doc-table">
+<tbody>
+<tr><td><strong>Version</strong></td><td>2.3.1</td></tr>
+<tr><td><strong>Triggers</strong></td><td>chain.pair_created, chain.liquidity_added</td></tr>
+<tr><td><strong>Tools</strong></td><td>dexscreener, etherscan, twitter, web3-rpc</td></tr>
+<tr><td><strong>Fitness</strong></td><td>0.84</td></tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table class="doc-table">
+<thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>min_liquidity</td><td>number</td><td>$10,000</td><td>Minimum pool liquidity to consider</td></tr>
+<tr><td>max_position</td><td>number</td><td>$500</td><td>Maximum per-trade position size</td></tr>
+<tr><td>entry_threshold</td><td>number</td><td>0.79</td><td>Confidence score required to enter</td></tr>
+<tr><td>take_profit</td><td>number[]</td><td>[2x, 5x, 10x]</td><td>Staged take-profit levels</td></tr>
+<tr><td>stop_loss</td><td>number</td><td>-50%</td><td>Maximum loss before exit</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="skill-card">
+<div class="skill-header">
+<h3>cex-trading</h3>
+<span class="status-badge live">LIVE</span>
+</div>
+<p>Centralized exchange trading with support for spot and futures. Implements grid trading, DCA, and momentum strategies with dynamic parameter adjustment.</p>
+<table class="doc-table">
+<tbody>
+<tr><td><strong>Version</strong></td><td>3.1.0</td></tr>
+<tr><td><strong>Triggers</strong></td><td>market.signal, schedule.1m</td></tr>
+<tr><td><strong>Tools</strong></td><td>binance, coingecko</td></tr>
+<tr><td><strong>Fitness</strong></td><td>0.79</td></tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table class="doc-table">
+<thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>strategy</td><td>enum</td><td>momentum</td><td>Trading strategy (momentum, grid, dca)</td></tr>
+<tr><td>leverage</td><td>number</td><td>1x</td><td>Futures leverage (1x = spot equivalent)</td></tr>
+<tr><td>stop_loss</td><td>number</td><td>2.8%</td><td>Stop-loss percentage</td></tr>
+<tr><td>pairs</td><td>string[]</td><td>[BTC, ETH]</td><td>Trading pairs whitelist</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="skill-card">
+<div class="skill-header">
+<h3>market-sense</h3>
+<span class="status-badge live">LIVE</span>
+</div>
+<p>Multi-source market sentiment analysis combining social media, on-chain metrics, and price action. Provides composite sentiment scores used by other skills.</p>
+<table class="doc-table">
+<tbody>
+<tr><td><strong>Version</strong></td><td>1.8.2</td></tr>
+<tr><td><strong>Triggers</strong></td><td>schedule.5m</td></tr>
+<tr><td><strong>Tools</strong></td><td>twitter, coingecko, dexscreener, etherscan</td></tr>
+<tr><td><strong>Fitness</strong></td><td>0.76</td></tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table class="doc-table">
+<thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>sentiment_weight</td><td>number</td><td>0.6</td><td>Weight of social sentiment vs price action</td></tr>
+<tr><td>lookback</td><td>string</td><td>24h</td><td>Analysis time window</td></tr>
+<tr><td>sources</td><td>string[]</td><td>[twitter, onchain]</td><td>Data sources to aggregate</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="skill-card">
+<div class="skill-header">
+<h3>nft-sniper</h3>
+<span class="status-badge beta">BETA</span>
+</div>
+<p>Monitors NFT collections for underpriced listings, rare trait snipes, and mint opportunities. Includes floor price analysis and wash-trade detection.</p>
+<table class="doc-table">
+<tbody>
+<tr><td><strong>Version</strong></td><td>0.9.0</td></tr>
+<tr><td><strong>Triggers</strong></td><td>chain.nft_listed, schedule.30s</td></tr>
+<tr><td><strong>Tools</strong></td><td>web3-rpc, etherscan</td></tr>
+<tr><td><strong>Fitness</strong></td><td>0.62</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="skill-card">
+<div class="skill-header">
+<h3>yield-farmer</h3>
+<span class="status-badge beta">BETA</span>
+</div>
+<p>Automated DeFi yield optimization across protocols. Monitors APY changes, impermanent loss, and auto-compounds or rebalances positions.</p>
+<table class="doc-table">
+<tbody>
+<tr><td><strong>Version</strong></td><td>0.7.3</td></tr>
+<tr><td><strong>Triggers</strong></td><td>schedule.15m, chain.pool_update</td></tr>
+<tr><td><strong>Tools</strong></td><td>web3-rpc, dexscreener</td></tr>
+<tr><td><strong>Fitness</strong></td><td>0.58</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="skill-card">
+<div class="skill-header">
+<h3>social-agent</h3>
+<span class="status-badge dev">DEV</span>
+</div>
+<p>Autonomous social media presence management. Generates contextual posts, responds to mentions, and builds community engagement based on market events.</p>
+<table class="doc-table">
+<tbody>
+<tr><td><strong>Version</strong></td><td>0.3.1</td></tr>
+<tr><td><strong>Triggers</strong></td><td>social.mention, schedule.1h</td></tr>
+<tr><td><strong>Tools</strong></td><td>twitter, telegram</td></tr>
+<tr><td><strong>Fitness</strong></td><td>0.45</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+<h2>Community Skills</h2>
+<p>Browse and install community-contributed skills from the marketplace:</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Marketplace Commands</div>
+<pre><code># Search skills
+seki skill search "arbitrage"
+
+# View skill details
+seki skill info cross-dex-arb
+
+# Install from marketplace
+seki skill install cross-dex-arb@1.2.0
+
+# List installed skills
+seki skill list --installed</code></pre>
+</div>
+
+<h2>Skill Status Legend</h2>
+<table class="doc-table">
+<thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><span class="status-badge live">LIVE</span></td><td>Production-ready, battle-tested, fitness &gt; 0.70</td></tr>
+<tr><td><span class="status-badge beta">BETA</span></td><td>Functional but under active evolution, fitness 0.50-0.70</td></tr>
+<tr><td><span class="status-badge dev">DEV</span></td><td>Experimental, may have rough edges, fitness &lt; 0.50</td></tr>
+</tbody>
+</table>
+
+</main>
+</div>
+<script src="../js/docs.js"></script>
+</body>
+</html>

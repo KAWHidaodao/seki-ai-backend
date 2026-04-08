@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Memory System — Seki Agent Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/docs.css">
+</head>
+<body>
+
+<nav class="nav">
+<div class="nav-inner">
+<a href="../../" class="nav-logo"><span class="logo-glyph">S</span><span class="logo-text">SEKI</span></a>
+<div class="nav-links">
+<a href="../../#architecture">Architecture</a>
+<a href="../../#evolution">Evolution</a>
+<a href="../../#skills">Skills</a>
+<a href="../../getting-started/quickstart.html" class="active">Docs</a>
+<a href="https://github.com/seki-agent" class="nav-gh" target="_blank">GitHub</a>
+</div>
+<button class="nav-menu" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+</nav>
+
+<div class="docs-layout">
+<aside class="sidebar">
+<div class="sb-section">
+<div class="sb-heading">Getting Started</div>
+<a href="../../getting-started/quickstart.html" class="sb-link">Quick Start</a>
+<a href="../../getting-started/installation.html" class="sb-link">Installation</a>
+<a href="../../getting-started/configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">User Guide</div>
+<a href="memory.html" class="sb-link active">Memory System</a>
+<a href="skills.html" class="sb-link">Skill Engine</a>
+<a href="tools.html" class="sb-link">Tools & Toolsets</a>
+<a href="self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Developer Guide</div>
+<a href="../../developer-guide/architecture.html" class="sb-link">Architecture</a>
+<a href="../../developer-guide/writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Reference</div>
+<a href="../../reference/skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="../../reference/api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../../">Home</a><span class="sep">/</span>
+<a href="#">User Guide</a><span class="sep">/</span>
+Memory System
+</div>
+
+<h1>Memory System</h1>
+<p class="doc-subtitle">How Seki remembers, learns, and builds context across thousands of observations.</p>
+
+<h2>Overview</h2>
+<p>Seki's memory is not a simple log. It's a multi-tier cognitive architecture inspired by human memory science. Four distinct layers work together to give the agent persistent, adaptive intelligence:</p>
+<ul>
+<li><strong>Working Memory</strong> — Current cycle context. The last 10 observations and active task state.</li>
+<li><strong>Episodic Memory</strong> — Stored experiences with vector embeddings. Searchable by semantic similarity.</li>
+<li><strong>Semantic Memory</strong> — Distilled knowledge: patterns, market models, and generalized rules extracted from episodes.</li>
+<li><strong>Meta-Memory</strong> — Memory about memory. Tracks which memories were useful, adjusts retrieval weights, and decides what to forget.</li>
+</ul>
+
+<h2>Memory Architecture</h2>
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Memory Flow</div>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│                  WORKING MEMORY                      │
+│  Current cycle buffer · TTL: 3 cycles (9 min)       │
+│  [price feeds] [social signals] [on-chain events]   │
+└──────────────────────┬──────────────────────────────┘
+                       │ encode & store
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│                 EPISODIC MEMORY                      │
+│  Vector DB (Chroma/Pinecone) · Similarity search    │
+│  Raw experiences with context & outcome tags         │
+└──────────────────────┬──────────────────────────────┘
+                       │ consolidation (24h cycle)
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│                 SEMANTIC MEMORY                      │
+│  Patterns · Market models · Generalized rules       │
+│  "When X happens after Y, Z follows 73% of time"   │
+└──────────────────────┬──────────────────────────────┘
+                       │ feedback & pruning
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│                  META-MEMORY                         │
+│  Usefulness tracking · Retrieval weight adjustment  │
+│  Auto-pruning of low-value memories                 │
+└─────────────────────────────────────────────────────┘</code></pre>
+</div>
+
+<h2>Working Memory</h2>
+<p>Working memory is the agent's immediate awareness — the scratchpad of the current decision cycle. It holds the most recent observations and expires after 3 cycles (~9 minutes).</p>
+
+<p><strong>What goes into working memory:</strong></p>
+<ul>
+<li>Price feeds from tracked tokens</li>
+<li>Social signals (Twitter mentions, Telegram messages)</li>
+<li>On-chain events (large transfers, contract interactions)</li>
+<li>Active task context and pending decisions</li>
+</ul>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>working_memory.json</div>
+<pre><code>{
+  "<span class="ck">cycle</span>": 4821,
+  "<span class="ck">timestamp</span>": "2026-04-08T01:15:00Z",
+  "<span class="ck">observations</span>": [
+    {
+      "<span class="ck">type</span>": "price_feed",
+      "<span class="ck">token</span>": "SEKI",
+      "<span class="ck">price</span>": 0.0847,
+      "<span class="ck">change_1h</span>": "+12.3%",
+      "<span class="ck">volume_surge</span>": true
+    },
+    {
+      "<span class="ck">type</span>": "social_signal",
+      "<span class="ck">source</span>": "twitter",
+      "<span class="ck">sentiment</span>": 0.82,
+      "<span class="ck">mentions</span>": 147,
+      "<span class="ck">key_accounts</span>": ["@whale_alert", "@cz_binance"]
+    },
+    {
+      "<span class="ck">type</span>": "chain_event",
+      "<span class="ck">event</span>": "large_transfer",
+      "<span class="ck">amount</span>": "500000 SEKI",
+      "<span class="ck">from</span>": "0xdead...beef",
+      "<span class="ck">to</span>": "PancakeSwap Router"
+    }
+  ],
+  "<span class="ck">ttl_cycles</span>": 3
+}</code></pre>
+</div>
+
+<h2>Episodic Memory</h2>
+<p>When observations leave working memory, significant ones are encoded as <strong>episodes</strong> and stored in the vector database. Each episode captures the full context: what happened, what the agent did, and what the outcome was.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Storing an Episode</div>
+<pre><code><span class="ck"># Auto-stored after each decision cycle</span>
+episode = {
+    "id": "ep_4821_a3f2",
+    "timestamp": "2026-04-08T01:15:00Z",
+    "context": {
+        "market_state": "bull_micro",
+        "volatility": "high",
+        "sentiment": 0.82
+    },
+    "action": "buy_token",
+    "params": {"token": "SEKI", "amount": "1000 USDT"},
+    "outcome": {
+        "profit_pct": 8.4,
+        "timing_score": 0.91,
+        "gas_efficiency": 0.76
+    },
+    "embedding": [0.12, -0.34, 0.56, ...]  <span class="ck"># 1536-dim vector</span>
+}</code></pre>
+</div>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Querying Episodic Memory</div>
+<pre><code><span class="ck"># Find similar past situations</span>
+results = seki.memory.query(
+    context=current_observation,
+    top_k=5,
+    min_similarity=0.75,
+    filters={"outcome.profit_pct": {">": 0}}
+)
+
+<span class="ck"># Results: episodes where similar market conditions</span>
+<span class="ck"># led to profitable outcomes</span>
+for ep in results:
+    print(f"{ep.action} → {ep.outcome.profit_pct}%")</code></pre>
+</div>
+
+<h2>Semantic Memory</h2>
+<p>Raw episodes are noisy. Semantic memory is the distilled, generalized knowledge that emerges from pattern analysis across thousands of episodes.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Semantic Extraction</div>
+<pre><code><span class="ck"># Extracted pattern example</span>
+pattern = {
+    "id": "pat_market_surge_buy",
+    "description": "Volume surge + positive sentiment → buy signal",
+    "conditions": {
+        "volume_change_1h": "> 200%",
+        "sentiment": "> 0.7",
+        "whale_accumulation": true
+    },
+    "predicted_outcome": "price_increase_5_15pct",
+    "confidence": 0.73,
+    "sample_size": 142,
+    "last_validated": "2026-04-07"
+}</code></pre>
+</div>
+
+<p>Semantic memory continuously updates as new episodes confirm or contradict existing patterns. Confidence scores rise or fall accordingly.</p>
+
+<h2>Meta-Memory</h2>
+<p>The meta-memory layer monitors the memory system itself. It answers: <em>"Which memories are actually useful for making good decisions?"</em></p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Meta-Memory Feedback Loop</div>
+<pre><code><span class="ck"># After each decision, meta-memory evaluates:</span>
+feedback = {
+    "decision_id": "dec_4821",
+    "memories_retrieved": ["ep_4102", "ep_3987", "pat_surge_buy"],
+    "memories_actually_useful": ["ep_4102", "pat_surge_buy"],
+    "outcome_quality": 0.84,
+    "adjustments": {
+        "ep_4102": {"retrieval_weight": "+0.05"},
+        "ep_3987": {"retrieval_weight": "-0.12"},
+        "pat_surge_buy": {"retrieval_weight": "+0.08"}
+    }
+}
+
+<span class="ck"># Low-weight memories are candidates for pruning</span>
+seki.memory.auto_prune(threshold=0.15)</code></pre>
+</div>
+
+<h2>Memory Consolidation</h2>
+<p>Every 24 hours (configurable), the consolidation engine runs a full memory maintenance cycle:</p>
+<ol>
+<li><strong>Episode Analysis</strong> — Cluster similar episodes, identify emerging patterns</li>
+<li><strong>Pattern Extraction</strong> — Promote frequent episode clusters into semantic patterns</li>
+<li><strong>Confidence Update</strong> — Re-validate all semantic patterns against recent data</li>
+<li><strong>Pruning</strong> — Remove episodes older than retention period with low meta-memory scores</li>
+<li><strong>Embedding Refresh</strong> — Re-encode semantic memories with updated embeddings</li>
+</ol>
+
+<div class="doc-warn">
+<strong>Resource Warning:</strong> Memory consolidation is CPU-intensive and queries the vector DB heavily. Schedule it during low-activity hours using <code>consolidation_schedule: "0 4 * * *"</code> (4 AM daily).
+</div>
+
+<div class="doc-info">
+<strong>Monitor:</strong> Use <code>seki memory stats</code> to view memory utilization — episode count, semantic pattern count, vector DB size, and last consolidation time.
+</div>
+
+<div class="doc-nav">
+<a href="../../getting-started/configuration.html" class="prev">
+<span class="nav-label">← PREV</span>
+<span class="nav-title">Configuration</span>
+</a>
+<a href="skills.html" class="next">
+<span class="nav-label">NEXT →</span>
+<span class="nav-title">Skill Engine</span>
+</a>
+</div>
+
+</main>
+</div>
+
+<script src="../../js/docs.js"></script>
+</body>
+</html>

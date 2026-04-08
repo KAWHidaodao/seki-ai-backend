@@ -1,0 +1,14 @@
+{
+  "id": "skill-gas-cap",
+  "name": "Gas费用上限控制",
+  "description": "单次cycle的gasCost超过0.008 BNB时跳过非必要操作",
+  "source": "refl-3",
+  "conditions": {
+    "gasCostAbove": 0.008
+  },
+  "action": "skip_optional",
+  "timesApplied": 5,
+  "successRate": 0.8,
+  "active": true,
+  "createdAt": "2026-04-07T13:53:32.794Z"
+}

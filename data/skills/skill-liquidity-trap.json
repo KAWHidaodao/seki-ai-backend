@@ -1,0 +1,15 @@
+{
+  "id": "skill-liquidity-trap",
+  "name": "流动性陷阱识别",
+  "description": "当 liquidity < 10 BNB 且 sentiment > 80 时，跳过买入",
+  "source": "refl-3",
+  "conditions": {
+    "liquidityBelow": 10,
+    "sentimentAbove": 80
+  },
+  "action": "skip_buy",
+  "timesApplied": 3,
+  "successRate": 1,
+  "active": true,
+  "createdAt": "2026-04-07T13:47:24.857Z"
+}

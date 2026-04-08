@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Skill Engine — Seki Agent Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/docs.css">
+</head>
+<body>
+
+<nav class="nav">
+<div class="nav-inner">
+<a href="../../" class="nav-logo"><span class="logo-glyph">S</span><span class="logo-text">SEKI</span></a>
+<div class="nav-links">
+<a href="../../#architecture">Architecture</a>
+<a href="../../#evolution">Evolution</a>
+<a href="../../#skills">Skills</a>
+<a href="../../getting-started/quickstart.html" class="active">Docs</a>
+<a href="https://github.com/seki-agent" class="nav-gh" target="_blank">GitHub</a>
+</div>
+<button class="nav-menu" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+</nav>
+
+<div class="docs-layout">
+<aside class="sidebar">
+<div class="sb-section">
+<div class="sb-heading">Getting Started</div>
+<a href="../../getting-started/quickstart.html" class="sb-link">Quick Start</a>
+<a href="../../getting-started/installation.html" class="sb-link">Installation</a>
+<a href="../../getting-started/configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">User Guide</div>
+<a href="memory.html" class="sb-link">Memory System</a>
+<a href="skills.html" class="sb-link active">Skill Engine</a>
+<a href="tools.html" class="sb-link">Tools & Toolsets</a>
+<a href="self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Developer Guide</div>
+<a href="../../developer-guide/architecture.html" class="sb-link">Architecture</a>
+<a href="../../developer-guide/writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Reference</div>
+<a href="../../reference/skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="../../reference/api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../../">Home</a><span class="sep">/</span>
+<a href="#">User Guide</a><span class="sep">/</span>
+Skill Engine
+</div>
+
+<h1>Skill Engine</h1>
+<p class="doc-subtitle">Modular capabilities that Seki learns, improves, and shares autonomously.</p>
+
+<h2>What is a Skill?</h2>
+<p>A skill is a reusable, composable unit of agent behavior. Think of it as a specialized sub-routine that the agent can invoke when conditions are met. Each skill has:</p>
+<ul>
+<li><strong>Trigger Condition</strong> — When should this skill activate?</li>
+<li><strong>Execution Strategy</strong> — What does it do, and how?</li>
+<li><strong>Input/Output Schema</strong> — Typed data contracts</li>
+<li><strong>Performance Metrics</strong> — Success rate, avg profit, execution count</li>
+<li><strong>Confidence Score</strong> — Self-assessed reliability (0.0–1.0)</li>
+</ul>
+<p>Skills are defined in YAML and can be auto-generated from successful task patterns by the evolution engine.</p>
+
+<h2>Built-in Skills</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>seki skills list</div>
+<pre><code>┌──────────────┬────────┬────────────────────────────────────────┐
+│ SKILL        │ STATUS │ DESCRIPTION                            │
+├──────────────┼────────┼────────────────────────────────────────┤
+│ meme-launch  │ <span style="color:#00ff88">LIVE</span>   │ Deploy and promote meme tokens          │
+│ cex-trading  │ <span style="color:#00ff88">LIVE</span>   │ Binance spot & futures trading          │
+│ market-sense │ <span style="color:#00ff88">LIVE</span>   │ Multi-source market analysis            │
+│ social-scan  │ <span style="color:#ffaa00">BETA</span>   │ Twitter/Telegram sentiment scanning     │
+│ chain-scout  │ <span style="color:#ffaa00">BETA</span>   │ On-chain whale & smart money tracking   │
+│ risk-guard   │ <span style="color:#666">DEV</span>    │ Portfolio risk management               │
+└──────────────┴────────┴────────────────────────────────────────┘</code></pre>
+</div>
+
+<ul>
+<li><strong>meme-launch</strong> — Full lifecycle: token deployment, liquidity provisioning, social promotion, and exit strategy</li>
+<li><strong>cex-trading</strong> — Binance integration: spot orders, futures positions, trailing stops, and DCA</li>
+<li><strong>market-sense</strong> — Aggregates data from CoinGecko, DexScreener, on-chain analytics, and social sentiment into actionable signals</li>
+<li><strong>social-scan</strong> — Monitors Twitter and Telegram for alpha signals, trending tokens, and influencer activity</li>
+<li><strong>chain-scout</strong> — Tracks whale wallets, smart money flows, large DEX trades, and new contract deployments</li>
+<li><strong>risk-guard</strong> — Portfolio exposure analysis, drawdown protection, position sizing, and correlation risk</li>
+</ul>
+
+<h2>Skill Lifecycle</h2>
+<p>Every skill moves through a defined lifecycle. Promotion and demotion are automated based on performance data.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Skill States</div>
+<pre><code>  DRAFT ──→ TESTING ──→ LIVE ──→ DEPRECATED
+    │          │          │
+    │          │          └─ fitness &lt; 0.3 for 48h
+    │          └─ success_rate &gt; 0.6 after 20+ runs
+    └─ auto-generated or manually created</code></pre>
+</div>
+
+<ul>
+<li><strong>DRAFT</strong> — Newly created. Not executed. Available for review.</li>
+<li><strong>TESTING</strong> — Runs in sandbox mode with limited capital. Collecting performance data.</li>
+<li><strong>LIVE</strong> — Fully operational. Trusted for real execution.</li>
+<li><strong>DEPRECATED</strong> — Underperforming. Removed from active rotation. Kept for analysis.</li>
+</ul>
+
+<h2>Skill Definition</h2>
+<p>Skills are defined as YAML files in <code>~/.seki/skills/</code>.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>skills/meme-launch.yaml</div>
+<pre><code><span class="ck">name:</span> meme-launch
+<span class="ck">version:</span> 2.1.0
+<span class="ck">status:</span> live
+<span class="ck">description:</span> Deploy and promote meme tokens on BSC/Base
+
+<span class="ck">trigger:</span>
+  <span class="ck">conditions:</span>
+    - social_buzz_score > 0.8
+    - trending_topic_match: true
+    - available_capital > 500 USDT
+  <span class="ck">cooldown:</span> 4h
+
+<span class="ck">strategy:</span>
+  <span class="ck">type:</span> sequential
+  <span class="ck">steps:</span>
+    - deploy_token:
+        <span class="ck">chain:</span> ${config.chain}
+        <span class="ck">supply:</span> 1_000_000_000
+        <span class="ck">tax:</span> { buy: 3, sell: 5 }
+    - add_liquidity:
+        <span class="ck">pair:</span> USDT
+        <span class="ck">amount:</span> ${trigger.available_capital * 0.3}
+    - promote:
+        <span class="ck">channels:</span> [twitter, telegram]
+        <span class="ck">duration:</span> 2h
+    - monitor_exit:
+        <span class="ck">take_profit:</span> 3x
+        <span class="ck">stop_loss:</span> -40%
+
+<span class="ck">inputs:</span>
+  <span class="ck">token_name:</span> { type: string, required: true }
+  <span class="ck">token_symbol:</span> { type: string, required: true }
+  <span class="ck">theme:</span> { type: string, default: "auto" }
+
+<span class="ck">outputs:</span>
+  <span class="ck">contract_address:</span> address
+  <span class="ck">liquidity_tx:</span> tx_hash
+  <span class="ck">pnl:</span> float
+
+<span class="ck">constraints:</span>
+  <span class="ck">max_capital:</span> 2000 USDT
+  <span class="ck">max_concurrent:</span> 1
+  <span class="ck">chains:</span> [bsc, base]
+
+<span class="ck">meta:</span>
+  <span class="ck">author:</span> seki-core
+  <span class="ck">tags:</span> [defi, meme, launch]
+  <span class="ck">confidence:</span> 0.78
+  <span class="ck">total_runs:</span> 47
+  <span class="ck">success_rate:</span> 0.72</code></pre>
+</div>
+
+<h2>Auto-Generated Skills</h2>
+<p>When the evolution engine detects repeated successful patterns, it can synthesize a new skill automatically:</p>
+<ol>
+<li><strong>Pattern Detection</strong> — Clusters of similar successful episodes are identified</li>
+<li><strong>Template Extraction</strong> — Common triggers, actions, and parameters are abstracted</li>
+<li><strong>Skill Generation</strong> — A YAML skill definition is auto-created in DRAFT state</li>
+<li><strong>Sandbox Testing</strong> — The skill runs in TESTING mode for minimum 20 executions</li>
+<li><strong>Promotion</strong> — If success_rate &gt; 0.6, the skill promotes to LIVE</li>
+</ol>
+
+<div class="doc-info">
+<strong>Discovery:</strong> Auto-generated skills appear in <code>~/.seki/skills/auto/</code>. Review them with <code>seki skills list --auto</code>.
+</div>
+
+<h2>Skill Composition</h2>
+<p>Skills can be chained into pipelines. The output of one skill feeds into the next.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Pipeline Definition</div>
+<pre><code><span class="ck">pipeline:</span> alpha-to-trade
+<span class="ck">steps:</span>
+  - <span class="ck">skill:</span> social-scan
+    <span class="ck">output_map:</span> { trending_tokens → tokens }
+  - <span class="ck">skill:</span> market-sense
+    <span class="ck">input_map:</span> { tokens → targets }
+    <span class="ck">output_map:</span> { signals → trade_signals }
+  - <span class="ck">skill:</span> cex-trading
+    <span class="ck">input_map:</span> { trade_signals → orders }
+    <span class="ck">filter:</span> "confidence > 0.75"</code></pre>
+</div>
+
+<h2>Performance Tracking</h2>
+<p>Every skill execution is tracked with granular metrics:</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>seki skills stats meme-launch</div>
+<pre><code>┌─────────────────────────────────────┐
+│  SKILL: meme-launch  v2.1.0        │
+│  Status: <span style="color:#00ff88">LIVE</span>                      │
+├─────────────────────────────────────┤
+│  Total Runs:      47               │
+│  Success Rate:    72.3%            │
+│  Avg Profit:      +184.2 USDT     │
+│  Best Run:        +1,247.5 USDT   │
+│  Worst Run:       -412.0 USDT     │
+│  Confidence:      0.78            │
+│  Fitness Score:   0.69            │
+│  Last Run:        2h ago          │
+└─────────────────────────────────────┘</code></pre>
+</div>
+
+<div class="doc-warn">
+<strong>Caution:</strong> Auto-generated skills start in TESTING mode with limited capital allocation. Monitor their performance before promoting to LIVE with <code>seki skills promote &lt;name&gt;</code>.
+</div>
+
+<div class="doc-nav">
+<a href="memory.html" class="prev">
+<span class="nav-label">← PREV</span>
+<span class="nav-title">Memory System</span>
+</a>
+<a href="tools.html" class="next">
+<span class="nav-label">NEXT →</span>
+<span class="nav-title">Tools & Toolsets</span>
+</a>
+</div>
+
+</main>
+</div>
+
+<script src="../../js/docs.js"></script>
+</body>
+</html>

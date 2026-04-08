@@ -1,0 +1,31 @@
+{
+  "major": 1,
+  "minor": 3,
+  "patch": 0,
+  "history": [
+    {
+      "version": "v1.0.0",
+      "timestamp": "2026-04-07T11:40:00.000Z",
+      "type": "minor",
+      "reason": "初始策略配置"
+    },
+    {
+      "version": "v1.1.0",
+      "timestamp": "2026-04-07T13:40:00.000Z",
+      "type": "minor",
+      "reason": "sellPressure阈值调整 + Herald batch策略"
+    },
+    {
+      "version": "v1.2.0",
+      "timestamp": "2026-04-07T14:40:00.000Z",
+      "type": "minor",
+      "reason": "流动性陷阱识别技能上线"
+    },
+    {
+      "version": "v1.3.0",
+      "timestamp": "2026-04-07T15:10:00.000Z",
+      "type": "minor",
+      "reason": "Gas上限控制 + 夜间保守模式"
+    }
+  ]
+}

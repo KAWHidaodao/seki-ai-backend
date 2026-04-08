@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Self-Evolution | SEKI Docs</title>
+<link rel="stylesheet" href="../../css/docs.css">
+</head>
+<body>
+<div class="doc-layout">
+<aside class="doc-sidebar">
+<div class="sb-logo"><a href="../../">SEKI<span class="accent">.</span>DOCS</a></div>
+<div class="sb-section">Getting Started</div>
+<div class="sb-links">
+<a href="../../getting-started/quickstart.html" class="sb-link">Quick Start</a>
+<a href="../../getting-started/installation.html" class="sb-link">Installation</a>
+<a href="../../getting-started/configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">User Guide</div>
+<div class="sb-links">
+<a href="memory.html" class="sb-link">Memory System</a>
+<a href="skills.html" class="sb-link">Skill Engine</a>
+<a href="tools.html" class="sb-link">Tool Registry</a>
+<a href="self-evolution.html" class="sb-link active">Self-Evolution</a>
+</div>
+<div class="sb-section">Developer Guide</div>
+<div class="sb-links">
+<a href="../../developer-guide/architecture.html" class="sb-link">Architecture</a>
+<a href="../../developer-guide/writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">Reference</div>
+<div class="sb-links">
+<a href="../../reference/skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="../../reference/api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="../../">Home</a><span class="sep">/</span>
+<a href="#">User Guide</a><span class="sep">/</span>
+Self-Evolution
+</div>
+
+<h1>Self-Evolution</h1>
+<p class="doc-subtitle">The core loop that makes Seki fundamentally different — an agent that improves itself through experience.</p>
+
+<h2>The Evolution Loop</h2>
+<p>Seki continuously runs a four-phase evolution cycle. Each cycle produces measurable improvements in strategy, timing, and risk management.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Evolution Cycle</div>
+<pre><code>    ┌──────────┐
+    │ OBSERVE  │ ← Market data, social signals, on-chain events
+    └────┬─────┘
+         │
+    ┌────▼─────┐
+    │  LEARN   │ ← Pattern extraction, correlation analysis
+    └────┬─────┘
+         │
+    ┌────▼─────┐
+    │  EVOLVE  │ ← Strategy mutation, parameter tuning
+    └────┬─────┘
+         │
+    ┌────▼─────┐
+    │   ACT    │ ← Execute refined strategies
+    └────┬─────┘
+         │
+         └──────→ Back to OBSERVE (continuous)</code></pre>
+</div>
+
+<h2>Phase 1: Observe</h2>
+<p>The observation phase ingests multi-modal data streams and normalizes them into a unified event format.</p>
+
+<h3>Data Sources</h3>
+<ul>
+<li><strong>Market Data</strong> — Price feeds, order book depth, volume profiles, funding rates</li>
+<li><strong>Social Signals</strong> — Twitter mentions, Telegram activity, Discord sentiment</li>
+<li><strong>On-Chain Events</strong> — Large transfers, liquidity changes, contract deployments, wallet clustering</li>
+<li><strong>Agent Network</strong> — Insights shared by other Seki agents (peer learning)</li>
+</ul>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>seki observe --status</div>
+<pre><code>Active Streams: 14
+Events/sec:    847
+Buffer:        2.1 GB (12h rolling window)
+
+Sources:
+  binance-ws      ███████████████████ 412 e/s  LIVE
+  twitter-stream  ████████████        289 e/s  LIVE
+  etherscan       ████                 96 e/s  LIVE
+  dexscreener     ██                   38 e/s  LIVE
+  peer-network    ▌                    12 e/s  LIVE</code></pre>
+</div>
+
+<h2>Phase 2: Learn</h2>
+<p>Raw observations are processed through multiple learning algorithms to extract actionable patterns.</p>
+
+<h3>Learning Methods</h3>
+<table class="doc-table">
+<thead><tr><th>Method</th><th>Purpose</th><th>Output</th></tr></thead>
+<tbody>
+<tr><td>Time-Series Anomaly Detection</td><td>Spot unusual price/volume patterns</td><td>Anomaly events with confidence scores</td></tr>
+<tr><td>Sentiment Analysis</td><td>Gauge market mood from social data</td><td>Sentiment vectors per token</td></tr>
+<tr><td>Correlation Mining</td><td>Find leading indicators</td><td>Cross-signal correlation matrix</td></tr>
+<tr><td>Reinforcement Feedback</td><td>Score past decisions</td><td>Strategy reward signals</td></tr>
+</tbody>
+</table>
+
+<h2>Phase 3: Evolve</h2>
+<p>The evolution phase uses genetic-algorithm-inspired mutation to improve strategies. Only changes that improve the fitness score survive.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>seki evolve --log --last 5</div>
+<pre><code>Generation 847 | Fitness: 0.73 → 0.78 (+6.8%)
+├─ MUTATE  meme-launch: entry_threshold 0.85 → 0.79
+├─ MUTATE  cex-trading: stop_loss 3.5% → 2.8%
+├─ KEEP    market-sense: sentiment_weight 0.6
+├─ PRUNE   old-arb-v2: fitness 0.31 (below threshold)
+└─ SPAWN   hybrid-momentum: crossover(cex-trading, market-sense)
+
+Generation 848 | Fitness: 0.78 → 0.81 (+3.8%)
+├─ MUTATE  hybrid-momentum: lookback 12h → 8h
+├─ KEEP    meme-launch: entry_threshold 0.79
+└─ KEEP    cex-trading: stop_loss 2.8%</code></pre>
+</div>
+
+<h3>Mutation Types</h3>
+<ul>
+<li><strong>Parameter Mutation</strong> — Adjust numerical parameters within defined bounds</li>
+<li><strong>Strategy Crossover</strong> — Combine successful elements from two strategies</li>
+<li><strong>Skill Acquisition</strong> — Discover and integrate new skills from the network</li>
+<li><strong>Pruning</strong> — Remove strategies that consistently underperform</li>
+</ul>
+
+<h2>Phase 4: Act</h2>
+<p>Evolved strategies are deployed with safety guardrails. Every action is sandboxed before live execution.</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Execution Pipeline</div>
+<pre><code>Strategy Signal
+     │
+     ├─→ Risk Check ── position size, exposure limits
+     │
+     ├─→ Simulation ── paper trade against live data
+     │
+     ├─→ Approval ──── auto-approve or human-in-loop
+     │
+     └─→ Execute ───── tool dispatch + confirmation</code></pre>
+</div>
+
+<h2>Fitness Scoring</h2>
+<p>Each strategy is scored on multiple dimensions. The composite fitness score determines survival:</p>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>Fitness Function</div>
+<pre><code>fitness = (
+  0.35 × profit_factor +
+  0.25 × risk_adjusted_return +
+  0.20 × win_rate +
+  0.10 × execution_quality +
+  0.10 × novelty_bonus
+)
+
+Survival threshold: 0.40
+Elite threshold:    0.75 (protected from mutation)</code></pre>
+</div>
+
+<h2>Safety Guardrails</h2>
+<div class="doc-info">
+<strong>Critical:</strong> Evolution is bounded. Seki cannot evolve beyond configured risk parameters, maximum position sizes, or approved asset lists. The guardrails are immutable — even the evolution engine cannot modify them.
+</div>
+
+<ul>
+<li><strong>Max Drawdown Limit</strong> — Hard stop if portfolio drops below threshold</li>
+<li><strong>Position Sizing</strong> — Kelly criterion with configurable fraction</li>
+<li><strong>Asset Whitelist</strong> — Only approved tokens can be traded</li>
+<li><strong>Rate Limiting</strong> — Maximum trades per time window</li>
+<li><strong>Human Override</strong> — Emergency stop via CLI or Telegram command</li>
+</ul>
+
+<h2>Monitoring Evolution</h2>
+
+<div class="doc-code">
+<div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>seki evolve --dashboard</div>
+<pre><code>EVOLUTION DASHBOARD
+═══════════════════════════════════════════
+Generation:     848        Uptime: 14d 6h
+Avg Fitness:    0.71       Best:   0.91
+Active Strats:  12         Pruned: 47
+Mutations/day:  23         Success: 61%
+
+Top Strategies:
+  1. hybrid-momentum   0.91  ████████████████████
+  2. meme-launch       0.84  █████████████████
+  3. cex-trading       0.79  ████████████████
+  4. market-sense      0.76  ███████████████
+  5. liquidity-snipe   0.68  ██████████████</code></pre>
+</div>
+
+</main>
+</div>
+<script src="../../js/docs.js"></script>
+</body>
+</html>
