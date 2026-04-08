@@ -2211,96 +2211,96 @@ Returns a JSON object with analysis results.
 <!-- AGENT LOGIC -->
 <div class="doc-panel" id="doc-agent-logic">
 <div class="doc-hero">
-<h1>Agent Decision Logic</h1>
-<p>How SEKI agents make on-chain decisions: the complete reasoning pipeline.</p>
+<h1>代理决策逻辑</h1>
+<p>SEKI 代理如何做出链上决策：完整的推理流水线。</p>
 </div>
 <div class="doc-section">
-<h2>Decision Pipeline</h2>
-<p>Every on-chain action flows through a multi-stage reasoning pipeline:</p>
+<h2>决策流水线</h2>
+<p>每个链上操作都经过多阶段推理流水线处理：</p>
 
 <div class="doc-card" style="margin-bottom:12px">
-<h4>1. Data Ingestion</h4>
-<p>Collect real-time on-chain data: token prices, liquidity depth, holder distribution, contract events, gas prices.</p>
+<h4>1. 数据采集</h4>
+<p>收集实时链上数据：代币价格、流动性深度、持有者分布、合约事件、Gas 费用。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>2. Signal Processing</h4>
-<p>Normalize and score signals. Cross-reference with historical patterns from memory. Generate a weighted signal vector.</p>
+<h4>2. 信号处理</h4>
+<p>标准化并评分信号。与记忆中的历史模式进行交叉验证。生成加权信号向量。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>3. Risk Assessment</h4>
-<p>Evaluate potential outcomes against risk parameters. Check position sizing rules. Verify sufficient liquidity for exit.</p>
+<h4>3. 风险评估</h4>
+<p>根据风险参数评估潜在结果。检查仓位大小规则。验证是否有足够的退出流动性。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>4. LLM Reasoning</h4>
-<p>Present processed data to the LLM with full context. The model provides a structured decision with confidence score and rationale.</p>
+<h4>4. LLM 推理</h4>
+<p>将处理后的数据连同完整上下文提交给 LLM。模型给出结构化决策，包含置信度评分和决策理由。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>5. Execution</h4>
-<p>If confidence exceeds threshold: simulate transaction, verify gas, execute. Log the full decision trail to memory.</p>
+<h4>5. 执行</h4>
+<p>当置信度超过阈值：模拟交易、验证 Gas、执行。将完整决策记录写入记忆。</p>
 </div>
 
-<h2>Confidence Thresholds</h2>
+<h2>置信度阈值</h2>
 <table class="doc-table">
-<tr><th>Action Type</th><th>Min Confidence</th><th>Approval</th></tr>
-<tr><td>Read-only query</td><td>0.3</td><td>Auto</td></tr>
-<tr><td>Small trade (&lt;1% portfolio)</td><td>0.7</td><td>Auto</td></tr>
-<tr><td>Medium trade (1-5%)</td><td>0.85</td><td>Auto</td></tr>
-<tr><td>Large trade (&gt;5%)</td><td>0.95</td><td>Manual</td></tr>
-<tr><td>Contract interaction</td><td>0.9</td><td>Manual</td></tr>
+<tr><th>操作类型</th><th>最低置信度</th><th>审批方式</th></tr>
+<tr><td>只读查询</td><td>0.3</td><td>自动</td></tr>
+<tr><td>小额交易（&lt;1% 仓位）</td><td>0.7</td><td>自动</td></tr>
+<tr><td>中额交易（1-5%）</td><td>0.85</td><td>自动</td></tr>
+<tr><td>大额交易（&gt;5%）</td><td>0.95</td><td>人工审批</td></tr>
+<tr><td>合约交互</td><td>0.9</td><td>人工审批</td></tr>
 </table>
 
-<div class="doc-tip">All thresholds are configurable. For production use, we recommend starting with manual approval for all trades and gradually increasing auto-approval limits as you build confidence in the agent's behavior.</div>
+<div class="doc-tip">所有阈值均可配置。生产环境中，建议先对所有交易启用人工审批，随着对代理行为的信心增强，再逐步提高自动审批的额度上限。</div>
 
-<h2>Decision Logging</h2>
-<p>Every decision is stored with full context for audit:</p>
+<h2>决策日志</h2>
+<p>每个决策都会连同完整上下文存储，以便审计：</p>
 <div class="doc-code">{
   <span class="st">"id"</span>: <span class="st">"dec_20240315_001"</span>,
   <span class="st">"timestamp"</span>: <span class="st">"2024-03-15T10:23:45Z"</span>,
   <span class="st">"action"</span>: <span class="st">"swap"</span>,
   <span class="st">"confidence"</span>: <span class="st">0.88</span>,
-  <span class="st">"rationale"</span>: <span class="st">"Strong buy signal: volume spike + whale accumulation..."</span>,
+  <span class="st">"rationale"</span>: <span class="st">"强买入信号：成交量飙升 + 巨鲸吸筹..."</span>,
   <span class="st">"signals"</span>: [...],
   <span class="st">"outcome"</span>: <span class="st">"pending"</span>
 }</div>
 </div>
 <div class="doc-nav-bottom">
-<button class="doc-nav-btn" onclick="showDoc('catalog')">&larr; Skills Catalog</button>
-<button class="doc-nav-btn" onclick="showDoc('fund-safety')">Fund Safety &rarr;</button>
+<button class="doc-nav-btn" onclick="showDoc('catalog')">&larr; 技能目录</button>
+<button class="doc-nav-btn" onclick="showDoc('fund-safety')">资金安全 &rarr;</button>
 </div>
 </div>
 
 <!-- FUND SAFETY -->
 <div class="doc-panel" id="doc-fund-safety">
 <div class="doc-hero">
-<h1>Fund Safety</h1>
-<p>How SEKI protects user funds through multiple layers of security controls.</p>
+<h1>资金安全</h1>
+<p>SEKI 如何通过多层安全控制保护用户资金。</p>
 </div>
 <div class="doc-section">
-<h2>Security Architecture</h2>
+<h2>安全架构</h2>
 <div class="doc-grid">
 <div class="doc-card">
-<h4>Wallet Isolation</h4>
-<p>Agent wallets are isolated from user wallets. The agent operates with a dedicated hot wallet with configurable spending limits.</p>
+<h4>钱包隔离</h4>
+<p>代理钱包与用户钱包隔离。代理使用专用热钱包运行，并配置可调的支出限额。</p>
 </div>
 <div class="doc-card">
-<h4>Transaction Simulation</h4>
-<p>Every transaction is simulated via <code>eth_call</code> before execution. Unexpected state changes trigger automatic abort.</p>
+<h4>交易模拟</h4>
+<p>每笔交易在执行前都会通过 <code>eth_call</code> 进行模拟。异常状态变化会触发自动中止。</p>
 </div>
 <div class="doc-card">
-<h4>Spending Limits</h4>
-<p>Per-transaction and daily spending caps. Breaching limits requires explicit user approval via secure channel.</p>
+<h4>支出限额</h4>
+<p>单笔交易和每日支出上限。超出限额需要用户通过安全渠道明确批准。</p>
 </div>
 <div class="doc-card">
-<h4>Contract Allowlist</h4>
-<p>Agents can only interact with pre-approved contracts. New contract interactions require manual verification.</p>
+<h4>合约白名单</h4>
+<p>代理只能与预先批准的合约交互。新的合约交互需要人工验证。</p>
 </div>
 </div>
 
-<h2>Safety Parameters</h2>
+<h2>安全参数</h2>
 <div class="doc-code"><span class="kw">safety</span>:
   <span class="kw">max_per_tx</span>: <span class="st">"100 USDT"</span>
   <span class="kw">max_daily</span>: <span class="st">"1000 USDT"</span>
-  <span class="kw">max_position</span>: <span class="st">"5%"</span>        <span class="cm"># of total portfolio</span>
+  <span class="kw">max_position</span>: <span class="st">"5%"</span>        <span class="cm"># 占总仓位比例</span>
   <span class="kw">slippage_max</span>: <span class="st">"2%"</span>
   <span class="kw">gas_limit_multiplier</span>: <span class="st">1.5</span>
   <span class="kw">require_simulation</span>: <span class="st">true</span>
@@ -2308,65 +2308,65 @@ Returns a JSON object with analysis results.
     - <span class="st">"0x10ED...PancakeRouter"</span>
     - <span class="st">"0xEf1c...SEKIStaking"</span></div>
 
-<div class="doc-warn">Never share agent wallet private keys. Use environment variables or a hardware wallet for signing. Consider a multisig for high-value operations.</div>
+<div class="doc-warn">切勿分享代理钱包私钥。请使用环境变量或硬件钱包进行签名。高价值操作建议使用多签钱包。</div>
 
-<h2>Emergency Controls</h2>
+<h2>紧急控制</h2>
 <ul>
-<li><strong>Kill Switch</strong> — Instantly halt all agent operations via API or dashboard</li>
-<li><strong>Auto-Pause</strong> — Agent pauses if loss exceeds configurable threshold (default: 5% of portfolio)</li>
-<li><strong>Withdrawal Lock</strong> — Large withdrawals require time-locked confirmation (24h default)</li>
-<li><strong>Audit Log</strong> — Complete transaction history with decision context, exportable as CSV/JSON</li>
+<li><strong>紧急停止</strong> — 通过 API 或仪表盘立即停止所有代理操作</li>
+<li><strong>自动暂停</strong> — 当亏损超过可配置阈值时自动暂停（默认：仓位的 5%）</li>
+<li><strong>提款锁定</strong> — 大额提款需要时间锁确认（默认 24 小时）</li>
+<li><strong>审计日志</strong> — 完整的交易历史记录，包含决策上下文，可导出为 CSV/JSON</li>
 </ul>
 </div>
 <div class="doc-nav-bottom">
-<button class="doc-nav-btn" onclick="showDoc('agent-logic')">&larr; Agent Logic</button>
-<button class="doc-nav-btn" onclick="showDoc('faq')">FAQ &rarr;</button>
+<button class="doc-nav-btn" onclick="showDoc('agent-logic')">&larr; 代理逻辑</button>
+<button class="doc-nav-btn" onclick="showDoc('faq')">常见问题 &rarr;</button>
 </div>
 </div>
 
 <!-- FAQ -->
 <div class="doc-panel" id="doc-faq">
 <div class="doc-hero">
-<h1>FAQ</h1>
-<p>Frequently asked questions about the SEKI platform.</p>
+<h1>常见问题</h1>
+<p>SEKI 平台常见问题解答。</p>
 </div>
 <div class="doc-section">
 <div class="doc-card" style="margin-bottom:12px">
-<h4>What is SEKI?</h4>
-<p>SEKI is an autonomous AI agent platform for Web3. It combines persistent memory, self-evolving skills, and on-chain execution to create intelligent agents that learn and improve over time.</p>
+<h4>SEKI 是什么？</h4>
+<p>SEKI 是一个面向 Web3 的自主 AI 代理平台。它结合持久记忆、自进化技能和链上执行能力，打造能够学习和持续进化的智能代理。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>Is SEKI safe to use with real funds?</h4>
-<p>SEKI has multiple safety layers: transaction simulation, spending limits, contract allowlists, and emergency kill switches. Start with small amounts and manual approval mode to build confidence.</p>
+<h4>SEKI 使用真实资金安全吗？</h4>
+<p>SEKI 拥有多层安全防护：交易模拟、支出限额、合约白名单和紧急停止开关。建议从小额资金和人工审批模式开始，逐步建立信心。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>What chains are supported?</h4>
-<p>Currently BSC and X Layer, with Ethereum, Polygon, and Arbitrum on the roadmap. The architecture supports any EVM-compatible chain.</p>
+<h4>支持哪些链？</h4>
+<p>目前支持 BSC 和 X Layer，Ethereum、Polygon 和 Arbitrum 已在路线图中。架构支持任何 EVM 兼容链。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>How does the agent learn?</h4>
-<p>Through the observe-reflect-adapt evolution loop. The agent analyzes outcomes of its actions, identifies patterns, and generates improved strategies — all within a sandboxed environment.</p>
+<h4>代理如何学习？</h4>
+<p>通过“观察-反思-进化”循环。代理分析其操作结果，识别模式，并生成改进策略 —— 所有这些都在沙箱环境中完成。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>Can I create custom skills?</h4>
-<p>Yes. Skills are modular and follow a simple structure (SKILL.md + index.js + config.yaml). See the <a style="color:#6366f1;cursor:pointer" onclick="showDoc('writing-skills')">Writing Skills</a> guide.</p>
+<h4>可以创建自定义技能吗？</h4>
+<p>可以。技能采用模块化设计，结构简单（SKILL.md + index.js + config.yaml）。请参阅<a style="color:#6366f1;cursor:pointer" onclick="showDoc('writing-skills')">技能开发指南</a>。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>What LLMs does SEKI support?</h4>
-<p>Any OpenAI-compatible API. GPT-4, Claude, Llama, Mistral — configure your preferred model in config.yaml.</p>
+<h4>SEKI 支持哪些 LLM？</h4>
+<p>任何兼容 OpenAI API 的模型。GPT-4、Claude、Llama、Mistral —— 在 config.yaml 中配置你偏好的模型即可。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>Is there a token?</h4>
-<p>The SEKI token is used for governance, skill marketplace fees, and agent staking. Contract details are available on the project page.</p>
+<h4>有代币吗？</h4>
+<p>SEKI 代币用于治理、技能市场费用和代理质押。合约详情请见项目首页。</p>
 </div>
 <div class="doc-card" style="margin-bottom:12px">
-<h4>Where can I get help?</h4>
-<p>Join our Telegram community, check the GitHub issues, or reach out via the contact form on the main site.</p>
+<h4>在哪里获取帮助？</h4>
+<p>加入我们的 Telegram 社区，查看 GitHub Issues，或通过网站主页的联系表单联系我们。</p>
 </div>
 </div>
 <div class="doc-nav-bottom">
-<button class="doc-nav-btn" onclick="showDoc('fund-safety')">&larr; Fund Safety</button>
-<button class="doc-nav-btn" onclick="showDoc('overview')">Back to Overview &rarr;</button>
+<button class="doc-nav-btn" onclick="showDoc('fund-safety')">&larr; 资金安全</button>
+<button class="doc-nav-btn" onclick="showDoc('overview')">返回概览 &rarr;</button>
 </div>
 </div>
 
