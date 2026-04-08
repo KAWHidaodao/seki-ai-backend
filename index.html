@@ -1403,521 +1403,977 @@
 </div>
 <div
 id="page-wendang" class="pw" style="display:none">
-
-<!-- ===== DOCS SCOPED STYLES ===== -->
 <style>
-.docs-wrap{background:#0a0a0f;color:#e0e0e0;font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;position:relative}
-.docs-wrap *{box-sizing:border-box}
-
-/* Neural Canvas */
-.docs-canvas-wrap{position:absolute;top:0;left:0;width:100%;height:600px;z-index:0;opacity:.3}
-#docs-neural-canvas{width:100%;height:100%}
-
-/* Hero */
-.docs-hero{position:relative;z-index:1;padding:80px 20px 40px;text-align:center}
-.docs-hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25);border-radius:20px;padding:6px 16px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#00ff88;margin-bottom:24px}
-.docs-hero-badge .pulse-dot{width:6px;height:6px;background:#00ff88;border-radius:50%;animation:docsPulse 2s infinite}
-@keyframes docsPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
-.docs-hero h1{font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:-1px;margin-bottom:12px;background:linear-gradient(135deg,#fff 30%,#00ff88 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.docs-hero .docs-subtitle{font-size:clamp(14px,2vw,18px);color:#888;max-width:600px;margin:0 auto 32px;line-height:1.6}
-
-/* Terminal */
-.docs-terminal{background:#0d0d14;border:1px solid rgba(0,255,136,.15);border-radius:12px;max-width:600px;margin:0 auto 40px;overflow:hidden;text-align:left}
-.docs-terminal-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)}
-.docs-terminal-dot{width:8px;height:8px;border-radius:50%}
-.docs-terminal-body{padding:16px 18px;font-family:'JetBrains Mono','Fira Code',monospace;font-size:12px;line-height:1.8;color:#00ff88;min-height:100px}
-.docs-terminal-body .cmd{color:#666}
-.docs-terminal-body .cursor{display:inline-block;width:7px;height:14px;background:#00ff88;animation:docsBlink 1s step-end infinite;vertical-align:middle;margin-left:2px}
-@keyframes docsBlink{50%{opacity:0}}
-
-/* Stats row */
-.docs-stats{display:flex;justify-content:center;gap:40px;margin:32px 0;flex-wrap:wrap}
-.docs-stat{text-align:center}
-.docs-stat-val{font-size:28px;font-weight:900;color:#00ff88;font-family:'JetBrains Mono',monospace}
-.docs-stat-label{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
-
-/* Section titles */
-.docs-section{padding:60px 20px;max-width:1100px;margin:0 auto;position:relative;z-index:1}
-.docs-section-tag{display:inline-block;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#00ff88;margin-bottom:12px;font-family:'JetBrains Mono',monospace}
-.docs-section h2{font-size:clamp(22px,3vw,32px);font-weight:800;margin-bottom:8px;color:#fff}
-.docs-section .docs-section-desc{font-size:14px;color:#666;max-width:600px;line-height:1.6;margin-bottom:32px}
-
-/* Evolution Loop */
-.docs-loop-container{display:flex;justify-content:center;align-items:center;padding:40px 0}
-.docs-loop-ring{position:relative;width:320px;height:320px}
-.docs-loop-ring svg{width:100%;height:100%}
-.docs-loop-node{position:absolute;width:72px;height:72px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:2px solid;transition:all .3s}
-.docs-loop-node .node-icon{font-size:22px;margin-bottom:4px}
-.docs-loop-node:nth-child(2){top:-10px;left:50%;transform:translateX(-50%);background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.4);color:#00ff88}
-.docs-loop-node:nth-child(3){top:50%;right:-10px;transform:translateY(-50%);background:rgba(0,136,255,.1);border-color:rgba(0,136,255,.4);color:#0088ff}
-.docs-loop-node:nth-child(4){bottom:-10px;left:50%;transform:translateX(-50%);background:rgba(255,136,0,.1);border-color:rgba(255,136,0,.4);color:#ff8800}
-.docs-loop-node:nth-child(5){top:50%;left:-10px;transform:translateY(-50%);background:rgba(136,0,255,.1);border-color:rgba(136,0,255,.4);color:#8800ff}
-.docs-loop-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.docs-loop-center span{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#444}
-.docs-loop-center .center-ver{display:block;font-size:20px;font-weight:900;color:#fff;margin-top:4px}
-</style>
-<style>
-/* Core Systems Cards */
-.docs-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.docs-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:24px;transition:all .3s}
-.docs-card:hover{border-color:rgba(0,255,136,.3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,255,136,.08)}
-.docs-card-icon{font-size:28px;margin-bottom:12px}
-.docs-card h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:8px}
-.docs-card p{font-size:13px;color:#888;line-height:1.6}
-.docs-card .docs-card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.docs-card .docs-card-tag{font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(0,255,136,.08);color:#00ff88;font-family:'JetBrains Mono',monospace}
-
-/* Skills Catalog */
-.docs-skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.docs-skill{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:20px;display:flex;gap:16px;align-items:flex-start;transition:all .3s}
-.docs-skill:hover{border-color:rgba(0,136,255,.3)}
-.docs-skill-icon{font-size:32px;flex-shrink:0}
-.docs-skill h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
-.docs-skill p{font-size:12px;color:#888;line-height:1.5}
-.docs-skill .skill-status{display:inline-block;font-size:10px;padding:2px 8px;border-radius:4px;margin-top:8px;font-family:'JetBrains Mono',monospace}
-.docs-skill .skill-active{background:rgba(0,255,136,.1);color:#00ff88}
-.docs-skill .skill-beta{background:rgba(255,200,0,.1);color:#ffc800}
-.docs-skill .skill-dev{background:rgba(0,136,255,.1);color:#0088ff}
-
-/* Evolution Timeline */
-.docs-timeline{position:relative;padding-left:24px;border-left:2px solid rgba(0,255,136,.15)}
-.docs-evo-event{position:relative;padding:0 0 32px 24px}
-.docs-evo-dot{position:absolute;left:-29px;top:4px;width:10px;height:10px;border-radius:50%;background:#00ff88;border:2px solid #0a0a0f}
-.docs-evo-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:#00ff88;margin-bottom:4px}
-.docs-evo-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
-.docs-evo-desc{font-size:12px;color:#666;line-height:1.5}
-
-/* Architecture Diagram */
-.docs-arch{display:flex;flex-direction:column;align-items:center;gap:12px;padding:20px 0}
-.docs-arch-layer{display:flex;align-items:center;gap:12px;width:100%;max-width:700px}
-.docs-arch-box{flex:1;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:14px 18px;text-align:center;font-size:12px;transition:all .3s}
-.docs-arch-box:hover{border-color:rgba(0,255,136,.3)}
-.docs-arch-box .arch-label{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
-.docs-arch-box .arch-name{font-weight:700;color:#fff;font-size:13px}
-.docs-arch-arrow{text-align:center;color:#333;font-size:18px}
-
-/* CTA */
-.docs-cta{text-align:center;padding:60px 20px;position:relative;z-index:1}
-.docs-cta h2{font-size:clamp(20px,3vw,28px);font-weight:800;color:#fff;margin-bottom:12px}
-.docs-cta p{font-size:14px;color:#666;margin-bottom:24px}
-.docs-cta-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.docs-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:all .3s;cursor:pointer;border:none}
-.docs-cta-btn.primary{background:#00ff88;color:#0a0a0f}
-.docs-cta-btn.primary:hover{background:#00cc6a;transform:translateY(-1px)}
-.docs-cta-btn.secondary{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.1)}
-.docs-cta-btn.secondary:hover{border-color:rgba(0,255,136,.3)}
-
-/* Tabs within docs */
-.docs-tabs{display:flex;gap:4px;margin-bottom:32px;flex-wrap:wrap}
-.docs-tab{padding:8px 16px;border-radius:6px;font-size:12px;font-weight:600;background:rgba(255,255,255,.04);color:#888;border:1px solid transparent;cursor:pointer;transition:all .2s}
-.docs-tab:hover{color:#fff;background:rgba(255,255,255,.06)}
-.docs-tab.active{background:rgba(0,255,136,.1);color:#00ff88;border-color:rgba(0,255,136,.25)}
-.docs-tab-content{display:none}
-.docs-tab-content.active{display:block}
-
-/* Responsive */
-@media(max-width:640px){
- .docs-stats{gap:20px}
- .docs-loop-ring{width:240px;height:240px}
- .docs-loop-node{width:56px;height:56px;font-size:8px}
- .docs-loop-node .node-icon{font-size:16px}
- .docs-arch-layer{flex-direction:column}
+.doc-wrap{display:flex;max-width:1200px;margin:0 auto;padding:100px 20px 60px;gap:32px;min-height:100vh}
+.doc-side{width:240px;flex-shrink:0;position:sticky;top:100px;align-self:flex-start;max-height:calc(100vh - 120px);overflow-y:auto}
+.doc-side::-webkit-scrollbar{width:3px}
+.doc-side::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:3px}
+.doc-cat{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#8888a8;padding:20px 0 8px;margin:0}
+.doc-cat:first-child{padding-top:0}
+.doc-link{display:block;padding:7px 14px;font-size:13.5px;color:#4a4a6a;border-radius:8px;cursor:pointer;transition:all .15s;text-decoration:none;line-height:1.4}
+.doc-link:hover{background:rgba(99,102,241,.06);color:#1a1a2e}
+.doc-link.on{background:rgba(99,102,241,.1);color:#6366f1;font-weight:600}
+.doc-main{flex:1;min-width:0}
+.doc-panel{display:none}
+.doc-panel.on{display:block}
+.doc-hero{margin-bottom:48px}
+.doc-hero h1{font-size:32px;font-weight:800;color:#1a1a2e;letter-spacing:-1px;margin:0 0 12px}
+.doc-hero p{font-size:15px;color:#4a4a6a;line-height:1.7;margin:0}
+.doc-section{margin-bottom:40px}
+.doc-section h2{font-size:22px;font-weight:700;color:#1a1a2e;margin:0 0 16px;letter-spacing:-.5px}
+.doc-section h3{font-size:17px;font-weight:600;color:#1a1a2e;margin:24px 0 12px}
+.doc-section p{font-size:14.5px;color:#4a4a6a;line-height:1.75;margin:0 0 16px}
+.doc-section ul,.doc-section ol{padding-left:20px;margin:0 0 16px}
+.doc-section li{font-size:14.5px;color:#4a4a6a;line-height:1.7;margin-bottom:6px}
+.doc-section li strong{color:#1a1a2e}
+.doc-card{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:24px;margin-bottom:16px;transition:box-shadow .2s}
+.doc-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.doc-card h4{font-size:15px;font-weight:700;color:#1a1a2e;margin:0 0 8px}
+.doc-card p{font-size:13.5px;color:#4a4a6a;line-height:1.65;margin:0}
+.doc-code{background:#1e1e2e;border-radius:12px;padding:20px;margin:0 0 20px;overflow-x:auto;font-family:'SF Mono',Monaco,monospace;font-size:13px;line-height:1.6;color:#e2e8f0}
+.doc-code .cm{color:#6b7280}
+.doc-code .kw{color:#c084fc}
+.doc-code .st{color:#34d399}
+.doc-code .fn{color:#60a5fa}
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:24px}
+.doc-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.doc-badge.green{background:rgba(16,185,129,.1);color:#059669}
+.doc-badge.blue{background:rgba(99,102,241,.1);color:#6366f1}
+.doc-badge.amber{background:rgba(245,158,11,.1);color:#d97706}
+.doc-table{width:100%;border-collapse:collapse;margin:0 0 20px;font-size:13.5px}
+.doc-table th{text-align:left;padding:10px 14px;background:rgba(0,0,0,.02);border-bottom:2px solid rgba(0,0,0,.08);color:#1a1a2e;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.doc-table td{padding:10px 14px;border-bottom:1px solid rgba(0,0,0,.04);color:#4a4a6a}
+.doc-table tr:hover td{background:rgba(99,102,241,.02)}
+.doc-tip{background:rgba(99,102,241,.06);border-left:3px solid #6366f1;border-radius:0 10px 10px 0;padding:16px 20px;margin:0 0 20px;font-size:14px;color:#4a4a6a;line-height:1.65}
+.doc-warn{background:rgba(245,158,11,.06);border-left:3px solid #d97706;border-radius:0 10px 10px 0;padding:16px 20px;margin:0 0 20px;font-size:14px;color:#4a4a6a;line-height:1.65}
+.doc-nav-bottom{display:flex;justify-content:space-between;margin-top:48px;padding-top:24px;border-top:1px solid rgba(0,0,0,.06)}
+.doc-nav-btn{padding:10px 20px;border:1px solid rgba(0,0,0,.08);border-radius:10px;font-size:13px;color:#6366f1;cursor:pointer;background:#fff;font-family:var(--font);font-weight:600;transition:all .15s}
+.doc-nav-btn:hover{background:rgba(99,102,241,.06);border-color:rgba(99,102,241,.2)}
+@media(max-width:768px){
+.doc-wrap{flex-direction:column;padding:80px 16px 40px}
+.doc-side{width:100%;position:static;max-height:none;display:flex;flex-wrap:wrap;gap:4px;padding-bottom:20px;border-bottom:1px solid rgba(0,0,0,.06);margin-bottom:24px}
+.doc-cat{width:100%;padding:12px 0 4px}
+.doc-link{padding:6px 12px;font-size:13px}
+.doc-grid{grid-template-columns:1fr}
 }
 </style>
 
-<div class="docs-wrap">
+<div class="doc-wrap">
+<!-- SIDEBAR -->
+<nav class="doc-side">
+<p class="doc-cat">Overview</p>
+<a class="doc-link on" onclick="showDoc('overview')">Introduction</a>
 
-<!-- Neural Background Canvas -->
-<div class="docs-canvas-wrap">
-<canvas id="docs-neural-canvas"></canvas>
+<p class="doc-cat">Getting Started</p>
+<a class="doc-link" onclick="showDoc('quickstart')">Quick Start</a>
+<a class="doc-link" onclick="showDoc('installation')">Installation</a>
+<a class="doc-link" onclick="showDoc('configuration')">Configuration</a>
+
+<p class="doc-cat">User Guide</p>
+<a class="doc-link" onclick="showDoc('memory')">Memory System</a>
+<a class="doc-link" onclick="showDoc('skills')">Skills</a>
+<a class="doc-link" onclick="showDoc('tools')">Tools</a>
+<a class="doc-link" onclick="showDoc('evolution')">Self-Evolution</a>
+
+<p class="doc-cat">Developer</p>
+<a class="doc-link" onclick="showDoc('architecture')">Architecture</a>
+<a class="doc-link" onclick="showDoc('writing-skills')">Writing Skills</a>
+
+<p class="doc-cat">Reference</p>
+<a class="doc-link" onclick="showDoc('api')">API Reference</a>
+<a class="doc-link" onclick="showDoc('catalog')">Skills Catalog</a>
+
+<p class="doc-cat">Project</p>
+<a class="doc-link" onclick="showDoc('agent-logic')">Agent Logic</a>
+<a class="doc-link" onclick="showDoc('fund-safety')">Fund Safety</a>
+<a class="doc-link" onclick="showDoc('faq')">FAQ</a>
+</nav>
+
+<!-- CONTENT -->
+<div class="doc-main">
+<!-- OVERVIEW -->
+<div class="doc-panel on" id="doc-overview">
+<div class="doc-hero">
+<h1>SEKI Documentation</h1>
+<p>SEKI is an autonomous AI agent platform built for Web3. It combines persistent memory, self-evolving skill systems, and on-chain decision-making into a unified intelligence framework.</p>
+</div>
+<div class="doc-grid">
+<div class="doc-card" onclick="showDoc('quickstart')" style="cursor:pointer">
+<h4>Quick Start</h4>
+<p>Get SEKI running in under 5 minutes. Connect your first agent and watch it learn.</p>
+</div>
+<div class="doc-card" onclick="showDoc('memory')" style="cursor:pointer">
+<h4>Memory System</h4>
+<p>Understand how SEKI stores and retrieves context across sessions with vector embeddings.</p>
+</div>
+<div class="doc-card" onclick="showDoc('skills')" style="cursor:pointer">
+<h4>Skills</h4>
+<p>Modular capability units that agents can learn, combine, and evolve autonomously.</p>
+</div>
+<div class="doc-card" onclick="showDoc('architecture')" style="cursor:pointer">
+<h4>Architecture</h4>
+<p>Deep dive into SEKI's neural mesh, decision engine, and multi-chain integration layer.</p>
+</div>
+<div class="doc-card" onclick="showDoc('api')" style="cursor:pointer">
+<h4>API Reference</h4>
+<p>Complete REST API documentation for integrating with the SEKI platform.</p>
+</div>
+<div class="doc-card" onclick="showDoc('catalog')" style="cursor:pointer">
+<h4>Skills Catalog</h4>
+<p>Browse 50+ pre-built skills across DeFi, social, analytics, and governance domains.</p>
+</div>
 </div>
 
-<!-- ===== HERO ===== -->
-<div class="docs-hero">
- <div class="docs-hero-badge"><span class="pulse-dot"></span> AUTONOMOUS AGENT</div>
- <h1>SEKI Agent Documentation</h1>
- <p class="docs-subtitle">Self-evolving crypto intelligence — an autonomous agent that learns, adapts, and evolves through every market cycle.</p>
-
- <!-- Terminal -->
- <div class="docs-terminal">
-  <div class="docs-terminal-bar">
-   <div class="docs-terminal-dot" style="background:#ff5f57"></div>
-   <div class="docs-terminal-dot" style="background:#ffbd2e"></div>
-   <div class="docs-terminal-dot" style="background:#28c840"></div>
-  </div>
-  <div class="docs-terminal-body" id="docs-terminal-output">
-   <span class="cmd">$</span> <span class="cursor"></span>
-  </div>
- </div>
-
- <!-- Stats -->
- <div class="docs-stats">
-  <div class="docs-stat"><div class="docs-stat-val">5,847</div><div class="docs-stat-label">Evolution Cycles</div></div>
-  <div class="docs-stat"><div class="docs-stat-val">23</div><div class="docs-stat-label">Active Skills</div></div>
-  <div class="docs-stat"><div class="docs-stat-val">99.2%</div><div class="docs-stat-label">Uptime</div></div>
-  <div class="docs-stat"><div class="docs-stat-val">1.2M</div><div class="docs-stat-label">Decisions Made</div></div>
- </div>
+<div class="doc-section">
+<h2>Core Concepts</h2>
+<div class="doc-grid">
+<div class="doc-card">
+<h4>Persistent Memory</h4>
+<p>Unlike stateless chatbots, SEKI agents remember everything — conversations, decisions, outcomes. Memory is stored as vector embeddings with semantic search.</p>
+</div>
+<div class="doc-card">
+<h4>Self-Evolution</h4>
+<p>Agents continuously improve through an observe-reflect-adapt loop. They analyze their own performance and generate new strategies.</p>
+</div>
+<div class="doc-card">
+<h4>On-Chain Integration</h4>
+<p>Native support for multiple blockchains. Agents can read contracts, execute transactions, and participate in governance autonomously.</p>
+</div>
+<div class="doc-card">
+<h4>Skill Composition</h4>
+<p>Skills are atomic capability units. Agents can combine skills dynamically to handle complex, multi-step tasks without human intervention.</p>
+</div>
+</div>
 </div>
 
-<!-- ===== DOCS TABS NAV ===== -->
-<div class="docs-section">
- <div class="docs-tabs">
-  <div class="docs-tab active" onclick="docsTabSwitch('overview',this)">Overview</div>
-  <div class="docs-tab" onclick="docsTabSwitch('systems',this)">Core Systems</div>
-  <div class="docs-tab" onclick="docsTabSwitch('skills',this)">Skills</div>
-  <div class="docs-tab" onclick="docsTabSwitch('evolution',this)">Evolution Log</div>
-  <div class="docs-tab" onclick="docsTabSwitch('architecture',this)">Architecture</div>
- </div>
-
- <!-- === TAB: OVERVIEW === -->
- <div class="docs-tab-content active" id="docs-tab-overview">
-
-  <!-- Evolution Loop Diagram -->
-  <span class="docs-section-tag">// EVOLUTION_LOOP</span>
-  <h2>The Autonomous Loop</h2>
-  <p class="docs-section-desc">SEKI operates on a continuous evolution cycle — observe, analyze, decide, learn. Every cycle refines the agent's understanding of the market.</p>
-
-  <div class="docs-loop-container">
-   <div class="docs-loop-ring">
-    <svg viewBox="0 0 320 320">
-     <circle cx="160" cy="160" r="130" fill="none" stroke="rgba(0,255,136,0.1)" stroke-width="1"/>
-     <circle cx="160" cy="160" r="130" fill="none" stroke="rgba(0,255,136,0.3)" stroke-width="1" stroke-dasharray="12 8" stroke-linecap="round">
-      <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="30s" repeatCount="indefinite"/>
-     </circle>
-    </svg>
-    <div class="docs-loop-node"><span class="node-icon">👁</span>Observe</div>
-    <div class="docs-loop-node"><span class="node-icon">🧠</span>Analyze</div>
-    <div class="docs-loop-node"><span class="node-icon">⚡</span>Execute</div>
-    <div class="docs-loop-node"><span class="node-icon">📚</span>Learn</div>
-    <div class="docs-loop-center">
-     <span>SEKI CORE</span>
-     <span class="center-ver">v2.1</span>
-    </div>
-   </div>
-  </div>
-
-  <!-- Core Principles -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:40px">
-   <div style="background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.1);border-radius:10px;padding:20px">
-    <div style="font-size:24px;margin-bottom:8px">🔄</div>
-    <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">Self-Evolution</div>
-    <div style="font-size:12px;color:#888;line-height:1.5">Continuously refines strategies based on market feedback loops</div>
-   </div>
-   <div style="background:rgba(0,136,255,.05);border:1px solid rgba(0,136,255,.1);border-radius:10px;padding:20px">
-    <div style="font-size:24px;margin-bottom:8px">🛡</div>
-    <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">Risk Aware</div>
-    <div style="font-size:12px;color:#888;line-height:1.5">Multi-layer risk assessment with dynamic position sizing</div>
-   </div>
-   <div style="background:rgba(136,0,255,.05);border:1px solid rgba(136,0,255,.1);border-radius:10px;padding:20px">
-    <div style="font-size:24px;margin-bottom:8px">⚡</div>
-    <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">Real-Time</div>
-    <div style="font-size:12px;color:#888;line-height:1.5">Sub-second market data processing with multi-source aggregation</div>
-   </div>
-  </div>
- </div>
-
- <!-- === TAB: CORE SYSTEMS === -->
- <div class="docs-tab-content" id="docs-tab-systems">
-  <span class="docs-section-tag">// CORE_SYSTEMS</span>
-  <h2>Core Systems</h2>
-  <p class="docs-section-desc">The neural backbone powering SEKI's autonomous decision-making engine.</p>
-
-  <div class="docs-cards">
-   <div class="docs-card">
-    <div class="docs-card-icon">🧠</div>
-    <h3>Meta-Cognition Engine</h3>
-    <p>Self-reflective analysis layer that evaluates decision quality and identifies cognitive biases in real-time.</p>
-    <div class="docs-card-tags"><span class="docs-card-tag">reflection</span><span class="docs-card-tag">bias-detection</span><span class="docs-card-tag">meta-learning</span></div>
-   </div>
-   <div class="docs-card">
-    <div class="docs-card-icon">📊</div>
-    <h3>Market Perception</h3>
-    <p>Multi-source data fusion combining on-chain analytics, social sentiment, and technical indicators into a unified market view.</p>
-    <div class="docs-card-tags"><span class="docs-card-tag">on-chain</span><span class="docs-card-tag">sentiment</span><span class="docs-card-tag">technicals</span></div>
-   </div>
-   <div class="docs-card">
-    <div class="docs-card-icon">⚡</div>
-    <h3>Strategy Evolution</h3>
-    <p>Genetic algorithm-inspired strategy optimization. Winning strategies reproduce; losing ones mutate or die.</p>
-    <div class="docs-card-tags"><span class="docs-card-tag">genetic-algo</span><span class="docs-card-tag">mutation</span><span class="docs-card-tag">fitness</span></div>
-   </div>
-   <div class="docs-card">
-    <div class="docs-card-icon">🛡</div>
-    <h3>Risk Management</h3>
-    <p>Dynamic position sizing, portfolio-level VaR, and circuit breakers that activate under extreme conditions.</p>
-    <div class="docs-card-tags"><span class="docs-card-tag">VaR</span><span class="docs-card-tag">circuit-breaker</span><span class="docs-card-tag">kelly-criterion</span></div>
-   </div>
-   <div class="docs-card">
-    <div class="docs-card-icon">💾</div>
-    <h3>Memory Systems</h3>
-    <p>Short-term working memory for active trades + long-term episodic memory for pattern recognition across market cycles.</p>
-    <div class="docs-card-tags"><span class="docs-card-tag">working-memory</span><span class="docs-card-tag">episodic</span><span class="docs-card-tag">pattern-db</span></div>
-   </div>
-   <div class="docs-card">
-    <div class="docs-card-icon">🔗</div>
-    <h3>Chain Interface</h3>
-    <p>Multi-chain execution layer supporting BSC, ETH, and Solana with MEV-aware transaction routing.</p>
-    <div class="docs-card-tags"><span class="docs-card-tag">multi-chain</span><span class="docs-card-tag">MEV-aware</span><span class="docs-card-tag">gas-optimize</span></div>
-   </div>
-  </div>
- </div>
-
- <!-- === TAB: SKILLS === -->
- <div class="docs-tab-content" id="docs-tab-skills">
-  <span class="docs-section-tag">// SKILLS_CATALOG</span>
-  <h2>Skills Catalog</h2>
-  <p class="docs-section-desc">Modular capabilities that SEKI can acquire, improve, and chain together autonomously.</p>
-
-  <div class="docs-skills">
-   <div class="docs-skill">
-    <div class="docs-skill-icon">📈</div>
-    <div>
-     <h4>Trend Following</h4>
-     <p>Multi-timeframe trend detection using adaptive moving averages and momentum oscillators.</p>
-     <span class="skill-status skill-active">ACTIVE</span>
-    </div>
-   </div>
-   <div class="docs-skill">
-    <div class="docs-skill-icon">🔍</div>
-    <div>
-     <h4>Smart Money Tracking</h4>
-     <p>Real-time wallet clustering and whale movement detection across DEXs.</p>
-     <span class="skill-status skill-active">ACTIVE</span>
-    </div>
-   </div>
-   <div class="docs-skill">
-    <div class="docs-skill-icon">💎</div>
-    <div>
-     <h4>Token Evaluation</h4>
-     <p>Contract audit, liquidity analysis, holder distribution, and social score aggregation.</p>
-     <span class="skill-status skill-active">ACTIVE</span>
-    </div>
-   </div>
-   <div class="docs-skill">
-    <div class="docs-skill-icon">🎯</div>
-    <div>
-     <h4>Entry/Exit Optimization</h4>
-     <p>Dynamic support/resistance detection with probabilistic price target modeling.</p>
-     <span class="skill-status skill-beta">BETA</span>
-    </div>
-   </div>
-   <div class="docs-skill">
-    <div class="docs-skill-icon">🌊</div>
-    <div>
-     <h4>Sentiment Analysis</h4>
-     <p>NLP-powered social media and news sentiment extraction with influence weighting.</p>
-     <span class="skill-status skill-active">ACTIVE</span>
-    </div>
-   </div>
-   <div class="docs-skill">
-    <div class="docs-skill-icon">🔮</div>
-    <div>
-     <h4>Narrative Detection</h4>
-     <p>Emerging narrative identification and rotation timing using cross-token correlation analysis.</p>
-     <span class="skill-status skill-dev">DEV</span>
-    </div>
-   </div>
-  </div>
- </div>
-
- <!-- === TAB: EVOLUTION LOG === -->
- <div class="docs-tab-content" id="docs-tab-evolution">
-  <span class="docs-section-tag">// EVOLUTION_LOG</span>
-  <h2>Evolution Timeline</h2>
-  <p class="docs-section-desc">Key milestones in SEKI's autonomous evolution journey.</p>
-
-  <div class="docs-timeline">
-   <div class="docs-evo-event">
-    <div class="docs-evo-dot"></div>
-    <div class="docs-evo-time">2025.04.08 — Cycle #5847</div>
-    <div class="docs-evo-title">Multi-Chain Expansion</div>
-    <div class="docs-evo-desc">Evolved cross-chain execution capabilities. Now monitoring BSC, ETH, and Solana simultaneously with unified risk management.</div>
-   </div>
-   <div class="docs-evo-event">
-    <div class="docs-evo-dot"></div>
-    <div class="docs-evo-time">2025.03.22 — Cycle #5201</div>
-    <div class="docs-evo-title">Strategy Mutation: Narrative Trading</div>
-    <div class="docs-evo-desc">Generated a new strategy variant combining social sentiment spikes with on-chain volume anomalies. Win rate: 73.2%.</div>
-   </div>
-   <div class="docs-evo-event">
-    <div class="docs-evo-dot"></div>
-    <div class="docs-evo-time">2025.03.15 — Cycle #4890</div>
-    <div class="docs-evo-title">Risk Module Upgrade</div>
-    <div class="docs-evo-desc">Self-modified circuit breaker thresholds after analyzing a flash crash event. Reduced max drawdown by 34%.</div>
-   </div>
-   <div class="docs-evo-event">
-    <div class="docs-evo-dot"></div>
-    <div class="docs-evo-time">2025.02.28 — Cycle #4400</div>
-    <div class="docs-evo-title">Memory System v2</div>
-    <div class="docs-evo-desc">Upgraded from simple key-value to episodic memory with temporal decay. Pattern recognition accuracy improved 28%.</div>
-   </div>
-   <div class="docs-evo-event">
-    <div class="docs-evo-dot"></div>
-    <div class="docs-evo-time">2025.02.10 — Cycle #3800</div>
-    <div class="docs-evo-title">Genesis: First Autonomous Trade</div>
-    <div class="docs-evo-desc">SEKI executed its first fully autonomous trade based on self-generated analysis. The beginning of true autonomy.</div>
-   </div>
-  </div>
- </div>
-
- <!-- === TAB: ARCHITECTURE === -->
- <div class="docs-tab-content" id="docs-tab-architecture">
-  <span class="docs-section-tag">// ARCHITECTURE</span>
-  <h2>System Architecture</h2>
-  <p class="docs-section-desc">How SEKI's layers interact — from raw data ingestion to autonomous execution.</p>
-
-  <div class="docs-arch">
-   <div class="docs-arch-layer">
-    <div class="docs-arch-box" style="border-color:rgba(0,255,136,.2)">
-     <div class="arch-label">Layer 4 — Interface</div>
-     <div class="arch-name">Dashboard / API / Alerts</div>
-    </div>
-   </div>
-   <div class="docs-arch-arrow">↕</div>
-   <div class="docs-arch-layer">
-    <div class="docs-arch-box" style="border-color:rgba(0,136,255,.2)">
-     <div class="arch-label">Layer 3 — Cognition</div>
-     <div class="arch-name">Meta-Agent / Strategy Engine / Risk</div>
-    </div>
-   </div>
-   <div class="docs-arch-arrow">↕</div>
-   <div class="docs-arch-layer">
-    <div class="docs-arch-box" style="border-color:rgba(255,136,0,.2)">
-     <div class="arch-label">Layer 2 — Processing</div>
-     <div class="arch-name">Sentiment / On-Chain / Technicals</div>
-    </div>
-   </div>
-   <div class="docs-arch-arrow">↕</div>
-   <div class="docs-arch-layer">
-    <div class="docs-arch-box" style="border-color:rgba(136,0,255,.2)">
-     <div class="arch-label">Layer 1 — Data</div>
-     <div class="arch-name">BSC / ETH / SOL / Twitter / News</div>
-    </div>
-   </div>
-  </div>
-
-  <!-- Data Flow Detail -->
-  <div style="margin-top:40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
-   <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:16px">
-    <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Input Sources</div>
-    <div style="font-size:12px;color:#ccc;line-height:1.7">
-     DEX Feeds<br>Block Explorers<br>Social APIs<br>News Aggregators<br>Wallet Monitors
-    </div>
-   </div>
-   <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:16px">
-    <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Processing</div>
-    <div style="font-size:12px;color:#ccc;line-height:1.7">
-     NLP Pipeline<br>Pattern Matching<br>Risk Scoring<br>Signal Generation<br>Strategy Selection
-    </div>
-   </div>
-   <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:16px">
-    <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Output Actions</div>
-    <div style="font-size:12px;color:#ccc;line-height:1.7">
-     Trade Execution<br>Position Management<br>Alert Dispatch<br>Strategy Mutation<br>Memory Update
-    </div>
-   </div>
-  </div>
- </div>
-
-</div><!-- end docs-section (tabs container) -->
-
-<!-- ===== CTA ===== -->
-<div class="docs-cta">
- <h2>Ready to Evolve?</h2>
- <p>Join the next generation of autonomous crypto intelligence.</p>
- <div class="docs-cta-btns">
-  <a class="docs-cta-btn primary" href="https://t.me/SekiAI_Official" target="_blank">Join Community</a>
-  <a class="docs-cta-btn secondary" href="https://twitter.com/SekiAI_" target="_blank">Follow @SekiAI</a>
- </div>
+<div class="doc-nav-bottom">
+<div></div>
+<button class="doc-nav-btn" onclick="showDoc('quickstart')">Quick Start &rarr;</button>
+</div>
 </div>
 
-</div><!-- end docs-wrap -->
+<!-- QUICKSTART -->
+<div class="doc-panel" id="doc-quickstart">
+<div class="doc-hero">
+<h1>Quick Start</h1>
+<p>Get your first SEKI agent running and connected to the blockchain.</p>
+</div>
+<div class="doc-section">
+<h2>1. Install SEKI</h2>
+<div class="doc-code"><span class="cm"># Install via npm</span>
+<span class="kw">npm</span> install -g @seki/cli
 
-<!-- ===== DOCS SCRIPTS ===== -->
-<script>
-// Tab switching
-function docsTabSwitch(id, el) {
- document.querySelectorAll('.docs-tab-content').forEach(function(t){t.classList.remove('active')});
- document.querySelectorAll('.docs-tab').forEach(function(t){t.classList.remove('active')});
- var tab = document.getElementById('docs-tab-'+id);
- if(tab) tab.classList.add('active');
- if(el) el.classList.add('active');
+<span class="cm"># Or clone from source</span>
+<span class="kw">git</span> clone https://github.com/seki-ai/seki.git
+<span class="kw">cd</span> seki && <span class="kw">npm</span> install</div>
+
+<h2>2. Initialize Agent</h2>
+<div class="doc-code"><span class="cm"># Create a new agent workspace</span>
+<span class="kw">seki</span> init my-agent
+
+<span class="cm"># Configure your API keys</span>
+<span class="kw">cd</span> my-agent
+<span class="kw">cp</span> .env.example .env
+<span class="cm"># Edit .env with your keys</span></div>
+
+<h2>3. Start the Agent</h2>
+<div class="doc-code"><span class="cm"># Launch in development mode</span>
+<span class="kw">seki</span> start --dev
+
+<span class="cm"># Agent will initialize memory, load skills,</span>
+<span class="cm"># and connect to configured chains</span>
+<span class="st">✓ Memory system initialized</span>
+<span class="st">✓ Loaded 12 skills</span>
+<span class="st">✓ Connected to BSC mainnet</span>
+<span class="st">✓ Agent ready at http://localhost:3000</span></div>
+
+<div class="doc-tip">The agent starts with a default skill set. It will learn and evolve new skills based on the tasks you give it.</div>
+
+<h2>4. First Interaction</h2>
+<p>Open the agent dashboard and try these commands:</p>
+<div class="doc-code"><span class="cm">// Check agent status</span>
+<span class="fn">&gt;</span> status
+
+<span class="cm">// Ask it to analyze a token</span>
+<span class="fn">&gt;</span> analyze 0x1234...abcd on BSC
+
+<span class="cm">// Set up monitoring</span>
+<span class="fn">&gt;</span> watch wallet 0xdead...beef for large transfers</div>
+
+<h2>5. Connect to Chain</h2>
+<p>Add blockchain connections in your configuration:</p>
+<div class="doc-code"><span class="cm"># config.yaml</span>
+<span class="kw">chains</span>:
+  <span class="kw">bsc</span>:
+    <span class="kw">rpc</span>: <span class="st">"https://bsc-dataseed.binance.org"</span>
+    <span class="kw">wallet</span>: <span class="st">"${WALLET_ADDRESS}"</span>
+  <span class="kw">xlayer</span>:
+    <span class="kw">rpc</span>: <span class="st">"https://rpc.xlayer.tech"</span>
+    <span class="kw">wallet</span>: <span class="st">"${WALLET_ADDRESS}"</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('overview')">&larr; Overview</button>
+<button class="doc-nav-btn" onclick="showDoc('installation')">Installation &rarr;</button>
+</div>
+</div>
+
+<!-- INSTALLATION -->
+<div class="doc-panel" id="doc-installation">
+<div class="doc-hero">
+<h1>Installation</h1>
+<p>System requirements and detailed installation guide for all platforms.</p>
+</div>
+<div class="doc-section">
+<h2>System Requirements</h2>
+<table class="doc-table">
+<tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr>
+<tr><td>Node.js</td><td>18.x</td><td>20.x LTS</td></tr>
+<tr><td>RAM</td><td>2 GB</td><td>8 GB</td></tr>
+<tr><td>Disk</td><td>1 GB</td><td>10 GB (for memory store)</td></tr>
+<tr><td>OS</td><td>Linux, macOS, WSL2</td><td>Ubuntu 22.04+</td></tr>
+</table>
+
+<h2>NPM Install</h2>
+<div class="doc-code"><span class="kw">npm</span> install -g @seki/cli
+<span class="kw">seki</span> --version</div>
+
+<h2>From Source</h2>
+<div class="doc-code"><span class="kw">git</span> clone https://github.com/seki-ai/seki.git
+<span class="kw">cd</span> seki
+<span class="kw">npm</span> install
+<span class="kw">npm</span> run build
+<span class="kw">npm</span> link</div>
+
+<h2>Docker</h2>
+<div class="doc-code"><span class="kw">docker</span> pull seki/agent:latest
+<span class="kw">docker</span> run -d \
+  --name seki-agent \
+  -p 3000:3000 \
+  -v ./data:/app/data \
+  -e OPENAI_API_KEY=sk-... \
+  seki/agent:latest</div>
+
+<h2>Verify Installation</h2>
+<div class="doc-code"><span class="kw">seki</span> doctor
+<span class="st">✓ Node.js 20.11.0</span>
+<span class="st">✓ npm 10.2.4</span>
+<span class="st">✓ Git 2.43.0</span>
+<span class="st">✓ Memory store writable</span>
+<span class="st">✓ Network connectivity OK</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('quickstart')">&larr; Quick Start</button>
+<button class="doc-nav-btn" onclick="showDoc('configuration')">Configuration &rarr;</button>
+</div>
+</div>
+
+<!-- CONFIGURATION -->
+<div class="doc-panel" id="doc-configuration">
+<div class="doc-hero">
+<h1>Configuration</h1>
+<p>Configure your SEKI agent's behavior, connections, and capabilities.</p>
+</div>
+<div class="doc-section">
+<h2>Configuration File</h2>
+<p>SEKI uses <code>config.yaml</code> in the agent workspace root:</p>
+<div class="doc-code"><span class="cm"># config.yaml</span>
+<span class="kw">agent</span>:
+  <span class="kw">name</span>: <span class="st">"my-seki-agent"</span>
+  <span class="kw">model</span>: <span class="st">"gpt-4"</span>
+  <span class="kw">temperature</span>: <span class="st">0.7</span>
+  <span class="kw">max_tokens</span>: <span class="st">4096</span>
+
+<span class="kw">memory</span>:
+  <span class="kw">backend</span>: <span class="st">"vector"</span>     <span class="cm"># vector | sqlite | redis</span>
+  <span class="kw">embedding_model</span>: <span class="st">"text-embedding-3-small"</span>
+  <span class="kw">max_entries</span>: <span class="st">100000</span>
+  <span class="kw">auto_consolidate</span>: <span class="st">true</span>
+
+<span class="kw">skills</span>:
+  <span class="kw">auto_load</span>: <span class="st">true</span>
+  <span class="kw">evolution</span>: <span class="st">true</span>
+  <span class="kw">sandbox</span>: <span class="st">true</span>
+
+<span class="kw">chains</span>:
+  <span class="kw">bsc</span>:
+    <span class="kw">rpc</span>: <span class="st">"https://bsc-dataseed.binance.org"</span>
+    <span class="kw">chain_id</span>: <span class="st">56</span>
+  <span class="kw">xlayer</span>:
+    <span class="kw">rpc</span>: <span class="st">"https://rpc.xlayer.tech"</span>
+    <span class="kw">chain_id</span>: <span class="st">196</span></div>
+
+<h2>Environment Variables</h2>
+<table class="doc-table">
+<tr><th>Variable</th><th>Description</th><th>Required</th></tr>
+<tr><td><code>OPENAI_API_KEY</code></td><td>OpenAI API key for LLM</td><td>Yes</td></tr>
+<tr><td><code>WALLET_PRIVATE_KEY</code></td><td>Wallet key for on-chain ops</td><td>For chain features</td></tr>
+<tr><td><code>SEKI_PORT</code></td><td>Server port (default: 3000)</td><td>No</td></tr>
+<tr><td><code>SEKI_LOG_LEVEL</code></td><td>debug | info | warn | error</td><td>No</td></tr>
+</table>
+
+<div class="doc-warn">Never commit <code>.env</code> files or private keys to version control. Use environment variables or a secrets manager in production.</div>
+
+<h2>Skill Configuration</h2>
+<div class="doc-code"><span class="cm"># Enable specific skills</span>
+<span class="kw">skills</span>:
+  <span class="kw">enabled</span>:
+    - <span class="st">defi-analyzer</span>
+    - <span class="st">token-scanner</span>
+    - <span class="st">governance-voter</span>
+    - <span class="st">social-monitor</span>
+  <span class="kw">disabled</span>:
+    - <span class="st">auto-trader</span>  <span class="cm"># Manual approval required</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('installation')">&larr; Installation</button>
+<button class="doc-nav-btn" onclick="showDoc('memory')">Memory System &rarr;</button>
+</div>
+</div>
+
+<!-- MEMORY -->
+<div class="doc-panel" id="doc-memory">
+<div class="doc-hero">
+<h1>Memory System</h1>
+<p>SEKI's persistent memory architecture enables true contextual awareness across sessions.</p>
+</div>
+<div class="doc-section">
+<h2>Architecture</h2>
+<p>The memory system operates on three tiers:</p>
+<div class="doc-grid">
+<div class="doc-card">
+<h4>Working Memory</h4>
+<p>Current conversation context. Fast access, limited capacity. Automatically managed by the context window.</p>
+</div>
+<div class="doc-card">
+<h4>Episodic Memory</h4>
+<p>Stored as vector embeddings. Semantic search retrieves relevant past interactions, decisions, and outcomes.</p>
+</div>
+<div class="doc-card">
+<h4>Long-term Memory</h4>
+<p>Consolidated insights and learned patterns. Auto-curated from episodic memory through periodic reflection.</p>
+</div>
+</div>
+
+<h2>How It Works</h2>
+<div class="doc-code"><span class="cm">// Store a memory</span>
+<span class="kw">await</span> agent.memory.<span class="fn">store</span>({
+  <span class="kw">content</span>: <span class="st">"User prefers conservative DeFi strategies"</span>,
+  <span class="kw">type</span>: <span class="st">"preference"</span>,
+  <span class="kw">importance</span>: <span class="st">0.8</span>,
+  <span class="kw">tags</span>: [<span class="st">"user"</span>, <span class="st">"defi"</span>, <span class="st">"risk"</span>]
+});
+
+<span class="cm">// Semantic search</span>
+<span class="kw">const</span> results = <span class="kw">await</span> agent.memory.<span class="fn">search</span>({
+  <span class="kw">query</span>: <span class="st">"What does the user think about yield farming?"</span>,
+  <span class="kw">limit</span>: <span class="st">5</span>,
+  <span class="kw">threshold</span>: <span class="st">0.7</span>
+});</div>
+
+<h2>Auto-Consolidation</h2>
+<p>When enabled, the agent periodically reviews recent memories and distills them into long-term insights:</p>
+<ul>
+<li>Identifies recurring patterns and preferences</li>
+<li>Removes redundant or outdated entries</li>
+<li>Generates summary memories with higher importance scores</li>
+<li>Maintains a knowledge graph of entity relationships</li>
+</ul>
+
+<div class="doc-tip">Memory consolidation runs during idle periods to avoid impacting response times. Configure frequency via <code>memory.consolidation_interval</code>.</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('configuration')">&larr; Configuration</button>
+<button class="doc-nav-btn" onclick="showDoc('skills')">Skills &rarr;</button>
+</div>
+</div>
+
+<!-- SKILLS -->
+<div class="doc-panel" id="doc-skills">
+<div class="doc-hero">
+<h1>Skills</h1>
+<p>Modular capability units that give agents specialized abilities.</p>
+</div>
+<div class="doc-section">
+<h2>What Are Skills?</h2>
+<p>Skills are self-contained capability modules. Each skill defines what an agent can do, when to activate, and how to execute. Agents can learn, combine, and evolve skills autonomously.</p>
+
+<h2>Skill Structure</h2>
+<div class="doc-code"><span class="kw">my-skill/</span>
+├── SKILL.md         <span class="cm"># Description & instructions</span>
+├── index.js         <span class="cm"># Entry point</span>
+├── config.yaml      <span class="cm"># Skill configuration</span>
+├── tests/           <span class="cm"># Skill tests</span>
+└── references/      <span class="cm"># Supporting data</span></div>
+
+<h2>Built-in Categories</h2>
+<div class="doc-grid">
+<div class="doc-card">
+<h4><span class="doc-badge blue">DeFi</span></h4>
+<p>Token analysis, liquidity monitoring, yield optimization, DEX aggregation, portfolio rebalancing.</p>
+</div>
+<div class="doc-card">
+<h4><span class="doc-badge green">Social</span></h4>
+<p>Twitter monitoring, sentiment analysis, community management, content generation.</p>
+</div>
+<div class="doc-card">
+<h4><span class="doc-badge amber">Governance</span></h4>
+<p>Proposal tracking, vote delegation, treasury analysis, DAO participation.</p>
+</div>
+<div class="doc-card">
+<h4><span class="doc-badge blue">Analytics</span></h4>
+<p>On-chain data analysis, whale tracking, market correlation, risk assessment.</p>
+</div>
+</div>
+
+<h2>Creating a Skill</h2>
+<div class="doc-code"><span class="cm"># Generate skill scaffold</span>
+<span class="kw">seki</span> skill create my-custom-skill
+
+<span class="cm"># Test the skill</span>
+<span class="kw">seki</span> skill test my-custom-skill
+
+<span class="cm"># Register with the agent</span>
+<span class="kw">seki</span> skill install ./my-custom-skill</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('memory')">&larr; Memory</button>
+<button class="doc-nav-btn" onclick="showDoc('tools')">Tools &rarr;</button>
+</div>
+</div>
+
+<!-- TOOLS -->
+<div class="doc-panel" id="doc-tools">
+<div class="doc-hero">
+<h1>Tools</h1>
+<p>External integrations and utilities that extend agent capabilities.</p>
+</div>
+<div class="doc-section">
+<h2>Tool Categories</h2>
+<table class="doc-table">
+<tr><th>Category</th><th>Tools</th><th>Description</th></tr>
+<tr><td>Chain</td><td>Web3 RPC, Etherscan, BSCScan</td><td>Blockchain data and transaction execution</td></tr>
+<tr><td>Data</td><td>CoinGecko, DeFiLlama, Dune</td><td>Market data and analytics APIs</td></tr>
+<tr><td>Social</td><td>Twitter API, Discord, Telegram</td><td>Social platform integrations</td></tr>
+<tr><td>Storage</td><td>IPFS, Arweave, S3</td><td>Decentralized and cloud storage</td></tr>
+<tr><td>Compute</td><td>Sandbox, Docker, WASM</td><td>Code execution environments</td></tr>
+</table>
+
+<h2>Using Tools</h2>
+<div class="doc-code"><span class="cm">// Tools are auto-injected based on skill requirements</span>
+<span class="kw">export default</span> {
+  <span class="kw">name</span>: <span class="st">"token-analyzer"</span>,
+  <span class="kw">tools</span>: [<span class="st">"web3"</span>, <span class="st">"coingecko"</span>, <span class="st">"etherscan"</span>],
+
+  <span class="kw">async</span> <span class="fn">execute</span>(ctx) {
+    <span class="kw">const</span> price = <span class="kw">await</span> ctx.tools.coingecko.<span class="fn">getPrice</span>(<span class="st">"bitcoin"</span>);
+    <span class="kw">const</span> txs = <span class="kw">await</span> ctx.tools.etherscan.<span class="fn">getTxList</span>(address);
+    <span class="kw">return</span> { price, txs };
+  }
+};</div>
+
+<h2>Custom Tools</h2>
+<p>Register custom tools to integrate with any external service:</p>
+<div class="doc-code"><span class="kw">seki</span> tool register \
+  --name <span class="st">"my-api"</span> \
+  --url <span class="st">"https://api.example.com"</span> \
+  --auth <span class="st">"bearer"</span> \
+  --key <span class="st">"$MY_API_KEY"</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('skills')">&larr; Skills</button>
+<button class="doc-nav-btn" onclick="showDoc('evolution')">Self-Evolution &rarr;</button>
+</div>
+</div>
+
+<!-- SELF-EVOLUTION -->
+<div class="doc-panel" id="doc-evolution">
+<div class="doc-hero">
+<h1>Self-Evolution</h1>
+<p>How SEKI agents continuously improve through autonomous learning loops.</p>
+</div>
+<div class="doc-section">
+<h2>The Evolution Loop</h2>
+<p>SEKI agents follow a continuous improvement cycle:</p>
+<div class="doc-grid">
+<div class="doc-card">
+<h4>1. Observe</h4>
+<p>Monitor outcomes of every action. Track success rates, response quality, and user feedback signals.</p>
+</div>
+<div class="doc-card">
+<h4>2. Reflect</h4>
+<p>Periodically analyze performance patterns. Identify what works, what fails, and why.</p>
+</div>
+<div class="doc-card">
+<h4>3. Adapt</h4>
+<p>Generate new strategies, modify skill parameters, create new skills, or deprecate ineffective ones.</p>
+</div>
+<div class="doc-card">
+<h4>4. Validate</h4>
+<p>Test adaptations in sandbox. Only promote changes that demonstrate measurable improvement.</p>
+</div>
+</div>
+
+<h2>Evolution Types</h2>
+<ul>
+<li><strong>Parameter Tuning</strong> — Adjusting thresholds, weights, and timing parameters based on outcome data</li>
+<li><strong>Strategy Mutation</strong> — Generating alternative approaches when current strategies underperform</li>
+<li><strong>Skill Synthesis</strong> — Combining existing skills to create new composite capabilities</li>
+<li><strong>Knowledge Distillation</strong> — Extracting reusable patterns from episodic memory into skills</li>
+</ul>
+
+<h2>Safety Controls</h2>
+<div class="doc-warn">Evolution is sandboxed by default. All mutations are tested before deployment. Set <code>evolution.auto_deploy: false</code> to require manual approval for all changes.</div>
+
+<div class="doc-code"><span class="kw">evolution</span>:
+  <span class="kw">enabled</span>: <span class="st">true</span>
+  <span class="kw">sandbox</span>: <span class="st">true</span>
+  <span class="kw">auto_deploy</span>: <span class="st">false</span>      <span class="cm"># Require approval</span>
+  <span class="kw">max_mutations</span>: <span class="st">3</span>       <span class="cm"># Per cycle</span>
+  <span class="kw">min_confidence</span>: <span class="st">0.85</span>   <span class="cm"># Deploy threshold</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('tools')">&larr; Tools</button>
+<button class="doc-nav-btn" onclick="showDoc('architecture')">Architecture &rarr;</button>
+</div>
+</div>
+
+<!-- ARCHITECTURE -->
+<div class="doc-panel" id="doc-architecture">
+<div class="doc-hero">
+<h1>Architecture</h1>
+<p>SEKI's internal architecture: how the neural mesh, decision engine, and chain layer work together.</p>
+</div>
+<div class="doc-section">
+<h2>System Overview</h2>
+<p>SEKI is built as a layered architecture with clear separation of concerns:</p>
+<div class="doc-grid">
+<div class="doc-card">
+<h4>Perception Layer</h4>
+<p>Ingests data from chains, APIs, and user inputs. Normalizes signals into a unified event stream for the decision engine.</p>
+</div>
+<div class="doc-card">
+<h4>Decision Engine</h4>
+<p>Core reasoning module. Combines rule-based logic with LLM inference. Prioritizes actions based on urgency, confidence, and resource availability.</p>
+</div>
+<div class="doc-card">
+<h4>Execution Layer</h4>
+<p>Translates decisions into actions: chain transactions, API calls, notifications, skill invocations. All actions are logged and auditable.</p>
+</div>
+<div class="doc-card">
+<h4>Memory Substrate</h4>
+<p>Persistent vector store underpinning all layers. Provides semantic retrieval, pattern matching, and temporal context to the decision engine.</p>
+</div>
+</div>
+
+<h2>Data Flow</h2>
+<div class="doc-code"><span class="cm">┌──────────────────────────────────────────┐</span>
+<span class="cm">│           External Data Sources           │</span>
+<span class="cm">│  Chains · APIs · Social · User Input      │</span>
+<span class="cm">└──────────────┬───────────────────────────┘</span>
+               <span class="cm">▼</span>
+<span class="cm">┌──────────────────────────────────────────┐</span>
+<span class="cm">│          Perception Layer                 │</span>
+<span class="cm">│  Signal Normalization · Event Stream      │</span>
+<span class="cm">└──────────────┬───────────────────────────┘</span>
+               <span class="cm">▼</span>
+<span class="cm">┌──────────────────────────────────────────┐</span>
+<span class="cm">│          Decision Engine                  │</span>
+<span class="cm">│  Rules → LLM → Skill Selection → Plan    │</span>
+<span class="cm">│          ↕ Memory Substrate              │</span>
+<span class="cm">└──────────────┬───────────────────────────┘</span>
+               <span class="cm">▼</span>
+<span class="cm">┌──────────────────────────────────────────┐</span>
+<span class="cm">│          Execution Layer                  │</span>
+<span class="cm">│  Tx Signing · API Calls · Notifications  │</span>
+<span class="cm">└──────────────────────────────────────────┘</span></div>
+
+<h2>Key Design Principles</h2>
+<ul>
+<li><strong>Event-Driven</strong> — All state changes flow through an event bus. Components are loosely coupled via pub/sub.</li>
+<li><strong>Sandbox-First</strong> — Skills execute in isolated environments. No skill can access system resources without explicit grants.</li>
+<li><strong>Audit Trail</strong> — Every decision and action is logged with full context. On-chain actions are verifiable via block explorers.</li>
+<li><strong>Graceful Degradation</strong> — If a data source is unavailable, the agent continues with reduced confidence rather than failing.</li>
+</ul>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('evolution')">&larr; Self-Evolution</button>
+<button class="doc-nav-btn" onclick="showDoc('writing-skills')">Writing Skills &rarr;</button>
+</div>
+</div>
+
+<!-- WRITING SKILLS -->
+<div class="doc-panel" id="doc-writing-skills">
+<div class="doc-hero">
+<h1>Writing Skills</h1>
+<p>A complete guide to creating custom skills for the SEKI platform.</p>
+</div>
+<div class="doc-section">
+<h2>Skill Anatomy</h2>
+<p>Every skill has three core files:</p>
+<div class="doc-code"><span class="kw">my-skill/</span>
+├── <span class="st">SKILL.md</span>        <span class="cm"># Human-readable description</span>
+│                   <span class="cm"># The agent reads this to understand the skill</span>
+├── <span class="st">index.js</span>        <span class="cm"># Executable logic</span>
+└── <span class="st">config.yaml</span>     <span class="cm"># Metadata, triggers, permissions</span></div>
+
+<h2>SKILL.md Format</h2>
+<div class="doc-code"><span class="cm"># My Custom Skill</span>
+
+<span class="cm">## Description</span>
+What this skill does in 1-2 sentences.
+
+<span class="cm">## Triggers</span>
+When to activate this skill:
+- User asks about X
+- Event Y is detected on chain
+- Scheduled every Z minutes
+
+<span class="cm">## Inputs</span>
+- <span class="st">`token_address`</span> — Contract address to analyze
+- <span class="st">`chain`</span> — Target blockchain (bsc | xlayer)
+
+<span class="cm">## Outputs</span>
+Returns a JSON object with analysis results.
+
+<span class="cm">## Examples</span>
+&gt; Analyze 0x1234 on BSC
+→ Returns risk score, liquidity depth, holder distribution</div>
+
+<h2>config.yaml</h2>
+<div class="doc-code"><span class="kw">name</span>: <span class="st">"my-custom-skill"</span>
+<span class="kw">version</span>: <span class="st">"1.0.0"</span>
+<span class="kw">description</span>: <span class="st">"Brief description"</span>
+
+<span class="kw">triggers</span>:
+  <span class="kw">intent</span>: [<span class="st">"analyze_token"</span>, <span class="st">"check_risk"</span>]
+  <span class="kw">schedule</span>: <span class="st">"*/30 * * * *"</span>
+  <span class="kw">events</span>: [<span class="st">"large_transfer"</span>]
+
+<span class="kw">tools</span>: [<span class="st">"web3"</span>, <span class="st">"coingecko"</span>]
+<span class="kw">permissions</span>: [<span class="st">"chain:read"</span>, <span class="st">"memory:write"</span>]
+
+<span class="kw">evolution</span>:
+  <span class="kw">mutable</span>: <span class="st">true</span>
+  <span class="kw">parameters</span>:
+    - <span class="kw">name</span>: <span class="st">"risk_threshold"</span>
+      <span class="kw">range</span>: [<span class="st">0.1</span>, <span class="st">0.9</span>]
+      <span class="kw">default</span>: <span class="st">0.5</span></div>
+
+<h2>Testing</h2>
+<div class="doc-code"><span class="cm"># Run skill tests</span>
+<span class="kw">seki</span> skill test my-custom-skill
+
+<span class="cm"># Test with mock data</span>
+<span class="kw">seki</span> skill test my-custom-skill --mock
+
+<span class="cm"># Dry run (no side effects)</span>
+<span class="kw">seki</span> skill run my-custom-skill --dry-run \
+  --input <span class="st">'{"token": "0x1234", "chain": "bsc"}'</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('architecture')">&larr; Architecture</button>
+<button class="doc-nav-btn" onclick="showDoc('api')">API Reference &rarr;</button>
+</div>
+</div>
+
+<!-- API REFERENCE -->
+<div class="doc-panel" id="doc-api">
+<div class="doc-hero">
+<h1>API Reference</h1>
+<p>Complete REST API for interacting with a running SEKI agent instance.</p>
+</div>
+<div class="doc-section">
+<h2>Base URL</h2>
+<div class="doc-code">https://your-agent.seki-ai.com/api/v1</div>
+
+<h2>Authentication</h2>
+<div class="doc-code"><span class="cm"># All requests require a Bearer token</span>
+<span class="kw">curl</span> -H <span class="st">"Authorization: Bearer &lt;YOUR_TOKEN&gt;"</span> \
+     https://your-agent.seki-ai.com/api/v1/status</div>
+
+<h2>Core Endpoints</h2>
+
+<h3>Agent Status</h3>
+<div class="doc-code"><span class="fn">GET</span> /api/v1/status
+
+<span class="cm">Response:</span>
+{
+  <span class="st">"status"</span>: <span class="st">"active"</span>,
+  <span class="st">"uptime"</span>: <span class="st">86400</span>,
+  <span class="st">"memory_entries"</span>: <span class="st">12847</span>,
+  <span class="st">"skills_loaded"</span>: <span class="st">15</span>,
+  <span class="st">"chains"</span>: [<span class="st">"bsc"</span>, <span class="st">"xlayer"</span>]
+}</div>
+
+<h3>Send Message</h3>
+<div class="doc-code"><span class="fn">POST</span> /api/v1/chat
+
+<span class="cm">Body:</span>
+{
+  <span class="st">"message"</span>: <span class="st">"Analyze token 0x1234 on BSC"</span>,
+  <span class="st">"context"</span>: {}
 }
 
-// Neural canvas (lightweight particles)
-(function(){
- var canvas = document.getElementById('docs-neural-canvas');
- if(!canvas) return;
- var ctx = canvas.getContext('2d');
- var particles = [];
- var maxP = 60;
+<span class="cm">Response:</span>
+{
+  <span class="st">"reply"</span>: <span class="st">"Analysis complete..."</span>,
+  <span class="st">"actions"</span>: [...],
+  <span class="st">"confidence"</span>: <span class="st">0.92</span>
+}</div>
 
- function resize(){canvas.width=canvas.parentElement.offsetWidth;canvas.height=canvas.parentElement.offsetHeight;}
- resize();
- window.addEventListener('resize',resize);
+<h3>Memory Operations</h3>
+<div class="doc-code"><span class="fn">GET</span>  /api/v1/memory/search?q=<span class="st">defi+strategies</span>&limit=<span class="st">10</span>
+<span class="fn">POST</span> /api/v1/memory/store
+<span class="fn">GET</span>  /api/v1/memory/stats</div>
 
- for(var i=0;i<maxP;i++){
-  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*2+1});
- }
+<h3>Skills</h3>
+<div class="doc-code"><span class="fn">GET</span>    /api/v1/skills              <span class="cm"># List all skills</span>
+<span class="fn">GET</span>    /api/v1/skills/:id          <span class="cm"># Get skill details</span>
+<span class="fn">POST</span>   /api/v1/skills/:id/run      <span class="cm"># Execute a skill</span>
+<span class="fn">PUT</span>    /api/v1/skills/:id/config   <span class="cm"># Update config</span></div>
 
- function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  for(var i=0;i<particles.length;i++){
-   var p=particles[i];
-   p.x+=p.vx;p.y+=p.vy;
-   if(p.x<0||p.x>canvas.width)p.vx*=-1;
-   if(p.y<0||p.y>canvas.height)p.vy*=-1;
-   ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(0,255,136,0.4)';ctx.fill();
-   for(var j=i+1;j<particles.length;j++){
-    var q=particles[j],dx=p.x-q.x,dy=p.y-q.y,dist=Math.sqrt(dx*dx+dy*dy);
-    if(dist<120){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='rgba(0,255,136,'+(1-dist/120)*.15+')';ctx.stroke();}
-   }
-  }
-  requestAnimationFrame(draw);
- }
- draw();
-})();
+<h3>Chain Operations</h3>
+<div class="doc-code"><span class="fn">GET</span>  /api/v1/chain/:chain/balance/:address
+<span class="fn">POST</span> /api/v1/chain/:chain/tx
+<span class="fn">GET</span>  /api/v1/chain/:chain/events?contract=<span class="st">0x...</span></div>
 
-// Terminal typewriter
-(function(){
- var el = document.getElementById('docs-terminal-output');
- if(!el) return;
- var lines = [
-  {cmd:true,text:'seki status --verbose'},
-  {cmd:false,text:'[CORE] Engine: ONLINE | Uptime: 47d 12h'},
-  {cmd:false,text:'[META] Reflection cycles: 5,847'},
-  {cmd:false,text:'[RISK] Portfolio VaR: 2.3% | Circuit: GREEN'},
-  {cmd:false,text:'[EVOL] Active strategies: 12 | Mutations: 3/day'},
-  {cmd:true,text:'seki evolve --show-latest'},
-  {cmd:false,text:'[+] New skill acquired: narrative_detection v0.3'},
-  {cmd:false,text:'[+] Strategy fitness improved: +4.2% avg'},
-  {cmd:false,text:'[OK] Evolution cycle #5848 complete'}
- ];
- var lineIdx=0,charIdx=0,html='';
- function type(){
-  if(lineIdx>=lines.length){lineIdx=0;charIdx=0;html='';setTimeout(type,2000);return;}
-  var ln=lines[lineIdx];
-  if(charIdx===0){
-   if(ln.cmd)html+='<span class="cmd">$ </span>';
-  }
-  html+=ln.text.charAt(charIdx);
-  charIdx++;
-  el.innerHTML=html+'<span class="cursor"></span>';
-  if(charIdx>=ln.text.length){
-   html+='<br>';lineIdx++;charIdx=0;
-   setTimeout(type,ln.cmd?400:150);
-  } else {
-   setTimeout(type,ln.cmd?45:20);
-  }
- }
- setTimeout(type,800);
-})();
-</script>
+<h2>Rate Limits</h2>
+<table class="doc-table">
+<tr><th>Endpoint</th><th>Rate</th><th>Window</th></tr>
+<tr><td>/chat</td><td>30 req</td><td>1 min</td></tr>
+<tr><td>/memory/*</td><td>60 req</td><td>1 min</td></tr>
+<tr><td>/skills/*/run</td><td>20 req</td><td>1 min</td></tr>
+<tr><td>/chain/*/tx</td><td>10 req</td><td>1 min</td></tr>
+</table>
 
-</div><!-- end page-wendang -->
+<h2>Webhooks</h2>
+<div class="doc-code"><span class="fn">POST</span> /api/v1/webhooks
 
+{
+  <span class="st">"url"</span>: <span class="st">"https://your-app.com/webhook"</span>,
+  <span class="st">"events"</span>: [<span class="st">"task.created"</span>, <span class="st">"task.completed"</span>, <span class="st">"alert"</span>],
+  <span class="st">"secret"</span>: <span class="st">"your-webhook-secret"</span>
+}</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('writing-skills')">&larr; Writing Skills</button>
+<button class="doc-nav-btn" onclick="showDoc('catalog')">Skills Catalog &rarr;</button>
+</div>
+</div>
 
+<!-- SKILLS CATALOG -->
+<div class="doc-panel" id="doc-catalog">
+<div class="doc-hero">
+<h1>Skills Catalog</h1>
+<p>Pre-built skills available for immediate use in your SEKI agent.</p>
+</div>
+<div class="doc-section">
+<h2><span class="doc-badge blue">DeFi Skills</span></h2>
+<div class="doc-grid">
+<div class="doc-card"><h4>Token Analyzer</h4><p>Deep analysis of any ERC-20 token: liquidity, holder distribution, contract verification, risk scoring.</p></div>
+<div class="doc-card"><h4>DEX Aggregator</h4><p>Find optimal swap routes across PancakeSwap, Uniswap, 1inch. Supports BSC, ETH, and X Layer.</p></div>
+<div class="doc-card"><h4>Yield Optimizer</h4><p>Monitor yield farming opportunities. Compare APYs, assess impermanent loss risk, suggest strategies.</p></div>
+<div class="doc-card"><h4>Whale Tracker</h4><p>Real-time monitoring of large wallet movements. Alerts on significant buys, sells, and transfers.</p></div>
+<div class="doc-card"><h4>Liquidity Monitor</h4><p>Track liquidity depth, LP token movements, and pool health metrics across DEXes.</p></div>
+<div class="doc-card"><h4>Portfolio Manager</h4><p>Track holdings across chains. Calculate P&L, suggest rebalancing, generate performance reports.</p></div>
+</div>
+
+<h2><span class="doc-badge green">Social Skills</span></h2>
+<div class="doc-grid">
+<div class="doc-card"><h4>Twitter Monitor</h4><p>Track mentions, hashtags, and influencer activity. Sentiment analysis on crypto-related content.</p></div>
+<div class="doc-card"><h4>Community Manager</h4><p>Moderate Telegram/Discord groups. Answer FAQs, detect spam, escalate issues.</p></div>
+<div class="doc-card"><h4>Content Generator</h4><p>Create tweets, announcements, and reports based on on-chain activity and market data.</p></div>
+</div>
+
+<h2><span class="doc-badge amber">Governance Skills</span></h2>
+<div class="doc-grid">
+<div class="doc-card"><h4>Proposal Tracker</h4><p>Monitor governance proposals across DAOs. Summarize changes, analyze impact, recommend votes.</p></div>
+<div class="doc-card"><h4>Vote Delegator</h4><p>Automated vote delegation based on configurable policies. Supports Snapshot and on-chain voting.</p></div>
+<div class="doc-card"><h4>Treasury Analyst</h4><p>Monitor DAO treasuries. Track inflows, outflows, runway calculations, and spending patterns.</p></div>
+</div>
+
+<h2>Installing Skills</h2>
+<div class="doc-code"><span class="cm"># Install from registry</span>
+<span class="kw">seki</span> skill install token-analyzer
+
+<span class="cm"># Install from Git</span>
+<span class="kw">seki</span> skill install https://github.com/seki-skills/whale-tracker.git
+
+<span class="cm"># List installed skills</span>
+<span class="kw">seki</span> skill list</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('api')">&larr; API Reference</button>
+<button class="doc-nav-btn" onclick="showDoc('agent-logic')">Agent Logic &rarr;</button>
+</div>
+</div>
+
+<!-- AGENT LOGIC -->
+<div class="doc-panel" id="doc-agent-logic">
+<div class="doc-hero">
+<h1>Agent Decision Logic</h1>
+<p>How SEKI agents make on-chain decisions: the complete reasoning pipeline.</p>
+</div>
+<div class="doc-section">
+<h2>Decision Pipeline</h2>
+<p>Every on-chain action flows through a multi-stage reasoning pipeline:</p>
+
+<div class="doc-card" style="margin-bottom:12px">
+<h4>1. Data Ingestion</h4>
+<p>Collect real-time on-chain data: token prices, liquidity depth, holder distribution, contract events, gas prices.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>2. Signal Processing</h4>
+<p>Normalize and score signals. Cross-reference with historical patterns from memory. Generate a weighted signal vector.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>3. Risk Assessment</h4>
+<p>Evaluate potential outcomes against risk parameters. Check position sizing rules. Verify sufficient liquidity for exit.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>4. LLM Reasoning</h4>
+<p>Present processed data to the LLM with full context. The model provides a structured decision with confidence score and rationale.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>5. Execution</h4>
+<p>If confidence exceeds threshold: simulate transaction, verify gas, execute. Log the full decision trail to memory.</p>
+</div>
+
+<h2>Confidence Thresholds</h2>
+<table class="doc-table">
+<tr><th>Action Type</th><th>Min Confidence</th><th>Approval</th></tr>
+<tr><td>Read-only query</td><td>0.3</td><td>Auto</td></tr>
+<tr><td>Small trade (&lt;1% portfolio)</td><td>0.7</td><td>Auto</td></tr>
+<tr><td>Medium trade (1-5%)</td><td>0.85</td><td>Auto</td></tr>
+<tr><td>Large trade (&gt;5%)</td><td>0.95</td><td>Manual</td></tr>
+<tr><td>Contract interaction</td><td>0.9</td><td>Manual</td></tr>
+</table>
+
+<div class="doc-tip">All thresholds are configurable. For production use, we recommend starting with manual approval for all trades and gradually increasing auto-approval limits as you build confidence in the agent's behavior.</div>
+
+<h2>Decision Logging</h2>
+<p>Every decision is stored with full context for audit:</p>
+<div class="doc-code">{
+  <span class="st">"id"</span>: <span class="st">"dec_20240315_001"</span>,
+  <span class="st">"timestamp"</span>: <span class="st">"2024-03-15T10:23:45Z"</span>,
+  <span class="st">"action"</span>: <span class="st">"swap"</span>,
+  <span class="st">"confidence"</span>: <span class="st">0.88</span>,
+  <span class="st">"rationale"</span>: <span class="st">"Strong buy signal: volume spike + whale accumulation..."</span>,
+  <span class="st">"signals"</span>: [...],
+  <span class="st">"outcome"</span>: <span class="st">"pending"</span>
+}</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('catalog')">&larr; Skills Catalog</button>
+<button class="doc-nav-btn" onclick="showDoc('fund-safety')">Fund Safety &rarr;</button>
+</div>
+</div>
+
+<!-- FUND SAFETY -->
+<div class="doc-panel" id="doc-fund-safety">
+<div class="doc-hero">
+<h1>Fund Safety</h1>
+<p>How SEKI protects user funds through multiple layers of security controls.</p>
+</div>
+<div class="doc-section">
+<h2>Security Architecture</h2>
+<div class="doc-grid">
+<div class="doc-card">
+<h4>Wallet Isolation</h4>
+<p>Agent wallets are isolated from user wallets. The agent operates with a dedicated hot wallet with configurable spending limits.</p>
+</div>
+<div class="doc-card">
+<h4>Transaction Simulation</h4>
+<p>Every transaction is simulated via <code>eth_call</code> before execution. Unexpected state changes trigger automatic abort.</p>
+</div>
+<div class="doc-card">
+<h4>Spending Limits</h4>
+<p>Per-transaction and daily spending caps. Breaching limits requires explicit user approval via secure channel.</p>
+</div>
+<div class="doc-card">
+<h4>Contract Allowlist</h4>
+<p>Agents can only interact with pre-approved contracts. New contract interactions require manual verification.</p>
+</div>
+</div>
+
+<h2>Safety Parameters</h2>
+<div class="doc-code"><span class="kw">safety</span>:
+  <span class="kw">max_per_tx</span>: <span class="st">"100 USDT"</span>
+  <span class="kw">max_daily</span>: <span class="st">"1000 USDT"</span>
+  <span class="kw">max_position</span>: <span class="st">"5%"</span>        <span class="cm"># of total portfolio</span>
+  <span class="kw">slippage_max</span>: <span class="st">"2%"</span>
+  <span class="kw">gas_limit_multiplier</span>: <span class="st">1.5</span>
+  <span class="kw">require_simulation</span>: <span class="st">true</span>
+  <span class="kw">contract_allowlist</span>:
+    - <span class="st">"0x10ED...PancakeRouter"</span>
+    - <span class="st">"0xEf1c...SEKIStaking"</span></div>
+
+<div class="doc-warn">Never share agent wallet private keys. Use environment variables or a hardware wallet for signing. Consider a multisig for high-value operations.</div>
+
+<h2>Emergency Controls</h2>
+<ul>
+<li><strong>Kill Switch</strong> — Instantly halt all agent operations via API or dashboard</li>
+<li><strong>Auto-Pause</strong> — Agent pauses if loss exceeds configurable threshold (default: 5% of portfolio)</li>
+<li><strong>Withdrawal Lock</strong> — Large withdrawals require time-locked confirmation (24h default)</li>
+<li><strong>Audit Log</strong> — Complete transaction history with decision context, exportable as CSV/JSON</li>
+</ul>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('agent-logic')">&larr; Agent Logic</button>
+<button class="doc-nav-btn" onclick="showDoc('faq')">FAQ &rarr;</button>
+</div>
+</div>
+
+<!-- FAQ -->
+<div class="doc-panel" id="doc-faq">
+<div class="doc-hero">
+<h1>FAQ</h1>
+<p>Frequently asked questions about the SEKI platform.</p>
+</div>
+<div class="doc-section">
+<div class="doc-card" style="margin-bottom:12px">
+<h4>What is SEKI?</h4>
+<p>SEKI is an autonomous AI agent platform for Web3. It combines persistent memory, self-evolving skills, and on-chain execution to create intelligent agents that learn and improve over time.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>Is SEKI safe to use with real funds?</h4>
+<p>SEKI has multiple safety layers: transaction simulation, spending limits, contract allowlists, and emergency kill switches. Start with small amounts and manual approval mode to build confidence.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>What chains are supported?</h4>
+<p>Currently BSC and X Layer, with Ethereum, Polygon, and Arbitrum on the roadmap. The architecture supports any EVM-compatible chain.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>How does the agent learn?</h4>
+<p>Through the observe-reflect-adapt evolution loop. The agent analyzes outcomes of its actions, identifies patterns, and generates improved strategies — all within a sandboxed environment.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>Can I create custom skills?</h4>
+<p>Yes. Skills are modular and follow a simple structure (SKILL.md + index.js + config.yaml). See the <a style="color:#6366f1;cursor:pointer" onclick="showDoc('writing-skills')">Writing Skills</a> guide.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>What LLMs does SEKI support?</h4>
+<p>Any OpenAI-compatible API. GPT-4, Claude, Llama, Mistral — configure your preferred model in config.yaml.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>Is there a token?</h4>
+<p>The SEKI token is used for governance, skill marketplace fees, and agent staking. Contract details are available on the project page.</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>Where can I get help?</h4>
+<p>Join our Telegram community, check the GitHub issues, or reach out via the contact form on the main site.</p>
+</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('fund-safety')">&larr; Fund Safety</button>
+<button class="doc-nav-btn" onclick="showDoc('overview')">Back to Overview &rarr;</button>
+</div>
+</div>
+
+</div><!-- /doc-main -->
+</div><!-- /doc-wrap -->
 </div><!-- /page-wendang -->
+
 
 <div id="page-my" class="pw" style="display:none">
 <div style="max-width:700px;margin:0 auto;padding:80px 20px 60px">
@@ -2207,6 +2663,16 @@ window.docTab = function(tab, el) {
   if(tab==='logic' && typeof loadLogicSentiment==='function') loadLogicSentiment();
 };
 function docTab(tab,el){ window.docTab(tab,el); }
+function showDoc(id){
+  document.querySelectorAll('.doc-panel').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.doc-link').forEach(function(l){l.classList.remove('on');});
+  var panel=document.getElementById('doc-'+id);
+  if(panel) panel.classList.add('on');
+  var links=document.querySelectorAll('.doc-link');
+  links.forEach(function(l){if(l.getAttribute('onclick')&&l.getAttribute('onclick').indexOf("'"+id+"'")!==-1) l.classList.add('on');});
+  var main=document.querySelector('.doc-main');
+  if(main) main.scrollTop=0;
+}
 </script>
 <script>
 // Mystical Theme: override inline light backgrounds

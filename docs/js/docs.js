@@ -13,7 +13,7 @@ if (canvas) {
   let W, H, particles = [], mouse = {x:-1000, y:-1000};
   const PARTICLE_COUNT = 80;
   const CONNECT_DIST = 150;
-  const ACCENT = {r:0, g:255, b:136};
+  const ACCENT = {r:108, g:92, b:231};
 
   function resize(){
     W = canvas.width = canvas.parentElement.offsetWidth;

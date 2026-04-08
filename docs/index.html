@@ -1,11 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0;url=/">
-<title>SEKI Docs — Redirecting</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Documentation — Seki Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/docs.css">
 </head>
 <body>
-<p>Redirecting to <a href="/">seki-ai.com</a>...</p>
+
+<nav class="nav">
+<div class="nav-inner">
+<a href="/" class="nav-logo"><span class="logo-glyph">S</span><span class="logo-text">SEKI</span></a>
+<div class="nav-links">
+<a href="/#architecture">Architecture</a>
+<a href="/#evolution">Evolution</a>
+<a href="/#skills">Skills</a>
+<a href="/docs/" class="active">Docs</a>
+<a href="https://github.com/seki-agent" class="nav-gh" target="_blank">GitHub</a>
+</div>
+<button class="nav-menu" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+</nav>
+
+<div class="docs-layout">
+<aside class="sidebar">
+<div class="sb-section">
+<div class="sb-heading">Getting Started</div>
+<a href="getting-started/quickstart.html" class="sb-link">Quick Start</a>
+<a href="getting-started/installation.html" class="sb-link">Installation</a>
+<a href="getting-started/configuration.html" class="sb-link">Configuration</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">User Guide</div>
+<a href="user-guide/features/memory.html" class="sb-link">Memory System</a>
+<a href="user-guide/features/skills.html" class="sb-link">Skill Engine</a>
+<a href="user-guide/features/tools.html" class="sb-link">Tools & Toolsets</a>
+<a href="user-guide/features/self-evolution.html" class="sb-link">Self-Evolution</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Developer Guide</div>
+<a href="developer-guide/architecture.html" class="sb-link">Architecture</a>
+<a href="developer-guide/writing-skills.html" class="sb-link">Writing Skills</a>
+</div>
+<div class="sb-section">
+<div class="sb-heading">Reference</div>
+<a href="reference/skills-catalog.html" class="sb-link">Skills Catalog</a>
+<a href="reference/api.html" class="sb-link">API Reference</a>
+</div>
+</aside>
+
+<main class="doc-content">
+<div class="doc-breadcrumb">
+<a href="/">Home</a><span class="sep">/</span>
+Documentation
+</div>
+
+<h1>Seki Agent Documentation</h1>
+<p class="doc-subtitle">Everything you need to understand, configure, and extend the Seki autonomous agent.</p>
+
+<h2>Getting Started</h2>
+<div class="doc-grid">
+<a href="getting-started/quickstart.html" class="doc-grid-card">
+<h3>Quick Start</h3>
+<p>Get Seki Agent running in under 5 minutes. From zero to a self-evolving on-chain agent.</p>
+</a>
+<a href="getting-started/installation.html" class="doc-grid-card">
+<h3>Installation</h3>
+<p>Platform-specific setup instructions for Linux, macOS, Windows, and Docker.</p>
+</a>
+<a href="getting-started/configuration.html" class="doc-grid-card">
+<h3>Configuration</h3>
+<p>All config options explained — chains, API keys, skills, and evolution parameters.</p>
+</a>
+</div>
+
+<h2>User Guide</h2>
+<div class="doc-grid">
+<a href="user-guide/features/memory.html" class="doc-grid-card">
+<h3>Memory System</h3>
+<p>How Seki remembers — episodic, semantic, and procedural memory layers.</p>
+</a>
+<a href="user-guide/features/skills.html" class="doc-grid-card">
+<h3>Skill Engine</h3>
+<p>Modular capabilities that the agent can learn, evolve, and compose.</p>
+</a>
+<a href="user-guide/features/tools.html" class="doc-grid-card">
+<h3>Tools & Toolsets</h3>
+<p>External integrations — exchanges, RPCs, data feeds, and custom tools.</p>
+</a>
+<a href="user-guide/features/self-evolution.html" class="doc-grid-card">
+<h3>Self-Evolution</h3>
+<p>The core loop: observe, learn, evolve, act. How Seki gets smarter over time.</p>
+</a>
+</div>
+
+<h2>Developer Guide</h2>
+<div class="doc-grid">
+<a href="developer-guide/architecture.html" class="doc-grid-card">
+<h3>Architecture</h3>
+<p>System design — evolution engine, skill registry, memory layers, and agent core.</p>
+</a>
+<a href="developer-guide/writing-skills.html" class="doc-grid-card">
+<h3>Writing Skills</h3>
+<p>Build custom skills — structure, lifecycle hooks, testing, and publishing.</p>
+</a>
+</div>
+
+<h2>Reference</h2>
+<div class="doc-grid">
+<a href="reference/skills-catalog.html" class="doc-grid-card">
+<h3>Skills Catalog</h3>
+<p>All built-in skills — meme-launch, cex-trading, market-sense, and more.</p>
+</a>
+<a href="reference/api.html" class="doc-grid-card">
+<h3>API Reference</h3>
+<p>REST & WebSocket endpoints, authentication, and response schemas.</p>
+</a>
+</div>
+
+</main>
+</div>
+
+<script src="js/docs.js"></script>
 </body>
 </html>
