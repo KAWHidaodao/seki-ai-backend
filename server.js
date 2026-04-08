@@ -162,44 +162,9 @@ async function callLLM(messages) {
 
 const tls = require('tls');
 
-// SSL: auto-detect certs, fallback to plain HTTP if missing
+// SSL handled by Nginx reverse proxy — Node only listens on HTTP :3000
 let _useHttps = false;
 let opts = {};
-
-function loadCert(domain) {
-  return tls.createSecureContext({
-    key:  fs.readFileSync(`/etc/letsencrypt/live/${domain}/privkey.pem`),
-    cert: fs.readFileSync(`/etc/letsencrypt/live/${domain}/fullchain.pem`),
-  });
-}
-
-try {
-  const defaultCertPath = '/etc/letsencrypt/live/bdmeme.xyz/privkey.pem';
-  if (fs.existsSync(defaultCertPath)) {
-    opts = {
-      key:  fs.readFileSync('/etc/letsencrypt/live/bdmeme.xyz/privkey.pem'),
-      cert: fs.readFileSync('/etc/letsencrypt/live/bdmeme.xyz/fullchain.pem'),
-      SNICallback: (servername, cb) => {
-        try {
-          if (servername && servername.includes('shuifenqian.xyz')) {
-            cb(null, loadCert('shuifenqian.xyz'));
-          } else if (servername && servername.includes('seki-ai.com')) {
-            cb(null, loadCert('seki-ai.com'));
-          } else {
-            cb(null, loadCert('bdmeme.xyz'));
-          }
-        } catch(e) {
-          cb(e);
-        }
-      },
-    };
-    _useHttps = true;
-  } else {
-    console.warn('[server] SSL certs not found, will use HTTP fallback');
-  }
-} catch (e) {
-  console.warn('[server] SSL init error, falling back to HTTP:', e.message);
-}
 
 // 加载/初始化元数据
 function loadMeta() {
