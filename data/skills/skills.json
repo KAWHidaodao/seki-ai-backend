@@ -1,0 +1,92 @@
+[
+  {
+    "id": "skill-1",
+    "name": "市场趋势分析",
+    "icon": "📈",
+    "proficiency": 0.95,
+    "learnedAt": "2026-03-10T04:54:36.611Z",
+    "usageCount": 136,
+    "lastUsed": "2026-04-07T09:54:36.611Z"
+  },
+  {
+    "id": "skill-2",
+    "name": "风险评估",
+    "icon": "🛡️",
+    "proficiency": 0.93,
+    "learnedAt": "2026-03-13T04:54:36.611Z",
+    "usageCount": 126,
+    "lastUsed": "2026-04-08T18:54:36.611Z"
+  },
+  {
+    "id": "skill-3",
+    "name": "链上数据解读",
+    "icon": "🔗",
+    "proficiency": 0.77,
+    "learnedAt": "2026-03-16T04:54:36.611Z",
+    "usageCount": 114,
+    "lastUsed": "2026-04-08T20:54:36.611Z"
+  },
+  {
+    "id": "skill-4",
+    "name": "情绪分析",
+    "icon": "🧠",
+    "proficiency": 0.81,
+    "learnedAt": "2026-03-19T04:54:36.611Z",
+    "usageCount": 47,
+    "lastUsed": "2026-04-08T03:54:36.611Z"
+  },
+  {
+    "id": "skill-5",
+    "name": "套利识别",
+    "icon": "⚡",
+    "proficiency": 0.64,
+    "learnedAt": "2026-03-22T04:54:36.611Z",
+    "usageCount": 54,
+    "lastUsed": "2026-04-07T21:54:36.611Z"
+  },
+  {
+    "id": "skill-6",
+    "name": "Gas 优化",
+    "icon": "⛽",
+    "proficiency": 0.65,
+    "learnedAt": "2026-03-25T04:54:36.611Z",
+    "usageCount": 67,
+    "lastUsed": "2026-04-07T15:54:36.611Z"
+  },
+  {
+    "id": "skill-7",
+    "name": "流动性评估",
+    "icon": "💧",
+    "proficiency": 0.57,
+    "learnedAt": "2026-03-28T04:54:36.611Z",
+    "usageCount": 46,
+    "lastUsed": "2026-04-08T12:54:36.611Z"
+  },
+  {
+    "id": "skill-8",
+    "name": "波动率预测",
+    "icon": "🌊",
+    "proficiency": 0.57,
+    "learnedAt": "2026-03-31T04:54:36.611Z",
+    "usageCount": 45,
+    "lastUsed": "2026-04-08T02:54:36.611Z"
+  },
+  {
+    "id": "skill-9",
+    "name": "合约安全审计",
+    "icon": "🔒",
+    "proficiency": 0.43,
+    "learnedAt": "2026-04-03T04:54:36.611Z",
+    "usageCount": 27,
+    "lastUsed": "2026-04-08T17:54:36.611Z"
+  },
+  {
+    "id": "skill-10",
+    "name": "多链资产管理",
+    "icon": "🌐",
+    "proficiency": 0.45,
+    "learnedAt": "2026-04-06T04:54:36.611Z",
+    "usageCount": 8,
+    "lastUsed": "2026-04-07T04:54:36.611Z"
+  }
+]

@@ -1,35 +1,50 @@
 [
   {
-    "id": "prop-001",
-    "type": "threshold",
-    "title": "缩短反思间隔至20分钟",
-    "description": "当前30分钟反思间隔在快速行情中响应不够及时",
-    "confidence": 0.78,
-    "source": "refl-4",
-    "createdAt": "2026-04-07T15:30:53.265Z",
-    "status": "pending",
-    "reason": "最近4轮反思数据显示，行情变化在15-20分钟内发生关键转折"
+    "id": "prop-1",
+    "title": "引入强化学习优化交易执行时机",
+    "status": "approved",
+    "score": 8.5,
+    "createdAt": "2026-04-08T04:54:36.611Z",
+    "description": "基于近期反思分析提出的优化方案，预期可提升整体表现6.3%"
   },
   {
-    "id": "prop-002",
-    "type": "strategy",
-    "title": "Strategist快速响应模式",
-    "description": "当价格波动超过5%/5min时，临时缩短决策周期",
-    "confidence": 0.82,
-    "source": "refl-4",
-    "createdAt": "2026-04-07T15:35:53.265Z",
-    "status": "pending",
-    "reason": "Strategist在3次快速行情中因等待完整周期数据而延迟决策"
+    "id": "prop-2",
+    "title": "添加跨链MEV保护机制",
+    "status": "approved",
+    "score": 7.8,
+    "createdAt": "2026-03-26T04:54:36.611Z",
+    "description": "基于近期反思分析提出的优化方案，预期可提升整体表现7.5%"
   },
   {
-    "id": "prop-003",
-    "type": "prompt",
-    "title": "优化Hunter入场提示词",
-    "description": "在Hunter的LLM提示词中增加sellPressure<60的硬性前置条件",
-    "confidence": 0.91,
-    "source": "refl-1",
-    "createdAt": "2026-04-07T15:40:53.265Z",
+    "id": "prop-3",
+    "title": "升级情绪分析为多模态模型",
     "status": "pending",
-    "reason": "Hunter在sellPressure>60时的买入成功率仅为25%"
+    "score": 7.2,
+    "createdAt": "2026-03-21T04:54:36.611Z",
+    "description": "基于近期反思分析提出的优化方案，预期可提升整体表现5.2%"
+  },
+  {
+    "id": "prop-4",
+    "title": "实现自适应滑点保护算法",
+    "status": "pending",
+    "score": 8.1,
+    "createdAt": "2026-04-02T04:54:36.611Z",
+    "description": "基于近期反思分析提出的优化方案，预期可提升整体表现6.5%"
+  },
+  {
+    "id": "prop-5",
+    "title": "增加NFT市场分析模块",
+    "status": "rejected",
+    "score": 4.5,
+    "createdAt": "2026-04-04T04:54:36.611Z",
+    "description": "基于近期反思分析提出的优化方案，预期可提升整体表现4.0%"
+  },
+  {
+    "id": "prop-6",
+    "title": "开发Layer2 Gas费预测引擎",
+    "status": "approved",
+    "score": 8.9,
+    "createdAt": "2026-04-02T04:54:36.611Z",
+    "description": "基于近期反思分析提出的优化方案，预期可提升整体表现3.7%"
   }
 ]

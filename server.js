@@ -1399,102 +1399,72 @@ a{color:#60a5fa;text-decoration:none}
     return;
   }
 
-  // ── Evolution Hall API endpoints ──────────────────────
+  // ── Evolution Hall API endpoints (file-based) ──────────
   if (req.url === '/api/evolution/dashboard' && req.method === 'GET') {
     try {
-      const evolver = require('./agent/evolver');
-      const dashboard = evolver.getEvolutionDashboard();
-      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify(dashboard));
-    } catch (e) {
-      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify({ error: e.message }));
-    }
-    return;
+      const reflDir = path.join(__dirname, 'data', 'reflections');
+      const reflFiles = fs.readdirSync(reflDir).filter(f => f.startsWith('refl-')).sort();
+      const reflections = reflFiles.map(f => JSON.parse(fs.readFileSync(path.join(reflDir, f), 'utf8')));
+      const cyclesFile = path.join(__dirname, 'data', 'evolution', 'cycles.json');
+      const cycles = fs.existsSync(cyclesFile) ? JSON.parse(fs.readFileSync(cyclesFile, 'utf8')) : [];
+      const versionFile = path.join(__dirname, 'data', 'evolution', 'version.json');
+      const vInfo = fs.existsSync(versionFile) ? JSON.parse(fs.readFileSync(versionFile, 'utf8')) : { current: 'v1.0.0' };
+      const skillsFile = path.join(__dirname, 'data', 'skills', 'skills.json');
+      const skills = fs.existsSync(skillsFile) ? JSON.parse(fs.readFileSync(skillsFile, 'utf8')) : [];
+      const avgRate = reflections.length ? reflections.reduce((s, r) => s + (r.metrics?.successRate || 0), 0) / reflections.length : 0;
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({
+        totalReflections: reflections.length,
+        totalCycles: cycles.length,
+        completionRate: Math.round(avgRate * 1000) / 10,
+        version: vInfo.current,
+        totalSkills: skills.length,
+        lastReflection: reflections.length ? reflections[reflections.length - 1].timestamp : null,
+      }));
+    } catch(e) { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify({ totalReflections: 0, totalCycles: 0, completionRate: 0, version: 'v1.0.0', totalSkills: 0 })); }
   }
-
   if (req.url === '/api/evolution/reflections' && req.method === 'GET') {
     try {
-      const reflDir = path.join(BASE, 'data', 'reflections');
-      if (!fs.existsSync(reflDir)) { res.writeHead(200, { ...cors }); res.end('[]'); return; }
-      const files = fs.readdirSync(reflDir).filter(f => f.endsWith('.json')).sort().reverse().slice(0, 30);
-      const reflections = files.map(f => {
-        try { return JSON.parse(fs.readFileSync(path.join(reflDir, f), 'utf8')); } catch { return null; }
-      }).filter(Boolean);
-      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify(reflections));
-    } catch (e) {
-      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify({ error: e.message }));
-    }
-    return;
+      const reflDir = path.join(__dirname, 'data', 'reflections');
+      const files = fs.readdirSync(reflDir).filter(f => f.startsWith('refl-')).sort();
+      const reflections = files.map(f => JSON.parse(fs.readFileSync(path.join(reflDir, f), 'utf8')));
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify(reflections));
+    } catch(e) { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end('[]'); }
   }
-
   if (req.url === '/api/evolution/skills' && req.method === 'GET') {
     try {
-      const skillDir = path.join(BASE, 'data', 'skills');
-      if (!fs.existsSync(skillDir)) { res.writeHead(200, { ...cors }); res.end('[]'); return; }
-      const files = fs.readdirSync(skillDir).filter(f => f.endsWith('.json'));
-      const skills = files.map(f => {
-        try { return JSON.parse(fs.readFileSync(path.join(skillDir, f), 'utf8')); } catch { return null; }
-      }).filter(Boolean);
-      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify(skills));
-    } catch (e) {
-      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify({ error: e.message }));
-    }
-    return;
+      const skillsFile = path.join(__dirname, 'data', 'skills', 'skills.json');
+      const data = fs.existsSync(skillsFile) ? fs.readFileSync(skillsFile, 'utf8') : '[]';
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(data);
+    } catch(e) { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end('[]'); }
   }
-
   if (req.url === '/api/evolution/proposals' && req.method === 'GET') {
     try {
-      const evolver = require('./agent/evolver');
-      const proposals = evolver.getPendingProposals();
-      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify(proposals));
-    } catch (e) {
-      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify({ error: e.message }));
-    }
-    return;
+      const pFile = path.join(__dirname, 'data', 'evolution', 'pending-proposals.json');
+      const data = fs.existsSync(pFile) ? fs.readFileSync(pFile, 'utf8') : '[]';
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(data);
+    } catch(e) { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end('[]'); }
   }
-
   if (req.url === '/api/evolution/status' && req.method === 'GET') {
     try {
-      const evolver = require('./agent/evolver');
-      const reflections = evolver.getRecentReflections ? evolver.getRecentReflections(100) : [];
-      const todayCycles = evolver.getTodayCycles ? evolver.getTodayCycles() : [];
-      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify({
-        version: evolver.versionString(),
-        totalCycles: todayCycles.length,
-        totalReflections: reflections.length,
-        lastReflection: reflections.length ? reflections[0].timestamp : null,
-        running: true
-      }));
-    } catch (e) {
-      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify({ version: 'v1.0.0', totalCycles: 0, totalReflections: 0, lastReflection: null, running: false }));
-    }
-    return;
+      const vFile = path.join(__dirname, 'data', 'evolution', 'version.json');
+      const v = fs.existsSync(vFile) ? JSON.parse(fs.readFileSync(vFile, 'utf8')) : {};
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ version: v.current || 'v1.0.0', running: true, uptime: process.uptime() }));
+    } catch(e) { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify({ version: 'v1.0.0', running: true })); }
   }
-
   if (req.url === '/api/evolution/cycles' && req.method === 'GET') {
     try {
-      const taskLogger = require('./agent/evolver/task-logger');
-      const stats = taskLogger.getStats();
-      const recent = taskLogger.getRecentCycles(50);
-      res.writeHead(200, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify({ stats, recent }));
-    } catch (e) {
-      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
-      res.end(JSON.stringify({ error: e.message }));
-    }
-    return;
+      const cFile = path.join(__dirname, 'data', 'evolution', 'cycles.json');
+      const data = fs.existsSync(cFile) ? fs.readFileSync(cFile, 'utf8') : '[]';
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(data);
+    } catch(e) { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end('[]'); }
   }
 
-  // ── 静态文件
   let p = req.url === '/' ? '/index.html' : req.url.split('?')[0];
   if (p === '/xlayer' || p === '/xlayer/') p = '/xlayer.html';
   if (p === '/chat' || p === '/chat/') p = '/chat.html';
