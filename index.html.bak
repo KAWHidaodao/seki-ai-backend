@@ -26,7 +26,7 @@
  <div class="nav-links">
  <button class="nl on" onclick="G('home',this)">首页</button>
  <button class="nl" onclick="G('square',this)">广场</button>
- <button class="nl" onclick="G('delegate',this)">委托 Agent</button>
+ <!-- <button class="nl" onclick="G('delegate',this)">委托 Agent</button> -->
  <button class="nl" onclick="G('faoxing',this)">发行</button>
  <button class="nl" onclick="G('wendang',this)">文档</button>
  <button class="nl" onclick="location.href='/evolution'">🧬 进化</button>
@@ -1403,662 +1403,977 @@
 </div>
 <div
 id="page-wendang" class="pw" style="display:none">
-  <div style="max-width:900px;margin:0 auto;padding:104px 28px 100px">
-    <div style="display:flex;gap:8px;margin-bottom:40px;flex-wrap:wrap">
-      <button id="dtag-logic" onclick="docTab('logic',this)" style="padding:8px 20px;border-radius:20px;border:1px solid rgba(0,0,0,.10);background:transparent;color:var(--tx2);font-size:13px;font-weight:700;cursor:pointer"> AI 逻辑</button>
-      <button id="dtag-dev" onclick="docTab('dev',this)" style="padding:8px 20px;border-radius:20px;border:1px solid rgba(0,0,0,.10);background:transparent;color:var(--tx2);font-size:13px;font-weight:700;cursor:pointer"> 开发者</button>
-      <button id="dtag-roadmap" onclick="docTab('roadmap',this)" style="padding:8px 20px;border-radius:20px;border:1px solid rgba(0,0,0,.10);background:transparent;color:var(--tx2);font-size:13px;font-weight:700;cursor:pointer"> 路线图</button>
-    </div>
-    <div id="docs-logic">
-  <div style="text-align:center;margin-bottom:56px">
-    <div style="font-size:9px;font-weight:700;letter-spacing:4px;color:var(--p);text-transform:uppercase;margin-bottom:14px">ERC-8183 · AI AGENT PROTOCOL</div>
-    <h1 style="font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px">Seki <span style="background:linear-gradient(135deg,#818cf8,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Agent</span><br>决策逻辑全解</h1>
-    <p style="font-size:14px;color:var(--tx2);max-width:500px;margin:0 auto;line-height:2">不是黑盒，不是人工操盘。<br>每一个任务的发布，都有公开可查的链上数据和市场信号作为依据。<br><span style="font-size:12px;color:var(--p);font-weight:700;letter-spacing:1px">全球首个 ERC-8183 兼容 · AI Agent 双链 Meme 激励平台</span></p>
-  </div>
+<style>
+.doc-wrap{display:flex;max-width:1200px;margin:0 auto;padding:100px 20px 60px;gap:32px;min-height:100vh}
+.doc-side{width:240px;flex-shrink:0;position:sticky;top:100px;align-self:flex-start;max-height:calc(100vh - 120px);overflow-y:auto}
+.doc-side::-webkit-scrollbar{width:3px}
+.doc-side::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:3px}
+.doc-cat{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#8888a8;padding:20px 0 8px;margin:0}
+.doc-cat:first-child{padding-top:0}
+.doc-link{display:block;padding:7px 14px;font-size:13.5px;color:#4a4a6a;border-radius:8px;cursor:pointer;transition:all .15s;text-decoration:none;line-height:1.4}
+.doc-link:hover{background:rgba(99,102,241,.06);color:#1a1a2e}
+.doc-link.on{background:rgba(99,102,241,.1);color:#6366f1;font-weight:600}
+.doc-main{flex:1;min-width:0}
+.doc-panel{display:none}
+.doc-panel.on{display:block}
+.doc-hero{margin-bottom:48px}
+.doc-hero h1{font-size:32px;font-weight:800;color:#1a1a2e;letter-spacing:-1px;margin:0 0 12px}
+.doc-hero p{font-size:15px;color:#4a4a6a;line-height:1.7;margin:0}
+.doc-section{margin-bottom:40px}
+.doc-section h2{font-size:22px;font-weight:700;color:#1a1a2e;margin:0 0 16px;letter-spacing:-.5px}
+.doc-section h3{font-size:17px;font-weight:600;color:#1a1a2e;margin:24px 0 12px}
+.doc-section p{font-size:14.5px;color:#4a4a6a;line-height:1.75;margin:0 0 16px}
+.doc-section ul,.doc-section ol{padding-left:20px;margin:0 0 16px}
+.doc-section li{font-size:14.5px;color:#4a4a6a;line-height:1.7;margin-bottom:6px}
+.doc-section li strong{color:#1a1a2e}
+.doc-card{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:24px;margin-bottom:16px;transition:box-shadow .2s}
+.doc-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.doc-card h4{font-size:15px;font-weight:700;color:#1a1a2e;margin:0 0 8px}
+.doc-card p{font-size:13.5px;color:#4a4a6a;line-height:1.65;margin:0}
+.doc-code{background:#1e1e2e;border-radius:12px;padding:20px;margin:0 0 20px;overflow-x:auto;font-family:'SF Mono',Monaco,monospace;font-size:13px;line-height:1.6;color:#e2e8f0}
+.doc-code .cm{color:#6b7280}
+.doc-code .kw{color:#c084fc}
+.doc-code .st{color:#34d399}
+.doc-code .fn{color:#60a5fa}
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:24px}
+.doc-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.doc-badge.green{background:rgba(16,185,129,.1);color:#059669}
+.doc-badge.blue{background:rgba(99,102,241,.1);color:#6366f1}
+.doc-badge.amber{background:rgba(245,158,11,.1);color:#d97706}
+.doc-table{width:100%;border-collapse:collapse;margin:0 0 20px;font-size:13.5px}
+.doc-table th{text-align:left;padding:10px 14px;background:rgba(0,0,0,.02);border-bottom:2px solid rgba(0,0,0,.08);color:#1a1a2e;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.doc-table td{padding:10px 14px;border-bottom:1px solid rgba(0,0,0,.04);color:#4a4a6a}
+.doc-table tr:hover td{background:rgba(99,102,241,.02)}
+.doc-tip{background:rgba(99,102,241,.06);border-left:3px solid #6366f1;border-radius:0 10px 10px 0;padding:16px 20px;margin:0 0 20px;font-size:14px;color:#4a4a6a;line-height:1.65}
+.doc-warn{background:rgba(245,158,11,.06);border-left:3px solid #d97706;border-radius:0 10px 10px 0;padding:16px 20px;margin:0 0 20px;font-size:14px;color:#4a4a6a;line-height:1.65}
+.doc-nav-bottom{display:flex;justify-content:space-between;margin-top:48px;padding-top:24px;border-top:1px solid rgba(0,0,0,.06)}
+.doc-nav-btn{padding:10px 20px;border:1px solid rgba(0,0,0,.08);border-radius:10px;font-size:13px;color:#6366f1;cursor:pointer;background:#fff;font-family:var(--font);font-weight:600;transition:all .15s}
+.doc-nav-btn:hover{background:rgba(99,102,241,.06);border-color:rgba(99,102,241,.2)}
+@media(max-width:768px){
+.doc-wrap{flex-direction:column;padding:80px 16px 40px}
+.doc-side{width:100%;position:static;max-height:none;display:flex;flex-wrap:wrap;gap:4px;padding-bottom:20px;border-bottom:1px solid rgba(0,0,0,.06);margin-bottom:24px}
+.doc-cat{width:100%;padding:12px 0 4px}
+.doc-link{padding:6px 12px;font-size:13px}
+.doc-grid{grid-template-columns:1fr}
+}
+</style>
 
-  
-<!-- ONCHAIN DECISIONS -->
-<div style="margin-bottom:64px">
-  <div class="label" style="margin-bottom:16px">◆ &nbsp;DECISIONS ON-CHAIN</div>
-  <h3 style="font-size:clamp(18px,2.5vw,28px);font-weight:900;letter-spacing:-1px;margin-bottom:8px">每一个决策，都在链上</h3>
-  <p style="font-size:13px;color:var(--tx2);line-height:1.9;margin-bottom:28px">Agent 的每次 ACT（发任务）都写入链上合约事件，可在区块浏览器永久查证。任何人都能验证 Agent 的行为没有人为干预。</p>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px">
-    <div style="padding:20px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-radius:16px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#34d399;margin-bottom:10px">BSC</div>
-      <div style="font-size:22px;font-weight:900;margin-bottom:4px" id="od-bsc-tasks">—</div>
-      <div style="font-size:11px;color:var(--tx3)">链上任务总数</div>
-    </div>
-    <div style="padding:20px;background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.2);border-radius:16px">
-      <div style="font-size:22px;font-weight:900;margin-bottom:4px" id="od-xl-tasks">—</div>
-      <div style="font-size:11px;color:var(--tx3)">链上任务总数</div>
-    </div>
-    <div style="padding:20px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:16px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#f59e0b;margin-bottom:10px">AGENT</div>
-      <div style="font-size:22px;font-weight:900;margin-bottom:4px" id="od-agent-tasks">—</div>
-      <div style="font-size:11px;color:var(--tx3)">Agent 自主发布</div>
-    </div>
-  </div>
-  <div style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:20px">
-    <div style="font-size:11px;font-weight:700;color:var(--tx3);letter-spacing:1px;margin-bottom:14px">最近链上决策</div>
-    <div id="od-log-list" style="font-size:12px;color:var(--tx2);line-height:2">加载中...</div>
-    <div style="margin-top:14px;display:flex;gap:10px">
-      <a href="https://bscscan.com/address/0xea43a24a1baefb89494126c12fe8921b5b8e3d8d#events" target="_blank" style="font-size:11px;color:#f59e0b;text-decoration:none;font-weight:700">BSCScan Events ↗</a>
-    </div>
-  </div>
+<div class="doc-wrap">
+<!-- SIDEBAR -->
+<nav class="doc-side">
+<p class="doc-cat">概览</p>
+<a class="doc-link on" onclick="showDoc('overview')">简介</a>
+
+<p class="doc-cat">快速上手</p>
+<a class="doc-link" onclick="showDoc('quickstart')">快速开始</a>
+<a class="doc-link" onclick="showDoc('installation')">安装指南</a>
+<a class="doc-link" onclick="showDoc('configuration')">配置说明</a>
+
+<p class="doc-cat">用户指南</p>
+<a class="doc-link" onclick="showDoc('memory')">记忆系统</a>
+<a class="doc-link" onclick="showDoc('skills')">技能引擎</a>
+<a class="doc-link" onclick="showDoc('tools')">工具</a>
+<a class="doc-link" onclick="showDoc('evolution')">自我进化</a>
+
+<p class="doc-cat">开发者</p>
+<a class="doc-link" onclick="showDoc('architecture')">架构</a>
+<a class="doc-link" onclick="showDoc('writing-skills')">编写技能</a>
+
+<p class="doc-cat">参考</p>
+<a class="doc-link" onclick="showDoc('api')">API 参考</a>
+<a class="doc-link" onclick="showDoc('catalog')">技能目录</a>
+
+<p class="doc-cat">项目</p>
+<a class="doc-link" onclick="showDoc('agent-logic')">代理逻辑</a>
+<a class="doc-link" onclick="showDoc('fund-safety')">资金安全</a>
+<a class="doc-link" onclick="showDoc('faq')">常见问题</a>
+</nav>
+
+<!-- CONTENT -->
+<div class="doc-main">
+<!-- OVERVIEW -->
+<div class="doc-panel on" id="doc-overview">
+<div class="doc-hero">
+<h1>SEKI 文档</h1>
+<p>SEKI 是一个为 Web3 打造的自主 AI 代理平台。它将持久记忆、自我进化技能系统和链上决策融合为统一的智能框架。</p>
 </div>
-<!-- CORE LOOP -->
-  <div style="margin-bottom:56px">
-    <div style="font-size:9px;font-weight:700;letter-spacing:4px;color:var(--tx3);text-transform:uppercase;margin-bottom:24px">CORE LOOP &nbsp;·&nbsp; 核心循环</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(0,0,0,.04);border-radius:20px;overflow:hidden">
-      <div style="background:var(--bg2);padding:28px 24px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(99,102,241,.5);margin-bottom:8px">01</div>
-        <div style="font-size:16px;font-weight:900;color:var(--p);letter-spacing:1px;margin-bottom:4px">OBSERVE</div>
-        <div style="font-size:10px;color:var(--tx3);letter-spacing:1px;margin-bottom:20px">观察</div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(99,102,241,.3)">链上价格 · 流动性深度<br>任务完成率 · taxPool 余额</div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(99,102,241,.3)">资金费率 · 买卖盘深度<br>鲸鱼大单 · BNB 涨跌幅</div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(99,102,241,.3)">DexScreener 成交量<br>持续热度追踪</div>
-        </div>
-        <div style="margin-top:18px;font-size:10px;color:var(--tx3);background:rgba(0,0,0,.025);border-radius:8px;padding:8px 10px;line-height:1.7">每 <strong style="color:var(--tx)">3 分钟</strong>采集一次全量信号，写入状态快照</div>
-      </div>
-      <div style="background:var(--bg2);padding:28px 24px;border-left:1px solid rgba(0,0,0,.06);border-right:1px solid rgba(0,0,0,.06)">
-        <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(59,130,246,.5);margin-bottom:8px">02</div>
-        <div style="font-size:16px;font-weight:900;color:#3b82f6;letter-spacing:1px;margin-bottom:4px">THINK</div>
-        <div style="font-size:10px;color:var(--tx3);letter-spacing:1px;margin-bottom:20px">推理</div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(59,130,246,.3)">匹配 <strong style="color:var(--tx)">5 条优先规则</strong><br>命中即跳过 LLM 直接执行</div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(59,130,246,.3)">规则未命中 → 全量信号输入<br><strong style="color:var(--tx)">GPT-5.4</strong> 综合推理</div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(59,130,246,.3)">自动切换人格<br>猎手 / 军师 / 传令官</div>
-        </div>
-        <div style="margin-top:18px;font-size:10px;color:var(--tx3);background:rgba(0,0,0,.025);border-radius:8px;padding:8px 10px;line-height:1.7">输出：任务类型 · 奖励金额 · 窗口期 · 持仓门槛</div>
-      </div>
-      <div style="background:var(--bg2);padding:28px 24px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(52,211,153,.5);margin-bottom:8px">03</div>
-        <div style="font-size:16px;font-weight:900;color:#34d399;letter-spacing:1px;margin-bottom:4px">ACT</div>
-        <div style="font-size:10px;color:var(--tx3);letter-spacing:1px;margin-bottom:20px">执行</div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(52,211,153,.3)">从 <strong style="color:var(--tx)">taxPool</strong> 扣款<br>调用合约发布任务</div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(52,211,153,.3)">写链上记录 · 更新日志<br>等待用户完成领取</div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.7;padding-left:10px;border-left:2px solid rgba(52,211,153,.3)">超时未领 → <strong style="color:var(--tx)">自动退款</strong><br>资金原路返回 taxPool</div>
-        </div>
-        <div style="margin-top:18px;font-size:10px;color:var(--tx3);background:rgba(0,0,0,.025);border-radius:8px;padding:8px 10px;line-height:1.7">全程链上可查，无人工介入</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TRIGGER RULES -->
-  <div style="margin-bottom:56px">
-    <div style="font-size:9px;font-weight:700;letter-spacing:4px;color:var(--tx3);text-transform:uppercase;margin-bottom:8px">TRIGGER RULES &nbsp;·&nbsp; 触发规则</div>
-    <div style="font-size:12px;color:var(--tx3);margin-bottom:24px;line-height:1.8">规则按优先级排序。命中高优先级规则时，直接执行，跳过 LLM 推理，响应延迟 &lt;1s。</div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="background:rgba(0,0,0,.025);border:1px solid rgba(239,68,68,.2);border-radius:16px;padding:20px 24px;display:flex;gap:20px;align-items:flex-start">
-        <div style="flex-shrink:0;width:36px;padding-top:2px;text-align:center">
-          <div style="font-size:11px;font-weight:900;color:#ef4444;letter-spacing:1px">01</div>
-          <div style="font-size:9px;color:var(--tx3);margin-top:3px">最高</div>
-        </div>
-        <div style="flex:1">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
-            <span style="font-size:13px;font-weight:800;color:var(--tx)">热度峰值</span>
-            <span style="font-size:9px;padding:2px 8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:20px;color:#f87171;letter-spacing:1px">SPIKE DETECTED</span>
-          </div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8;margin-bottom:10px">10 分钟内成交量达平均值 <strong style="color:var(--tx)">3 倍以上</strong>，判定为热度峰值。强制插入一个 <strong style="color:#f87171">5 分钟早鸟任务</strong>，极短窗口制造 FOMO 效应。</div>
-          <div style="font-size:11px;color:var(--tx3);background:rgba(0,0,0,.02);border-radius:8px;padding:8px 12px;border-left:2px solid rgba(239,68,68,.3)">设计原因：热度是最稀缺的资源，出现时必须立刻利用，不能等 LLM 慢慢想。</div>
-        </div>
-      </div>
-      <div style="background:rgba(0,0,0,.025);border:1px solid rgba(248,113,113,.15);border-radius:16px;padding:20px 24px;display:flex;gap:20px;align-items:flex-start">
-        <div style="flex-shrink:0;width:36px;padding-top:2px;text-align:center">
-          <div style="font-size:11px;font-weight:900;color:#f87171;letter-spacing:1px">02</div>
-        </div>
-        <div style="flex:1">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
-            <span style="font-size:13px;font-weight:800;color:var(--tx)">抄底触发</span>
-            <span style="font-size:9px;padding:2px 8px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:20px;color:#f87171;letter-spacing:1px">DIP DETECTED</span>
-          </div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8;margin-bottom:10px">1 小时内跌幅超过 <strong style="color:var(--tx)">15%</strong>，发布买入任务，奖励倍率 <strong style="color:#f87171">2×</strong>，持仓门槛降至默认值一半，降低抄底门槛。</div>
-          <div style="font-size:11px;color:var(--tx3);background:rgba(0,0,0,.02);border-radius:8px;padding:8px 12px;border-left:2px solid rgba(248,113,113,.3)">设计原因：跌幅大时散户最容易割肉，高奖励买入任务能拦截抛压，给钻石手奖励。</div>
-        </div>
-      </div>
-      <div style="background:rgba(0,0,0,.025);border:1px solid rgba(239,68,68,.12);border-radius:16px;padding:20px 24px;display:flex;gap:20px;align-items:flex-start">
-        <div style="flex-shrink:0;width:36px;padding-top:2px;text-align:center">
-          <div style="font-size:11px;font-weight:900;color:#ef4444;letter-spacing:1px">03</div>
-        </div>
-        <div style="flex:1">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
-            <span style="font-size:13px;font-weight:800;color:var(--tx)">BNB 恐慌防护</span>
-            <span style="font-size:9px;padding:2px 8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:20px;color:#f87171;letter-spacing:1px">MARKET PANIC</span>
-          </div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8;margin-bottom:10px">BNB 24h 跌幅超过 <strong style="color:var(--tx)">8%</strong>，整个 BSC 生态进入恐慌。发布高奖励买入任务，倍率 <strong style="color:#f87171">3×</strong>，主动对冲用户浮亏情绪。</div>
-          <div style="font-size:11px;color:var(--tx3);background:rgba(0,0,0,.02);border-radius:8px;padding:8px 12px;border-left:2px solid rgba(239,68,68,.3)">设计原因：BNB 跌等于当前链所有 meme 都跌，此时最需要外部激励维持持仓信心。</div>
-        </div>
-      </div>
-      <div style="background:rgba(0,0,0,.025);border:1px solid rgba(52,211,153,.12);border-radius:16px;padding:20px 24px;display:flex;gap:20px;align-items:flex-start">
-        <div style="flex-shrink:0;width:36px;padding-top:2px;text-align:center">
-          <div style="font-size:11px;font-weight:900;color:#34d399;letter-spacing:1px">04</div>
-        </div>
-        <div style="flex:1">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
-            <span style="font-size:13px;font-weight:800;color:var(--tx)">BNB 上涨联动</span>
-            <span style="font-size:9px;padding:2px 8px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);border-radius:20px;color:#34d399;letter-spacing:1px">BULL SIGNAL</span>
-          </div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8;margin-bottom:10px">BNB 24h 涨幅超过 <strong style="color:var(--tx)">5%</strong>，市场情绪偏多。发布持仓任务，要求持有至少 <strong style="color:#34d399">10 分钟</strong>，锁筹码防止高位砸盘。</div>
-          <div style="font-size:11px;color:var(--tx3);background:rgba(0,0,0,.02);border-radius:8px;padding:8px 12px;border-left:2px solid rgba(52,211,153,.3)">设计原因：涨势中最大的风险是短期获利了结，持仓任务能让筹码稳定在强手里。</div>
-        </div>
-      </div>
-      <div style="background:rgba(0,0,0,.025);border:1px solid rgba(59,130,246,.12);border-radius:16px;padding:20px 24px;display:flex;gap:20px;align-items:flex-start">
-        <div style="flex-shrink:0;width:36px;padding-top:2px;text-align:center">
-          <div style="font-size:11px;font-weight:900;color:#3b82f6;letter-spacing:1px">05</div>
-        </div>
-        <div style="flex:1">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
-            <span style="font-size:13px;font-weight:800;color:var(--tx)">成交量萎缩</span>
-            <span style="font-size:9px;padding:2px 8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:20px;color:#60a5fa;letter-spacing:1px">VOLUME DRY</span>
-          </div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8;margin-bottom:10px">连续 <strong style="color:var(--tx)">2 个周期</strong>无活跃任务且成交量低于均值 <strong style="color:var(--tx)">30%</strong>，判定为流动性枯竭。发布小额买入任务，重新引入交易热度。</div>
-          <div style="font-size:11px;color:var(--tx3);background:rgba(0,0,0,.02);border-radius:8px;padding:8px 12px;border-left:2px solid rgba(59,130,246,.3)">设计原因：死盘的特征就是没人交易，小额任务是激活流动性成本最低的手段。</div>
-        </div>
-      </div>
-      <div style="background:rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:20px 24px;display:flex;gap:20px;align-items:flex-start">
-        <div style="flex-shrink:0;width:36px;padding-top:2px;text-align:center">
-          <div style="font-size:11px;font-weight:900;color:var(--p);letter-spacing:1px">AI</div>
-          <div style="font-size:9px;color:var(--tx3);margin-top:3px">兜底</div>
-        </div>
-        <div style="flex:1">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
-            <span style="font-size:13px;font-weight:800;color:var(--tx)">LLM 自由决策</span>
-            <span style="font-size:9px;padding:2px 8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);border-radius:20px;color:var(--p);letter-spacing:1px">GPT-5.4</span>
-          </div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8;margin-bottom:10px">以上规则均未命中时，将全量信号（价格、成交量、资金费率、鲸鱼数据、任务历史）输入 GPT-5.4，由模型综合推理输出最优任务方案。</div>
-          <div style="font-size:11px;color:var(--tx3);background:rgba(0,0,0,.02);border-radius:8px;padding:8px 12px;border-left:2px solid rgba(99,102,241,.3)">LLM 输出受 Prompt 约束，只能选择合法任务类型，奖励金额不超过单次上限，防止幻觉乱发。</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PERSONA -->
-  <div style="margin-bottom:56px">
-    <div style="font-size:9px;font-weight:700;letter-spacing:4px;color:var(--tx3);text-transform:uppercase;margin-bottom:8px">PERSONA &nbsp;·&nbsp; 人格系统</div>
-    <div style="font-size:12px;color:var(--tx3);margin-bottom:24px;line-height:1.8">每 30 分钟自动评估市场状态，切换至最匹配的运营人格。人格影响任务频率、奖励力度和类型偏好。</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-      <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:16px;padding:20px">
-        <div style="width:32px;height:32px;background:#dc2626;border-radius:6px;margin:0 0 12px"></div>
-        <div style="font-size:14px;font-weight:900;letter-spacing:.5px;margin-bottom:2px">猎手</div>
-        <div style="font-size:9px;color:#f87171;letter-spacing:2px;margin-bottom:14px">HUNTER</div>
-        <div style="font-size:11px;color:var(--tx3);line-height:1.9">
-          <div style="color:var(--tx2);margin-bottom:4px;font-weight:600">触发：</div>
-          <div style="padding-left:8px;border-left:2px solid rgba(239,68,68,.3);color:var(--tx2);margin-bottom:10px">BNB 急跌 &gt;8%<br>任务完成率 &lt;20%</div>
-          <div style="color:var(--tx2);margin-bottom:4px;font-weight:600">策略：</div>
-          <div style="padding-left:8px;border-left:2px solid rgba(239,68,68,.3);color:var(--tx2)">短平快高频小额<br>制造持续 FOMO</div>
-        </div>
-      </div>
-      <div style="background:rgba(217,119,6,.05);border:1px solid rgba(217,119,6,.15);border-radius:16px;padding:20px">
-        <div style="width:32px;height:32px;background:#d97706;border-radius:6px;margin:0 0 12px"></div>
-        <div style="font-size:14px;font-weight:900;letter-spacing:.5px;margin-bottom:2px">军师</div>
-        <div style="font-size:9px;color:#d97706;letter-spacing:2px;margin-bottom:14px">STRATEGIST</div>
-        <div style="font-size:11px;color:var(--tx3);line-height:1.9">
-          <div style="color:var(--tx2);margin-bottom:4px;font-weight:600">触发：</div>
-          <div style="padding-left:8px;border-left:2px solid rgba(217,119,6,.3);color:var(--tx2);margin-bottom:10px">任务完成率 &gt;70%<br>市场平稳横盘</div>
-          <div style="color:var(--tx2);margin-bottom:4px;font-weight:600">策略：</div>
-          <div style="padding-left:8px;border-left:2px solid rgba(217,119,6,.3);color:var(--tx2)">低频大额精准<br>最大化资金效率</div>
-        </div>
-      </div>
-      <div style="background:rgba(5,150,105,.05);border:1px solid rgba(5,150,105,.15);border-radius:16px;padding:20px">
-        <div style="width:32px;height:32px;background:#059669;border-radius:6px;margin:0 0 12px"></div>
-        <div style="font-size:14px;font-weight:900;letter-spacing:.5px;margin-bottom:2px">传令官</div>
-        <div style="font-size:9px;color:#34d399;letter-spacing:2px;margin-bottom:14px">HERALD</div>
-        <div style="font-size:11px;color:var(--tx3);line-height:1.9">
-          <div style="color:var(--tx2);margin-bottom:4px;font-weight:600">触发：</div>
-          <div style="padding-left:8px;border-left:2px solid rgba(5,150,105,.3);color:var(--tx2);margin-bottom:10px">BNB 大涨 &gt;5%<br>热度处于峰值</div>
-          <div style="color:var(--tx2);margin-bottom:4px;font-weight:600">策略：</div>
-          <div style="padding-left:8px;border-left:2px solid rgba(5,150,105,.3);color:var(--tx2)">造势狂欢趁热打<br>最大化参与人数</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- FUND SAFETY -->
-  <div style="margin-bottom:56px">
-    <div style="font-size:9px;font-weight:700;letter-spacing:4px;color:var(--tx3);text-transform:uppercase;margin-bottom:24px">FUND SAFETY &nbsp;·&nbsp; 资金安全</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-      <div style="background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.15);border-radius:16px;padding:20px">
-        <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:#34d399;margin-bottom:14px">Agent 能做</div>
-        <div style="display:flex;flex-direction:column;gap:9px;font-size:12px;color:var(--tx2)">
-          <div style="display:flex;gap:8px"><span style="color:#34d399;flex-shrink:0">◆</span>从 taxPool 发布任务</div>
-          <div style="display:flex;gap:8px"><span style="color:#34d399;flex-shrink:0">◆</span>调用合约白名单函数</div>
-          <div style="display:flex;gap:8px"><span style="color:#34d399;flex-shrink:0">◆</span>支付交易 Gas 费用</div>
-          <div style="display:flex;gap:8px"><span style="color:#34d399;flex-shrink:0">◆</span>自动退款过期任务</div>
-        </div>
-      </div>
-      <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:16px;padding:20px">
-        <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:#f87171;margin-bottom:14px">Agent 不能做</div>
-        <div style="display:flex;flex-direction:column;gap:9px;font-size:12px;color:var(--tx2)">
-          <div style="display:flex;gap:8px"><span style="color:#f87171;flex-shrink:0">×</span>提取 taxPool 资金</div>
-          <div style="display:flex;gap:8px"><span style="color:#f87171;flex-shrink:0">×</span>修改合约规则</div>
-          <div style="display:flex;gap:8px"><span style="color:#f87171;flex-shrink:0">×</span>用自己的钱发任务</div>
-          <div style="display:flex;gap:8px"><span style="color:#f87171;flex-shrink:0">×</span>绕过合约直接转账</div>
-        </div>
-      </div>
-    </div>
-    <div style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:14px 18px;font-size:12px;color:var(--tx2);line-height:1.9">taxPool 锁在 <strong style="color:var(--tx)">AgentRegistry 合约</strong>，任何人（包括 Agent 本身）无法直接提取。奖励只能通过合约函数定向发放给任务完成者，全程链上可查，代码即规则。</div>
-  </div>
-
-
-  <!-- HOW IT WORKS: 完整决策流程 -->
-  <div style="margin-bottom:56px">
-    <div style="font-size:9px;font-weight:700;letter-spacing:4px;color:var(--tx3);text-transform:uppercase;margin-bottom:8px">DECISION FLOW &nbsp;·&nbsp; 完整决策示例</div>
-    <div style="font-size:12px;color:var(--tx3);margin-bottom:24px;line-height:1.8">以下是一个真实场景：某代币委托 Agent 后，一次完整的 3 分钟循环内发生了什么。</div>
-    <div style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:20px;overflow:hidden">
-      <div style="padding:20px 24px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:16px;align-items:flex-start">
-        <div style="flex-shrink:0;width:28px;height:28px;background:rgba(99,102,241,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--p)">1</div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--tx);margin-bottom:4px">采集信号 &nbsp;<span style="font-weight:400;color:var(--tx3)">T=0:00</span></div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8">Agent 读取 BNB 报价 <strong style="color:var(--tx)">+2.3%</strong>，资金费率 <strong style="color:var(--tx)">+0.012%</strong>（偏多但未过热）；从 DexScreener 读取该代币 10m 成交量 <strong style="color:var(--tx)">1.8×</strong> 均值（未达峰值阈值 3×）；任务完成率 <strong style="color:var(--tx)">55%</strong>，taxPool 余额 <strong style="color:var(--tx)">0.04 BNB（BSC）</strong>。</div>
-        </div>
-      </div>
-      <div style="padding:20px 24px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:16px;align-items:flex-start">
-        <div style="flex-shrink:0;width:28px;height:28px;background:rgba(59,130,246,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#3b82f6">2</div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--tx);margin-bottom:4px">规则匹配 &nbsp;<span style="font-weight:400;color:var(--tx3)">T=0:01</span></div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8">依次检查 5 条触发规则：热度峰值（否，1.8× &lt; 3×）→ 抄底（否，未跌）→ BNB恐慌（否，BNB涨）→ <strong style="color:#34d399">BNB 上涨联动（命中！BNB +2.3% &gt; +5%？否，未达）</strong> → 成交量萎缩（否，量正常）。全部未命中，进入 LLM 阶段。</div>
-        </div>
-      </div>
-      <div style="padding:20px 24px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:16px;align-items:flex-start">
-        <div style="flex-shrink:0;width:28px;height:28px;background:rgba(99,102,241,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--p)">3</div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--tx);margin-bottom:4px">LLM 推理 &nbsp;<span style="font-weight:400;color:var(--tx3)">T=0:02</span></div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8">将全量信号组装成 Prompt 发送给 GPT-5.4：<span style="font-family:monospace;font-size:11px;color:var(--p);background:rgba(99,102,241,.08);padding:2px 6px;border-radius:4px">BNB小涨，量适中，完成率中等，人格=军师</span>。模型输出：发布<strong style="color:var(--tx)">持仓任务</strong>，奖励 <strong style="color:var(--tx)">0.0018 Gas 代币</strong>，窗口期 <strong style="color:var(--tx)">20 分钟</strong>，持仓门槛 <strong style="color:var(--tx)">888万 token</strong>。</div>
-        </div>
-      </div>
-      <div style="padding:20px 24px;display:flex;gap:16px;align-items:flex-start">
-        <div style="flex-shrink:0;width:28px;height:28px;background:rgba(52,211,153,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#34d399">4</div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--tx);margin-bottom:4px">链上执行 &nbsp;<span style="font-weight:400;color:var(--tx3)">T=0:03</span></div>
-          <div style="font-size:12px;color:var(--tx2);line-height:1.8">Agent 签名调用 <span style="font-family:monospace;font-size:11px;color:var(--p);background:rgba(99,102,241,.08);padding:2px 6px;border-radius:4px">createTask()</span>，从 taxPool 扣款 0.009 Gas 代币（5 人 × 0.0018），链上记录任务 ID 写入日志。20 分钟后若未满员，合约自动退款，进入下一轮循环。</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FAQ -->
-  <div style="margin-bottom:56px">
-    <div style="font-size:9px;font-weight:700;letter-spacing:4px;color:var(--tx3);text-transform:uppercase;margin-bottom:24px">FAQ &nbsp;·&nbsp; 常见问题</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <details style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:16px 20px;cursor:pointer">
-        <summary style="font-size:13px;font-weight:700;color:var(--tx);list-style:none;display:flex;justify-content:space-between;align-items:center">Agent 会不会乱发任务烧光预算？<span style="color:var(--tx3);font-size:16px">+</span></summary>
-        <div style="font-size:12px;color:var(--tx2);line-height:1.9;margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.06)">不会。每次发任务前，Agent 会检查 <strong style="color:var(--tx)">taxPool 或 job.budget 余额是否充足</strong>。单次奖励上限由委托参数决定，Agent 无法超出。若余额不足以支付一次完整任务，Agent 跳过本轮，等待下次循环。</div>
-      </details>
-      <details style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:16px 20px;cursor:pointer">
-        <summary style="font-size:13px;font-weight:700;color:var(--tx);list-style:none;display:flex;justify-content:space-between;align-items:center">Agent 私钥泄露了怎么办？<span style="color:var(--tx3);font-size:16px">+</span></summary>
-        <div style="font-size:12px;color:var(--tx2);line-height:1.9;margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.06)">Agent 私钥只能调用合约白名单函数（createTask、cancelTask 等），<strong style="color:var(--tx)">无法转账、无法提取 taxPool</strong>。即使私钥泄露，攻击者最多能：发布无效任务（会被合约校验拦截）、浪费少量 Gas。真正的资金在合约里，与 Agent 私钥完全隔离。</div>
-      </details>
-      <details style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:16px 20px;cursor:pointer">
-        <summary style="font-size:13px;font-weight:700;color:var(--tx);list-style:none;display:flex;justify-content:space-between;align-items:center">taxPool 里的钱我还能取出来吗？<span style="color:var(--tx3);font-size:16px">+</span></summary>
-        <div style="font-size:12px;color:var(--tx2);line-height:1.9;margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.06)">taxPool 来自 four.meme 交易税，属于平台公共资金，<strong style="color:var(--tx)">任何人都无法单方面提取</strong>，包括项目方和 Seki 团队。委托方存入的 job.budget 可通过 <strong style="color:var(--tx)">cancelJob → claimRefund</strong> 退回，到期自动退款，链上可查。</div>
-      </details>
-      <details style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:16px 20px;cursor:pointer">
-        <summary style="font-size:13px;font-weight:700;color:var(--tx);list-style:none;display:flex;justify-content:space-between;align-items:center">LLM 会不会输出有害内容或异常任务？<span style="color:var(--tx3);font-size:16px">+</span></summary>
-        <div style="font-size:12px;color:var(--tx2);line-height:1.9;margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.06)">LLM 输出经过 <strong style="color:var(--tx)">严格的后处理校验</strong>：任务类型必须在枚举范围内（持仓/买入/早鸟/锦标赛），奖励金额不超过单次上限，窗口期在 10~45 分钟之间。解析失败或超限时，Agent 本轮跳过，不执行任何操作。</div>
-      </details>
-      <details style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:16px 20px;cursor:pointer">
-        <summary style="font-size:13px;font-weight:700;color:var(--tx);list-style:none;display:flex;justify-content:space-between;align-items:center">持仓任务怎么验证我真的持有了？<span style="color:var(--tx3);font-size:16px">+</span></summary>
-        <div style="font-size:12px;color:var(--tx2);line-height:1.9;margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.06)">合约在用户 <strong style="color:var(--tx)">claim 时</strong>调用代币合约的 <span style="font-family:monospace;font-size:11px;color:var(--p);background:rgba(99,102,241,.08);padding:2px 6px;border-radius:4px">balanceOf()</span>，查询当前持仓量是否达到门槛。无法提前锁定，无法转移后再查询，链上原子操作保证真实性。</div>
-      </details>
-    </div>
-  </div>
-
-<div style="margin-bottom:14px">
- <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);margin-bottom:5px"><span>极度恐慌</span><span>中性</span><span>极度贪婪</span></div>
- <div style="height:8px;background:linear-gradient(to right,#ef4444,#f59e0b,#34d399);border-radius:4px;position:relative"><div id="logic-sentiment-cursor" style="position:absolute;top:-4px;width:16px;height:16px;background:#fff;border-radius:50%;transform:translateX(-50%);left:50%;box-shadow:0 2px 6px rgba(0,0,0,.4);transition:left .8s ease"></div></div>
- <div style="text-align:center;margin-top:10px;font-size:36px;font-weight:900" id="logic-sentiment-score">--</div>
- </div>
- <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px">
- <div style="background:rgba(0,0,0,.03);border-radius:8px;padding:8px;text-align:center"><div style="font-size:9px;color:var(--tx3);margin-bottom:3px">BNB 24h</div><div style="font-size:13px;font-weight:800" id="logic-bnb">--</div></div>
- <div style="background:rgba(0,0,0,.03);border-radius:8px;padding:8px;text-align:center"><div style="font-size:9px;color:var(--tx3);margin-bottom:3px">资金费率</div><div style="font-size:13px;font-weight:800" id="logic-fr">--</div></div>
- <div style="background:rgba(0,0,0,.03);border-radius:8px;padding:8px;text-align:center"><div style="font-size:9px;color:var(--tx3);margin-bottom:3px">盘口比</div><div style="font-size:13px;font-weight:800" id="logic-ob">--</div></div>
- <div style="background:rgba(0,0,0,.03);border-radius:8px;padding:8px;text-align:center"><div style="font-size:9px;color:var(--tx3);margin-bottom:3px">鲸鱼(3m)</div><div style="font-size:13px;font-weight:800" id="logic-whale">--</div></div>
- </div>
- <div id="logic-reasoning" style="background:rgba(13,13,26,.8);border-radius:8px;padding:12px;font-size:11px;color:var(--tx2);line-height:1.8"><span style="color:var(--tx3)">获取中...</span></div>
- <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--tx3)">每 30 秒自动更新</div>
- 
- 
- 
-    </div>
-    </div>
-
-     <div id="docs-dev" style="display:none">
-      <div style="max-width:520px;margin:0 auto">
-      <!-- HEADER -->
-      <div style="text-align:center;margin-bottom:56px">
-        <div style="font-size:9px;font-weight:700;letter-spacing:4px;color:#34d399;text-transform:uppercase;margin-bottom:14px">OPEN SOURCE · REPRODUCIBLE</div>
-        <h1 style="font-size:clamp(28px,4vw,44px);font-weight:900;letter-spacing:-1.5px;margin-bottom:16px">开发者文档</h1>
-        <p style="font-size:14px;color:var(--tx2);max-width:500px;margin:0 auto;line-height:2">完整配置、合约 ABI、环境变量——<br>任何人都可以基于 Seki 架构复现或二次开发。</p>
-      </div>
-
-      <!-- 快速开始 -->
-      <div style="margin-bottom:48px">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#34d399;margin-bottom:16px">◆ &nbsp;QUICK START</div>
-        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
-          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-radius:16px">
-            <div style="font-size:22px;font-weight:900;color:#34d399;flex-shrink:0;width:32px">01</div>
-            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px">部署合约</div><div style="font-size:11px;color:var(--tx3);line-height:1.7">用 Hardhat 或 Remix 部署 MemeBountyV2 + AgentRegistry</div></div>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-radius:16px">
-            <div style="font-size:22px;font-weight:900;color:#34d399;flex-shrink:0;width:32px">02</div>
-            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px">配置 Agent</div><div style="font-size:11px;color:var(--tx3);line-height:1.7">填写 .env 环境变量，配置 RPC、私钥、LLM Key</div></div>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-radius:16px">
-            <div style="font-size:22px;font-weight:900;color:#34d399;flex-shrink:0;width:32px">03</div>
-            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px">启动服务</div><div style="font-size:11px;color:var(--tx3);line-height:1.7">node server.js + node loop.js，或用 systemd 管理</div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 环境变量 -->
-      <div style="margin-bottom:48px">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#34d399;margin-bottom:16px">◆ &nbsp;环境变量 (.env)</div>
-        <div style="background:#1e1e2e;border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:24px;font-family:monospace;font-size:12px;line-height:2;color:#a3e635;overflow-x:auto">
-          <div style="color:#6b7280;margin-bottom:4px"># 链配置</div>
-          <div>BSC_RPC_URL=https://bsc-dataseed.binance.org/</div>
-          <div style="color:#6b7280;margin-top:8px;margin-bottom:4px"># 合约地址（BSC）</div>
-          <div>CONTRACT_ADDRESS=0xea43a24a1baefb89494126c12fe8921b5b8e3d8d</div>
-          <div>REGISTRY_ADDRESS=0x8c98f9821299e531353dd004b722851cf1b4c8a2</div>
-          <div style="color:#6b7280;margin-top:8px;margin-bottom:4px"># Agent 配置</div>
-          <div>PRIVATE_KEY=&lt;your_agent_wallet_private_key&gt;</div>
-          <div>LLM_URL=https://&lt;your_llm_endpoint&gt;/v1/chat/completions</div>
-          <div>LLM_KEY=&lt;your_api_key&gt;</div>
-          <div>LLM_MODEL=gpt-4o</div>
-          <div style="color:#6b7280;margin-top:8px;margin-bottom:4px"># 可选</div>
-          <div></div>
-          <div>ADMIN_PASS=&lt;your_admin_password&gt;</div>
-        </div>
-      </div>
-
-      <!-- Agent 决策流程图 -->
-      <div style="margin-bottom:48px">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#34d399;margin-bottom:16px">◆ &nbsp;AGENT LOOP 架构</div>
-        <div style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:28px">
-          <!-- 流程节点 -->
-          <div style="display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:8px">
-            <div style="min-width:120px;flex:1;text-align:center;padding:16px 8px">
-              <div style="width:44px;height:44px;border-radius:12px;background:rgba(99,102,241,.2);border:1px solid rgba(99,102,241,.4);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:var(--p)">O</div>
-              <div style="font-size:12px;font-weight:800;margin-bottom:4px">OBSERVE</div>
-              <div style="font-size:10px;color:var(--tx3);line-height:1.6">链上数据<br>市场信号<br>BNB价格</div>
-            </div>
-            <div style="display:flex;align-items:center;color:var(--tx3);font-size:18px;padding:0 4px">→</div>
-            <div style="min-width:120px;flex:1;text-align:center;padding:16px 8px">
-              <div style="width:44px;height:44px;border-radius:12px;background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#60a5fa">T</div>
-              <div style="font-size:12px;font-weight:800;margin-bottom:4px">THINK</div>
-              <div style="font-size:10px;color:var(--tx3);line-height:1.6">触发规则<br>LLM 推理<br>人格系统</div>
-            </div>
-            <div style="display:flex;align-items:center;color:var(--tx3);font-size:18px;padding:0 4px">→</div>
-            <div style="min-width:120px;flex:1;text-align:center;padding:16px 8px">
-              <div style="width:44px;height:44px;border-radius:12px;background:rgba(52,211,153,.2);border:1px solid rgba(52,211,153,.4);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#34d399">A</div>
-              <div style="font-size:12px;font-weight:800;margin-bottom:4px">ACT</div>
-              <div style="font-size:10px;color:var(--tx3);line-height:1.6">发布链上任务<br>写入合约<br>SSE 推送前端</div>
-            </div>
-            <div style="display:flex;align-items:center;color:var(--tx3);font-size:18px;padding:0 4px">→</div>
-            <div style="min-width:120px;flex:1;text-align:center;padding:16px 8px">
-              <div style="width:44px;height:44px;border-radius:12px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.4);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#f59e0b">R</div>
-              <div style="font-size:12px;font-weight:800;margin-bottom:4px">REFUND</div>
-              <div style="font-size:10px;color:var(--tx3);line-height:1.6">自动退款<br>过期任务<br>链上核销</div>
-            </div>
-          </div>
-          <div style="margin-top:16px;padding:12px 16px;background:rgba(52,211,153,.04);border-radius:10px;font-size:11px;color:var(--tx3);text-align:center">每 3 分钟执行一次 · BSC 链 · 资金始终在合约中，Agent 无法动用</div>
-        </div>
-      </div>
-
-      <!-- 合约 ABI 关键接口 -->
-      <div style="margin-bottom:48px">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#34d399;margin-bottom:16px">◆ &nbsp;核心合约接口</div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div style="background:#1e1e2e;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:20px">
-            <div style="font-size:11px;font-weight:700;color:var(--p);margin-bottom:12px">MemeBountyV5</div>
-            <div style="font-family:monospace;font-size:11px;line-height:2;color:var(--tx2)">
-              <div style="color:#60a5fa">createTask(address token, uint8 taskType, uint256 rewardPerWinner, uint256 maxWinners, uint256 deadline)</div>
-              <div style="color:#60a5fa">claimHold(uint256 id)</div>
-              <div style="color:#60a5fa">claimBuy(uint256 id)</div>
-              <div style="color:#60a5fa">claimFree(uint256 id)</div>
-              <div style="color:#60a5fa">cancelTask(uint256 id)</div>
-            </div>
-          </div>
-          <div style="background:#1e1e2e;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:20px">
-            <div style="font-size:11px;font-weight:700;color:#818cf8;margin-bottom:12px">AgentRegistry</div>
-            <div style="font-family:monospace;font-size:11px;line-height:2;color:var(--tx2)">
-              <div style="color:#818cf8">createJob(address token, uint8 agentType, uint256 durationHours)</div>
-              <div style="color:#818cf8">setBudget(uint256 jobId)</div>
-              <div style="color:#818cf8">fundJob(uint256 jobId)</div>
-              <div style="color:#818cf8">cancelJob(uint256 jobId)</div>
-              <div style="color:#818cf8">claimRefund(uint256 jobId)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Personal Agent API -->
-      <div style="margin-bottom:48px">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#34d399;margin-bottom:16px">◆ &nbsp;PERSONAL AGENT API</div>
-        <div style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:28px">
-
-          <!-- /api/chat -->
-          <div style="margin-bottom:24px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-              <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:5px;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);color:#34d399">POST</span>
-              <span style="font-family:monospace;font-size:13px;color:var(--tx)">/api/chat</span>
-              <span style="font-size:10px;color:var(--tx3)">AI 对话 · 策略解析</span>
-            </div>
-            <div style="background:rgba(13,13,26,.8);border-radius:10px;padding:14px;font-family:monospace;font-size:11px;color:#818cf8;line-height:1.8">
-              <span style="color:var(--tx3)">// Request</span><br>
-              { "messages": [{ "role": "user", "content": "帮我配置策略..." }] }<br><br>
-              <span style="color:var(--tx3)">// Response: SSE stream</span><br>
-              data: {"choices":[{"delta":{"content":"..."}}]}<br>
-              data: [DONE]
-            </div>
-            <div style="font-size:11px;color:var(--tx3);margin-top:8px;line-height:1.7">SSE 流式输出。System prompt 注入策略解析指令，AI 返回含 autoExecute JSON 的回复时，前端自动识别并应用策略。</div>
-          </div>
-
-          <!-- /api/agent-status -->
-          <div style="margin-bottom:24px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-              <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:5px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:#60a5fa">GET</span>
-              <span style="font-family:monospace;font-size:13px;color:var(--tx)">/api/agent-status</span>
-              <span style="font-size:10px;color:var(--tx3)">服务端 ODA Agent 状态</span>
-            </div>
-            <div style="background:rgba(13,13,26,.8);border-radius:10px;padding:14px;font-family:monospace;font-size:11px;color:#818cf8;line-height:1.8">
-              { "ok": true, "agents": { "observer": {...}, "decision": {...}, "executor": {...} },<br>
-              &nbsp;&nbsp;"lastDecision": { "action": "CREATE", "reason": "...", "source": "..." } }
-            </div>
-          </div>
-
-          <!-- pa-worker.js -->
-          <div>
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-              <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:#f59e0b">JS</span>
-              <span style="font-family:monospace;font-size:13px;color:var(--tx)">/pa-worker.js</span>
-              <span style="font-size:10px;color:var(--tx3)">Web Worker 自动执行器</span>
-            </div>
-            <div style="background:rgba(13,13,26,.8);border-radius:10px;padding:14px;font-family:monospace;font-size:11px;color:#818cf8;line-height:1.8">
-              <span style="color:var(--tx3)">// 启动 Worker</span><br>
-              const w = new Worker('/pa-worker.js');<br>
-              w.postMessage({ action: 'start', privateKey: pk, strategy: {...} });<br><br>
-              <span style="color:var(--tx3)">// Worker 消息类型</span><br>
-              scanning | found | need_sign | done | stopped | error | idle
-            </div>
-            <div style="font-size:11px;color:var(--tx3);margin-top:8px;line-height:1.7">独立后台线程，每3分钟调用 BSC RPC 扫描链上任务，发现符合策略的任务通过 <code style="background:rgba(0,0,0,.04);padding:1px 5px;border-radius:4px">need_sign</code> 消息通知主线程签名执行，服务器零介入。</div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- 复现步骤 -->
-      <div style="margin-bottom:48px">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#34d399;margin-bottom:16px">◆ &nbsp;完整复现步骤</div>
-        <div style="background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.08);border-radius:16px;overflow:hidden">
-          <div style="padding:16px 20px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:16px;align-items:flex-start">
-            <div style="width:24px;height:24px;border-radius:6px;background:rgba(52,211,153,.2);color:#34d399;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
-            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px">克隆 / 下载合约</div><div style="font-size:11px;color:var(--tx3)">下载 MemeBountyV2.sol 和 AgentRegistry.sol，通过 Remix IDE 或 Hardhat 编译部署到 BSC</div></div>
-          </div>
-          <div style="padding:16px 20px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:16px;align-items:flex-start">
-            <div style="width:24px;height:24px;border-radius:6px;background:rgba(52,211,153,.2);color:#34d399;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
-            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px">配置 .env</div><div style="font-size:11px;color:var(--tx3)">填写合约地址、Agent 钱包私钥、RPC URL、LLM API Key（支持任意 OpenAI 兼容接口）</div></div>
-          </div>
-          <div style="padding:16px 20px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:16px;align-items:flex-start">
-            <div style="width:24px;height:24px;border-radius:6px;background:rgba(52,211,153,.2);color:#34d399;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
-            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px">启动后端</div><div style="font-size:11px;color:var(--tx3)">npm install && node server.js（端口 3000）+ node loop.js（Agent 每 3 分钟自动运行）</div></div>
-          </div>
-          <div style="padding:16px 20px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:16px;align-items:flex-start">
-            <div style="width:24px;height:24px;border-radius:6px;background:rgba(52,211,153,.2);color:#34d399;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
-            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px">发币并委托</div><div style="font-size:11px;color:var(--tx3)">在「发币」页用 MetaMask 发射 meme 代币（BSC: four.meme），然后到「委托」页选择 Agent 类型并注资</div></div>
-          </div>
-          <div style="padding:16px 20px;display:flex;gap:16px;align-items:flex-start">
-            <div style="width:24px;height:24px;border-radius:6px;background:rgba(52,211,153,.2);color:#34d399;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
-            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px">Agent 自动运行</div><div style="font-size:11px;color:var(--tx3)">3 分钟后 Agent 开始观察市场信号，根据 5 条触发规则自动发布链上任务，用户完成任务可领取奖励</div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 下载 & 链接 -->
-      <div style="margin-bottom:40px">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#34d399;margin-bottom:16px">◆ &nbsp;下载 & 资源</div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <a href="/contract" style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-radius:14px;text-decoration:none;color:var(--tx)">
-            <div style="width:36px;height:36px;border-radius:10px;background:rgba(52,211,153,.15);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">◈</div>
-            <div><div style="font-size:13px;font-weight:700">MemeBountyV2.sol</div><div style="font-size:11px;color:var(--tx3)">下载主合约源码</div></div>
-          </a>
-          <a href="/registry" style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-radius:14px;text-decoration:none;color:var(--tx)">
-            <div style="width:36px;height:36px;border-radius:10px;background:rgba(52,211,153,.15);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">◈</div>
-            <div><div style="font-size:13px;font-weight:700">AgentRegistry.sol</div><div style="font-size:11px;color:var(--tx3)">下载 Agent 注册合约</div></div>
-          </a>
-          <a href="https://bscscan.com/address/0xea43a24a1baefb89494126c12fe8921b5b8e3d8d" target="_blank" style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:14px;text-decoration:none;color:var(--tx)">
-            <div style="width:36px;height:36px;border-radius:10px;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">◈</div>
-            <div><div style="font-size:13px;font-weight:700">BSC 合约 ↗</div><div style="font-size:11px;color:var(--tx3)">BSCScan 浏览器查看</div></div>
-          </a>
-        </div>
-      </div>
-      </div><!-- /max-width wrapper -->
-    </div>
+<div class="doc-grid">
+<div class="doc-card" onclick="showDoc('quickstart')" style="cursor:pointer">
+<h4>快速开始</h4>
+<p>5 分钟内运行 SEKI。连接你的第一个代理并观察它的学习过程。</p>
 </div>
-  <div id="docs-roadmap" style="display:none">
-    <div style="max-width:860px;margin:0 auto;padding:32px 20px 60px">
-      <h2 style="text-align:center;font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--tx1);margin-bottom:8px">Roadmap</h2>
-      <p style="text-align:center;color:var(--tx3);font-size:13px;margin-bottom:48px;letter-spacing:1px">Seki Protocol · 四阶段演进计划</p>
-      <div style="position:relative;padding-left:32px">
-        <!-- vertical line -->
-        <div style="position:absolute;left:10px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,rgba(99,102,241,.6),rgba(99,102,241,.1))"></div>
-
-        <!-- Phase 1 -->
-        <div style="position:relative;margin-bottom:40px">
-          <div style="position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--p);box-shadow:0 0 10px rgba(99,102,241,.8)"></div>
-          <div style="background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:24px 28px;backdrop-filter:blur(8px)">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-              <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--p);background:rgba(99,102,241,.12);padding:3px 10px;border-radius:20px;border:1px solid rgba(99,102,241,.3)">Phase 1</span>
-              <span style="font-size:13px;font-weight:700;color:#4ade80">已完成 ✅</span>
-            </div>
-            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:13px"><span style="color:#4ade80;margin-top:1px">✓</span>MemeBountyV5 合约上线 BSC 主网</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:13px"><span style="color:#4ade80;margin-top:1px">✓</span>Agent 委托系统（ERC-8183）上线</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:13px"><span style="color:#4ade80;margin-top:1px">✓</span>任务大厅：持仓 / 买入 / 早鸟 / 推荐 / 锦标赛 5 种任务类型</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:13px"><span style="color:#4ade80;margin-top:1px">✓</span>前端 seki-ai.com 上线</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:13px"><span style="color:#4ade80;margin-top:1px">✓</span>AgentReportHook 链上工作记录</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Phase 2 -->
-        <div style="position:relative;margin-bottom:40px">
-          <div style="position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;background:rgba(251,191,36,1);box-shadow:0 0 10px rgba(251,191,36,.7)"></div>
-          <div style="background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.2);border-radius:16px;padding:24px 28px;backdrop-filter:blur(8px)">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-              <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#d97706;background:rgba(251,191,36,.1);padding:3px 10px;border-radius:20px;border:1px solid rgba(251,191,36,.3)">Phase 2</span>
-              <span style="font-size:13px;font-weight:700;color:#d97706">进行中 🔄</span>
-              <span style="font-size:11px;color:var(--tx3);margin-left:auto">Q2 2026</span>
-            </div>
-            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:13px"><span style="color:#d97706;margin-top:1px">◎</span>Agent 自动扫链 + 自动发任务（createTaskFromTax）</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:13px"><span style="color:#d97706;margin-top:1px">◎</span>税收池机制上线（four.meme 税收自动注入）</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:13px"><span style="color:#d97706;margin-top:1px">◎</span>多 Agent 市场：strategist / hunter / analyst / guardian</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:13px"><span style="color:#d97706;margin-top:1px">◎</span>委托一键发起（createJobAndFund）</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx2);font-size:13px"><span style="color:#d97706;margin-top:1px">◎</span>移动端适配优化</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Phase 3 -->
-        <div style="position:relative;margin-bottom:40px">
-          <div style="position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;background:rgba(99,102,241,.8);box-shadow:0 0 10px rgba(99,102,241,.5)"></div>
-          <div style="background:rgba(99,102,241,.04);border:1px solid rgba(99,102,241,.15);border-radius:16px;padding:24px 28px;backdrop-filter:blur(8px)">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-              <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#818cf8;background:rgba(99,102,241,.1);padding:3px 10px;border-radius:20px;border:1px solid rgba(99,102,241,.25)">Phase 3</span>
-              <span style="font-size:13px;font-weight:700;color:#818cf8">规划中 📋</span>
-              <span style="font-size:11px;color:var(--tx3);margin-left:auto">Q3 2026</span>
-            </div>
-            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx3);font-size:13px"><span style="color:#818cf8;margin-top:1px">○</span>SEKI 治理代币发行</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx3);font-size:13px"><span style="color:#818cf8;margin-top:1px">○</span>Agent 评分系统（链上信誉积分）</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx3);font-size:13px"><span style="color:#818cf8;margin-top:1px">○</span>DAO 投票：Agent 准入 / 任务参数</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx3);font-size:13px"><span style="color:#818cf8;margin-top:1px">○</span>跨链支持（Base / Arbitrum）</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx3);font-size:13px"><span style="color:#818cf8;margin-top:1px">○</span>Agent SDK 开放给第三方开发者</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Phase 4 -->
-        <div style="position:relative">
-          <div style="position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;background:rgba(0,0,0,.10);border:1px solid rgba(0,0,0,.15)"></div>
-          <div style="background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:24px 28px;backdrop-filter:blur(8px)">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-              <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);background:rgba(0,0,0,.035);padding:3px 10px;border-radius:20px;border:1px solid rgba(0,0,0,.08)">Phase 4</span>
-              <span style="font-size:13px;font-weight:700;color:var(--tx3)">远期愿景 🚀</span>
-              <span style="font-size:11px;color:var(--tx3);margin-left:auto">Q4 2026+</span>
-            </div>
-            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx3);font-size:13px"><span style="margin-top:1px">○</span>Agent 市场开放（任何人可注册 Agent）</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx3);font-size:13px"><span style="margin-top:1px">○</span>AI × 链上数据深度融合（持仓分析 / 情绪预测）</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx3);font-size:13px"><span style="margin-top:1px">○</span>B2B API：项目方直接接入 Seki Agent 做市营销</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx3);font-size:13px"><span style="margin-top:1px">○</span>多链 Agent 协作网络</li>
-              <li style="display:flex;align-items:flex-start;gap:10px;color:var(--tx3);font-size:13px"><span style="margin-top:1px">○</span>Seki Protocol 白皮书 v2</li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-<div class="pw2" id="panel">
- <div class="pn">
- <!-- 面板头部 -->
- <div class="pn-header">
- <button class="pc" onclick="closeP()">
- <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
- </button>
- <div class="pn-header-center">
- <div class="pn-tag" id="ptask-type">任务</div>
- </div>
- <div class="pn-header-right">
- <span class="pn-id" id="ptask-id">#—</span>
- </div>
- </div>
- <!-- 奖励大显示区 -->
- <div class="pn-reward-hero">
- <div class="pn-reward-val" id="ptask-reward">—</div>
- <div class="pn-reward-sub">每人奖励</div>
- <div class="pn-reward-progress">
- <div class="pn-reward-bar" id="ptask-bar"></div>
- </div>
- <div class="pn-reward-stat">
- <span id="ptask-claimed">0</span> / <span id="ptask-max">0</span> 已领
- <span style="margin:0 8px;opacity:.3">·</span>
- 剩余 <span id="ptask-remain">0</span> 名额
- </div>
- </div>
- <!-- 面板主体 -->
- <div id="pbody"></div>
- <!-- 标题（隐藏，兼容旧代码） -->
- <h3 id="ptitle" style="display:none"></h3>
- </div>
+<div class="doc-card" onclick="showDoc('memory')" style="cursor:pointer">
+<h4>记忆系统</h4>
+<p>了解 SEKI 如何通过向量嵌入跨会话存储和检索上下文。</p>
 </div>
-<div class="tw" id="tw"></div>
+<div class="doc-card" onclick="showDoc('skills')" style="cursor:pointer">
+<h4>技能系统</h4>
+<p>模块化能力单元，代理可以自主学习、组合和进化。</p>
+</div>
+<div class="doc-card" onclick="showDoc('architecture')" style="cursor:pointer">
+<h4>架构</h4>
+<p>深入了解 SEKI 的神经网络、决策引擎和多链集成层。</p>
+</div>
+<div class="doc-card" onclick="showDoc('api')" style="cursor:pointer">
+<h4>API 参考</h4>
+<p>完整的 REST API 文档，用于与 SEKI 平台集成。</p>
+</div>
+<div class="doc-card" onclick="showDoc('catalog')" style="cursor:pointer">
+<h4>技能目录</h4>
+<p>浏览 50+ 预建技能，涵盖 DeFi、社交、分析和治理等领域。</p>
+</div>
+</div>
 
+<div class="doc-section">
+<h2>核心概念</h2>
+<div class="doc-grid">
+<div class="doc-card">
+<h4>持久记忆</h4>
+<p>不同于无状态聊天机器人，SEKI 代理记住一切 —— 对话、决策、结果。记忆以向量嵌入形式存储，支持语义搜索。</p>
+</div>
+<div class="doc-card">
+<h4>自我进化</h4>
+<p>代理通过“观察-反思-适应”循环持续改进。它们分析自身表现并生成新策略。</p>
+</div>
+<div class="doc-card">
+<h4>链上集成</h4>
+<p>原生支持多条区块链。代理可以读取合约、执行交易、自主参与治理。</p>
+</div>
+<div class="doc-card">
+<h4>技能组合</h4>
+<p>技能是原子能力单元。代理可以动态组合技能来处理复杂的多步骤任务，无需人工干预。</p>
+</div>
+</div>
+</div>
 
+<div class="doc-nav-bottom">
+<div></div>
+<button class="doc-nav-btn" onclick="showDoc('quickstart')">快速开始 &rarr;</button>
+</div>
+</div>
 
+<!-- QUICKSTART -->
+<div class="doc-panel" id="doc-quickstart">
+<div class="doc-hero">
+<h1>快速开始</h1>
+<p>让你的第一个 SEKI 代理运行起来并连接到区块链。</p>
+</div>
+<div class="doc-section">
+<h2>1. 安装 SEKI</h2>
+<div class="doc-code"><span class="cm"># Install via npm</span>
+<span class="kw">npm</span> install -g @seki/cli
+
+<span class="cm"># Or clone from source</span>
+<span class="kw">git</span> clone https://github.com/seki-ai/seki.git
+<span class="kw">cd</span> seki && <span class="kw">npm</span> install</div>
+
+<h2>2. 初始化代理</h2>
+<div class="doc-code"><span class="cm"># Create a new agent workspace</span>
+<span class="kw">seki</span> init my-agent
+
+<span class="cm"># Configure your API keys</span>
+<span class="kw">cd</span> my-agent
+<span class="kw">cp</span> .env.example .env
+<span class="cm"># Edit .env with your keys</span></div>
+
+<h2>3. 启动代理</h2>
+<div class="doc-code"><span class="cm"># Launch in development mode</span>
+<span class="kw">seki</span> start --dev
+
+<span class="cm"># Agent will initialize memory, load skills,</span>
+<span class="cm"># and connect to configured chains</span>
+<span class="st">✓ Memory system initialized</span>
+<span class="st">✓ Loaded 12 skills</span>
+<span class="st">✓ Connected to BSC mainnet</span>
+<span class="st">✓ Agent ready at http://localhost:3000</span></div>
+
+<div class="doc-tip">代理启动时带有默认技能集。它会根据你分配的任务自主学习和进化新技能。</div>
+
+<h2>4. 第一次交互</h2>
+<p>打开代理仪表盘并尝试以下命令：</p>
+<div class="doc-code"><span class="cm">// Check agent status</span>
+<span class="fn">&gt;</span> status
+
+<span class="cm">// Ask it to analyze a token</span>
+<span class="fn">&gt;</span> analyze 0x1234...abcd on BSC
+
+<span class="cm">// Set up monitoring</span>
+<span class="fn">&gt;</span> watch wallet 0xdead...beef for large transfers</div>
+
+<h2>5. 连接区块链</h2>
+<p>在配置中添加区块链连接：</p>
+<div class="doc-code"><span class="cm"># config.yaml</span>
+<span class="kw">chains</span>:
+  <span class="kw">bsc</span>:
+    <span class="kw">rpc</span>: <span class="st">"https://bsc-dataseed.binance.org"</span>
+    <span class="kw">wallet</span>: <span class="st">"${WALLET_ADDRESS}"</span>
+  <span class="kw">xlayer</span>:
+    <span class="kw">rpc</span>: <span class="st">"https://rpc.xlayer.tech"</span>
+    <span class="kw">wallet</span>: <span class="st">"${WALLET_ADDRESS}"</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('overview')">&larr; 概览</button>
+<button class="doc-nav-btn" onclick="showDoc('installation')">安装指南 &rarr;</button>
+</div>
+</div>
+
+<!-- INSTALLATION -->
+<div class="doc-panel" id="doc-installation">
+<div class="doc-hero">
+<h1>安装指南</h1>
+<p>系统要求和各平台的详细安装教程。</p>
+</div>
+<div class="doc-section">
+<h2>系统要求</h2>
+<table class="doc-table">
+<tr><th>组件</th><th>最低要求</th><th>推荐配置</th></tr>
+<tr><td>Node.js</td><td>18.x</td><td>20.x LTS</td></tr>
+<tr><td>内存</td><td>2 GB</td><td>8 GB</td></tr>
+<tr><td>磁盘</td><td>1 GB</td><td>10 GB（用于记忆存储）</td></tr>
+<tr><td>操作系统</td><td>Linux, macOS, WSL2</td><td>Ubuntu 22.04+</td></tr>
+</table>
+
+<h2>NPM 安装</h2>
+<div class="doc-code"><span class="kw">npm</span> install -g @seki/cli
+<span class="kw">seki</span> --version</div>
+
+<h2>从源码安装</h2>
+<div class="doc-code"><span class="kw">git</span> clone https://github.com/seki-ai/seki.git
+<span class="kw">cd</span> seki
+<span class="kw">npm</span> install
+<span class="kw">npm</span> run build
+<span class="kw">npm</span> link</div>
+
+<h2>Docker</h2>
+<div class="doc-code"><span class="kw">docker</span> pull seki/agent:latest
+<span class="kw">docker</span> run -d \
+  --name seki-agent \
+  -p 3000:3000 \
+  -v ./data:/app/data \
+  -e OPENAI_API_KEY=sk-... \
+  seki/agent:latest</div>
+
+<h2>验证安装</h2>
+<div class="doc-code"><span class="kw">seki</span> doctor
+<span class="st">✓ Node.js 20.11.0</span>
+<span class="st">✓ npm 10.2.4</span>
+<span class="st">✓ Git 2.43.0</span>
+<span class="st">✓ Memory store writable</span>
+<span class="st">✓ Network connectivity OK</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('quickstart')">&larr; 快速开始</button>
+<button class="doc-nav-btn" onclick="showDoc('configuration')">配置说明 &rarr;</button>
+</div>
+</div>
+
+<!-- CONFIGURATION -->
+<div class="doc-panel" id="doc-configuration">
+<div class="doc-hero">
+<h1>配置说明</h1>
+<p>配置你的 SEKI 代理的行为、连接和能力。</p>
+</div>
+<div class="doc-section">
+<h2>配置文件</h2>
+<p>SEKI 使用代理工作区根目录下的 <code>config.yaml</code>：</p>
+<div class="doc-code"><span class="cm"># config.yaml</span>
+<span class="kw">agent</span>:
+  <span class="kw">name</span>: <span class="st">"my-seki-agent"</span>
+  <span class="kw">model</span>: <span class="st">"gpt-4"</span>
+  <span class="kw">temperature</span>: <span class="st">0.7</span>
+  <span class="kw">max_tokens</span>: <span class="st">4096</span>
+
+<span class="kw">memory</span>:
+  <span class="kw">backend</span>: <span class="st">"vector"</span>     <span class="cm"># vector | sqlite | redis</span>
+  <span class="kw">embedding_model</span>: <span class="st">"text-embedding-3-small"</span>
+  <span class="kw">max_entries</span>: <span class="st">100000</span>
+  <span class="kw">auto_consolidate</span>: <span class="st">true</span>
+
+<span class="kw">skills</span>:
+  <span class="kw">auto_load</span>: <span class="st">true</span>
+  <span class="kw">evolution</span>: <span class="st">true</span>
+  <span class="kw">sandbox</span>: <span class="st">true</span>
+
+<span class="kw">chains</span>:
+  <span class="kw">bsc</span>:
+    <span class="kw">rpc</span>: <span class="st">"https://bsc-dataseed.binance.org"</span>
+    <span class="kw">chain_id</span>: <span class="st">56</span>
+  <span class="kw">xlayer</span>:
+    <span class="kw">rpc</span>: <span class="st">"https://rpc.xlayer.tech"</span>
+    <span class="kw">chain_id</span>: <span class="st">196</span></div>
+
+<h2>环境变量</h2>
+<table class="doc-table">
+<tr><th>变量</th><th>说明</th><th>必填</th></tr>
+<tr><td><code>OPENAI_API_KEY</code></td><td>OpenAI LLM API 密钥</td><td>是</td></tr>
+<tr><td><code>WALLET_PRIVATE_KEY</code></td><td>链上操作的钱包密钥</td><td>链上功能需要</td></tr>
+<tr><td><code>SEKI_PORT</code></td><td>服务端口（默认 3000）</td><td>否</td></tr>
+<tr><td><code>SEKI_LOG_LEVEL</code></td><td>debug | info | warn | error</td><td>否</td></tr>
+</table>
+
+<div class="doc-warn">切勿将 <code>.env</code> 文件或私钥提交到版本控制。生产环境中请使用环境变量或密钥管理器。</div>
+
+<h2>技能配置</h2>
+<div class="doc-code"><span class="cm"># Enable specific skills</span>
+<span class="kw">skills</span>:
+  <span class="kw">enabled</span>:
+    - <span class="st">defi-analyzer</span>
+    - <span class="st">token-scanner</span>
+    - <span class="st">governance-voter</span>
+    - <span class="st">social-monitor</span>
+  <span class="kw">disabled</span>:
+    - <span class="st">auto-trader</span>  <span class="cm"># Manual approval required</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('installation')">&larr; 安装指南</button>
+<button class="doc-nav-btn" onclick="showDoc('memory')">记忆系统 &rarr;</button>
+</div>
+</div>
+
+<!-- MEMORY -->
+<div class="doc-panel" id="doc-memory">
+<div class="doc-hero">
+<h1>记忆系统</h1>
+<p>SEKI 的持久记忆架构实现了跨会话的真正上下文感知。</p>
+</div>
+<div class="doc-section">
+<h2>架构</h2>
+<p>记忆系统分三层运作：</p>
+<div class="doc-grid">
+<div class="doc-card">
+<h4>工作记忆</h4>
+<p>当前对话上下文。访问快速，容量有限。由上下文窗口自动管理。</p>
+</div>
+<div class="doc-card">
+<h4>情景记忆</h4>
+<p>以向量嵌入形式存储。通过语义搜索检索过去的交互、决策和结果。</p>
+</div>
+<div class="doc-card">
+<h4>长期记忆</h4>
+<p>整合的见解和学习到的模式。通过定期反思从情景记忆中自动提练。</p>
+</div>
+</div>
+
+<h2>工作原理</h2>
+<div class="doc-code"><span class="cm">// Store a memory</span>
+<span class="kw">await</span> agent.memory.<span class="fn">store</span>({
+  <span class="kw">content</span>: <span class="st">"User prefers conservative DeFi strategies"</span>,
+  <span class="kw">type</span>: <span class="st">"preference"</span>,
+  <span class="kw">importance</span>: <span class="st">0.8</span>,
+  <span class="kw">tags</span>: [<span class="st">"user"</span>, <span class="st">"defi"</span>, <span class="st">"risk"</span>]
+});
+
+<span class="cm">// Semantic search</span>
+<span class="kw">const</span> results = <span class="kw">await</span> agent.memory.<span class="fn">search</span>({
+  <span class="kw">query</span>: <span class="st">"What does the user think about yield farming?"</span>,
+  <span class="kw">limit</span>: <span class="st">5</span>,
+  <span class="kw">threshold</span>: <span class="st">0.7</span>
+});</div>
+
+<h2>自动整合</h2>
+<p>启用后，代理会定期回顾近期记忆并提练为长期见解：</p>
+<ul>
+<li>识别反复出现的模式和偏好</li>
+<li>移除冗余或过时的条目</li>
+<li>生成更高重要度的摘要记忆</li>
+<li>维护实体关系的知识图谱</li>
+</ul>
+
+<div class="doc-tip">记忆整合在空闲时段运行，以避免影响响应时间。通过 <code>memory.consolidation_interval</code> 配置频率。</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('configuration')">&larr; 配置说明</button>
+<button class="doc-nav-btn" onclick="showDoc('skills')">技能引擎 &rarr;</button>
+</div>
+</div>
+
+<!-- SKILLS -->
+<div class="doc-panel" id="doc-skills">
+<div class="doc-hero">
+<h1>技能引擎</h1>
+<p>赋予代理专业能力的模块化能力单元。</p>
+</div>
+<div class="doc-section">
+<h2>什么是技能？</h2>
+<p>技能是独立的能力模块。每个技能定义了代理能做什么、何时激活、如何执行。代理可以自主学习、组合和进化技能。</p>
+
+<h2>技能结构</h2>
+<div class="doc-code"><span class="kw">my-skill/</span>
+├── SKILL.md         <span class="cm"># Description & instructions</span>
+├── index.js         <span class="cm"># Entry point</span>
+├── config.yaml      <span class="cm"># Skill configuration</span>
+├── tests/           <span class="cm"># Skill tests</span>
+└── references/      <span class="cm"># Supporting data</span></div>
+
+<h2>内置分类</h2>
+<div class="doc-grid">
+<div class="doc-card">
+<h4><span class="doc-badge blue">DeFi</span></h4>
+<p>代币分析、流动性监控、收益优化、DEX 聚合、投资组合再平衡。</p>
+</div>
+<div class="doc-card">
+<h4><span class="doc-badge green">社交</span></h4>
+<p>Twitter 监控、情绪分析、社区管理、内容生成。</p>
+</div>
+<div class="doc-card">
+<h4><span class="doc-badge amber">治理</span></h4>
+<p>提案跟踪、投票委托、财库分析、DAO 参与。</p>
+</div>
+<div class="doc-card">
+<h4><span class="doc-badge blue">分析</span></h4>
+<p>链上数据分析、巨鲸跟踪、市场相关性、风险评估。</p>
+</div>
+</div>
+
+<h2>创建技能</h2>
+<div class="doc-code"><span class="cm"># Generate skill scaffold</span>
+<span class="kw">seki</span> skill create my-custom-skill
+
+<span class="cm"># Test the skill</span>
+<span class="kw">seki</span> skill test my-custom-skill
+
+<span class="cm"># Register with the agent</span>
+<span class="kw">seki</span> skill install ./my-custom-skill</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('memory')">&larr; 记忆系统</button>
+<button class="doc-nav-btn" onclick="showDoc('tools')">工具 &rarr;</button>
+</div>
+</div>
+
+<!-- TOOLS -->
+<div class="doc-panel" id="doc-tools">
+<div class="doc-hero">
+<h1>工具</h1>
+<p>扩展代理能力的外部集成和实用工具。</p>
+</div>
+<div class="doc-section">
+<h2>工具分类</h2>
+<table class="doc-table">
+<tr><th>分类</th><th>工具</th><th>说明</th></tr>
+<tr><td>链上</td><td>Web3 RPC, Etherscan, BSCScan</td><td>区块链数据和交易执行</td></tr>
+<tr><td>数据</td><td>CoinGecko, DeFiLlama, Dune</td><td>市场数据和分析 API</td></tr>
+<tr><td>社交</td><td>Twitter API, Discord, Telegram</td><td>社交平台集成</td></tr>
+<tr><td>存储</td><td>IPFS, Arweave, S3</td><td>去中心化和云存储</td></tr>
+<tr><td>计算</td><td>Sandbox, Docker, WASM</td><td>代码执行环境</td></tr>
+</table>
+
+<h2>使用工具</h2>
+<div class="doc-code"><span class="cm">// Tools are auto-injected based on skill requirements</span>
+<span class="kw">export default</span> {
+  <span class="kw">name</span>: <span class="st">"token-analyzer"</span>,
+  <span class="kw">tools</span>: [<span class="st">"web3"</span>, <span class="st">"coingecko"</span>, <span class="st">"etherscan"</span>],
+
+  <span class="kw">async</span> <span class="fn">execute</span>(ctx) {
+    <span class="kw">const</span> price = <span class="kw">await</span> ctx.tools.coingecko.<span class="fn">getPrice</span>(<span class="st">"bitcoin"</span>);
+    <span class="kw">const</span> txs = <span class="kw">await</span> ctx.tools.etherscan.<span class="fn">getTxList</span>(address);
+    <span class="kw">return</span> { price, txs };
+  }
+};</div>
+
+<h2>自定义工具</h2>
+<p>注册自定义工具以集成任何外部服务：</p>
+<div class="doc-code"><span class="kw">seki</span> tool register \
+  --name <span class="st">"my-api"</span> \
+  --url <span class="st">"https://api.example.com"</span> \
+  --auth <span class="st">"bearer"</span> \
+  --key <span class="st">"$MY_API_KEY"</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('skills')">&larr; 技能引擎</button>
+<button class="doc-nav-btn" onclick="showDoc('evolution')">自我进化 &rarr;</button>
+</div>
+</div>
+
+<!-- SELF-EVOLUTION -->
+<div class="doc-panel" id="doc-evolution">
+<div class="doc-hero">
+<h1>自我进化</h1>
+<p>SEKI 代理如何通过自主学习循环持续改进。</p>
+</div>
+<div class="doc-section">
+<h2>进化循环</h2>
+<p>SEKI 代理遵循持续改进的循环：</p>
+<div class="doc-grid">
+<div class="doc-card">
+<h4>1. 观察</h4>
+<p>监控每个操作的结果。跟踪成功率、响应质量和用户反馈信号。</p>
+</div>
+<div class="doc-card">
+<h4>2. 反思</h4>
+<p>定期分析表现模式。识别什么有效、什么失败以及原因。</p>
+</div>
+<div class="doc-card">
+<h4>3. 适应</h4>
+<p>生成新策略、修改技能参数、创建新技能或弃用无效的技能。</p>
+</div>
+<div class="doc-card">
+<h4>4. 验证</h4>
+<p>在沙箱中测试适应性变更。仅提升经证明可衡量改进的变更。</p>
+</div>
+</div>
+
+<h2>进化类型</h2>
+<ul>
+<li><strong>参数调优</strong> —— 根据结果数据调整阈值、权重和时间参数</li>
+<li><strong>策略变异</strong> —— 当前策略表现不佳时生成替代方案</li>
+<li><strong>技能合成</strong> —— 组合现有技能创建新的复合能力</li>
+<li><strong>知识提练</strong> —— 从情景记忆中提取可复用的模式并转化为技能</li>
+</ul>
+
+<h2>安全控制</h2>
+<div class="doc-warn">进化默认在沙箱中运行。所有变异在部署前都会经过测试。设置 <code>evolution.auto_deploy: false</code> 以要求所有变更均需手动审批。</div>
+
+<div class="doc-code"><span class="kw">evolution</span>:
+  <span class="kw">enabled</span>: <span class="st">true</span>
+  <span class="kw">sandbox</span>: <span class="st">true</span>
+  <span class="kw">auto_deploy</span>: <span class="st">false</span>      <span class="cm"># Require approval</span>
+  <span class="kw">max_mutations</span>: <span class="st">3</span>       <span class="cm"># Per cycle</span>
+  <span class="kw">min_confidence</span>: <span class="st">0.85</span>   <span class="cm"># Deploy threshold</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('tools')">&larr; 工具</button>
+<button class="doc-nav-btn" onclick="showDoc('architecture')">架构 &rarr;</button>
+</div>
+</div>
+
+<!-- ARCHITECTURE -->
+<div class="doc-panel" id="doc-architecture">
+<div class="doc-hero">
+<h1>架构</h1>
+<p>SEKI 的内部架构：神经网络、决策引擎和链上层如何协同工作。</p>
+</div>
+<div class="doc-section">
+<h2>系统概览</h2>
+<p>SEKI 采用分层架构，职责分离清晰：</p>
+<div class="doc-grid">
+<div class="doc-card">
+<h4>感知层</h4>
+<p>从链上、API 和用户输入摄取数据。将信号归一化为统一的事件流，供决策引擎使用。</p>
+</div>
+<div class="doc-card">
+<h4>决策引擎</h4>
+<p>核心推理模块。结合规则逻辑和 LLM 推理。根据紧迫性、置信度和资源可用性对操作进行优先级排序。</p>
+</div>
+<div class="doc-card">
+<h4>执行层</h4>
+<p>将决策转化为操作：链上交易、API 调用、通知、技能调用。所有操作均记录并可审计。</p>
+</div>
+<div class="doc-card">
+<h4>记忆底层</h4>
+<p>支撑所有层级的持久向量存储。为决策引擎提供语义检索、模式匹配和时间上下文。</p>
+</div>
+</div>
+
+<h2>数据流</h2>
+<div class="doc-code"><span class="cm">┌──────────────────────────────────────────┐</span>
+<span class="cm">│           External Data Sources           │</span>
+<span class="cm">│  Chains · APIs · Social · User Input      │</span>
+<span class="cm">└──────────────┬───────────────────────────┘</span>
+               <span class="cm">▼</span>
+<span class="cm">┌──────────────────────────────────────────┐</span>
+<span class="cm">│          Perception Layer                 │</span>
+<span class="cm">│  Signal Normalization · Event Stream      │</span>
+<span class="cm">└──────────────┬───────────────────────────┘</span>
+               <span class="cm">▼</span>
+<span class="cm">┌──────────────────────────────────────────┐</span>
+<span class="cm">│          Decision Engine                  │</span>
+<span class="cm">│  Rules → LLM → Skill Selection → Plan    │</span>
+<span class="cm">│          ↕ Memory Substrate              │</span>
+<span class="cm">└──────────────┬───────────────────────────┘</span>
+               <span class="cm">▼</span>
+<span class="cm">┌──────────────────────────────────────────┐</span>
+<span class="cm">│          Execution Layer                  │</span>
+<span class="cm">│  Tx Signing · API Calls · Notifications  │</span>
+<span class="cm">└──────────────────────────────────────────┘</span></div>
+
+<h2>核心设计原则</h2>
+<ul>
+<li><strong>事件驱动</strong> —— 所有状态变更通过事件总线流转。组件通过发布/订阅模式松耦合。</li>
+<li><strong>沙箱优先</strong> —— 技能在隔离环境中执行。未经明确授权，技能无法访问系统资源。</li>
+<li><strong>审计轨迹</strong> —— 每个决策和操作均记录完整上下文。链上操作可通过区块浏览器验证。</li>
+<li><strong>优雅降级</strong> —— 数据源不可用时，代理会以降低的置信度继续运行，而非直接失败。</li>
+</ul>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('evolution')">&larr; 自我进化</button>
+<button class="doc-nav-btn" onclick="showDoc('writing-skills')">编写技能 &rarr;</button>
+</div>
+</div>
+
+<!-- WRITING SKILLS -->
+<div class="doc-panel" id="doc-writing-skills">
+<div class="doc-hero">
+<h1>编写技能</h1>
+<p>为 SEKI 平台创建自定义技能的完整指南。</p>
+</div>
+<div class="doc-section">
+<h2>技能结构</h2>
+<p>每个技能包含三个核心文件：</p>
+<div class="doc-code"><span class="kw">my-skill/</span>
+├── <span class="st">SKILL.md</span>        <span class="cm"># Human-readable description</span>
+│                   <span class="cm"># The agent reads this to understand the skill</span>
+├── <span class="st">index.js</span>        <span class="cm"># Executable logic</span>
+└── <span class="st">config.yaml</span>     <span class="cm"># Metadata, triggers, permissions</span></div>
+
+<h2>SKILL.md 格式</h2>
+<div class="doc-code"><span class="cm"># My Custom Skill</span>
+
+<span class="cm">## Description</span>
+What this skill does in 1-2 sentences.
+
+<span class="cm">## Triggers</span>
+When to activate this skill:
+- User asks about X
+- Event Y is detected on chain
+- Scheduled every Z minutes
+
+<span class="cm">## Inputs</span>
+- <span class="st">`token_address`</span> — Contract address to analyze
+- <span class="st">`chain`</span> — Target blockchain (bsc | xlayer)
+
+<span class="cm">## Outputs</span>
+Returns a JSON object with analysis results.
+
+<span class="cm">## Examples</span>
+&gt; Analyze 0x1234 on BSC
+→ Returns risk score, liquidity depth, holder distribution</div>
+
+<h2>config.yaml</h2>
+<div class="doc-code"><span class="kw">name</span>: <span class="st">"my-custom-skill"</span>
+<span class="kw">version</span>: <span class="st">"1.0.0"</span>
+<span class="kw">description</span>: <span class="st">"Brief description"</span>
+
+<span class="kw">triggers</span>:
+  <span class="kw">intent</span>: [<span class="st">"analyze_token"</span>, <span class="st">"check_risk"</span>]
+  <span class="kw">schedule</span>: <span class="st">"*/30 * * * *"</span>
+  <span class="kw">events</span>: [<span class="st">"large_transfer"</span>]
+
+<span class="kw">tools</span>: [<span class="st">"web3"</span>, <span class="st">"coingecko"</span>]
+<span class="kw">permissions</span>: [<span class="st">"chain:read"</span>, <span class="st">"memory:write"</span>]
+
+<span class="kw">evolution</span>:
+  <span class="kw">mutable</span>: <span class="st">true</span>
+  <span class="kw">parameters</span>:
+    - <span class="kw">name</span>: <span class="st">"risk_threshold"</span>
+      <span class="kw">range</span>: [<span class="st">0.1</span>, <span class="st">0.9</span>]
+      <span class="kw">default</span>: <span class="st">0.5</span></div>
+
+<h2>测试</h2>
+<div class="doc-code"><span class="cm"># Run skill tests</span>
+<span class="kw">seki</span> skill test my-custom-skill
+
+<span class="cm"># Test with mock data</span>
+<span class="kw">seki</span> skill test my-custom-skill --mock
+
+<span class="cm"># Dry run (no side effects)</span>
+<span class="kw">seki</span> skill run my-custom-skill --dry-run \
+  --input <span class="st">'{"token": "0x1234", "chain": "bsc"}'</span></div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('architecture')">&larr; 架构</button>
+<button class="doc-nav-btn" onclick="showDoc('api')">API 参考 &rarr;</button>
+</div>
+</div>
+
+<!-- API REFERENCE -->
+<div class="doc-panel" id="doc-api">
+<div class="doc-hero">
+<h1>API 参考</h1>
+<p>与运行中的 SEKI 代理实例交互的完整 REST API。</p>
+</div>
+<div class="doc-section">
+<h2>Base URL</h2>
+<div class="doc-code">https://your-agent.seki-ai.com/api/v1</div>
+
+<h2>认证</h2>
+<div class="doc-code"><span class="cm"># All requests require a Bearer token</span>
+<span class="kw">curl</span> -H <span class="st">"Authorization: Bearer &lt;YOUR_TOKEN&gt;"</span> \
+     https://your-agent.seki-ai.com/api/v1/status</div>
+
+<h2>核心接口</h2>
+
+<h3>代理状态</h3>
+<div class="doc-code"><span class="fn">GET</span> /api/v1/status
+
+<span class="cm">Response:</span>
+{
+  <span class="st">"status"</span>: <span class="st">"active"</span>,
+  <span class="st">"uptime"</span>: <span class="st">86400</span>,
+  <span class="st">"memory_entries"</span>: <span class="st">12847</span>,
+  <span class="st">"skills_loaded"</span>: <span class="st">15</span>,
+  <span class="st">"chains"</span>: [<span class="st">"bsc"</span>, <span class="st">"xlayer"</span>]
+}</div>
+
+<h3>发送消息</h3>
+<div class="doc-code"><span class="fn">POST</span> /api/v1/chat
+
+<span class="cm">Body:</span>
+{
+  <span class="st">"message"</span>: <span class="st">"Analyze token 0x1234 on BSC"</span>,
+  <span class="st">"context"</span>: {}
+}
+
+<span class="cm">Response:</span>
+{
+  <span class="st">"reply"</span>: <span class="st">"Analysis complete..."</span>,
+  <span class="st">"actions"</span>: [...],
+  <span class="st">"confidence"</span>: <span class="st">0.92</span>
+}</div>
+
+<h3>记忆操作</h3>
+<div class="doc-code"><span class="fn">GET</span>  /api/v1/memory/search?q=<span class="st">defi+strategies</span>&limit=<span class="st">10</span>
+<span class="fn">POST</span> /api/v1/memory/store
+<span class="fn">GET</span>  /api/v1/memory/stats</div>
+
+<h3>技能</h3>
+<div class="doc-code"><span class="fn">GET</span>    /api/v1/skills              <span class="cm"># 列出所有技能</span>
+<span class="fn">GET</span>    /api/v1/skills/:id          <span class="cm"># 获取技能详情</span>
+<span class="fn">POST</span>   /api/v1/skills/:id/run      <span class="cm"># 执行技能</span>
+<span class="fn">PUT</span>    /api/v1/skills/:id/config   <span class="cm"># 更新配置</span></div>
+
+<h3>链上操作</h3>
+<div class="doc-code"><span class="fn">GET</span>  /api/v1/chain/:chain/balance/:address
+<span class="fn">POST</span> /api/v1/chain/:chain/tx
+<span class="fn">GET</span>  /api/v1/chain/:chain/events?contract=<span class="st">0x...</span></div>
+
+<h2>速率限制</h2>
+<table class="doc-table">
+<tr><th>接口</th><th>限制</th><th>时间窗口</th></tr>
+<tr><td>/chat</td><td>30 请求</td><td>1 分钟</td></tr>
+<tr><td>/memory/*</td><td>60 请求</td><td>1 分钟</td></tr>
+<tr><td>/skills/*/run</td><td>20 请求</td><td>1 分钟</td></tr>
+<tr><td>/chain/*/tx</td><td>10 请求</td><td>1 分钟</td></tr>
+</table>
+
+<h2>Webhook 回调</h2>
+<div class="doc-code"><span class="fn">POST</span> /api/v1/webhooks
+
+{
+  <span class="st">"url"</span>: <span class="st">"https://your-app.com/webhook"</span>,
+  <span class="st">"events"</span>: [<span class="st">"task.created"</span>, <span class="st">"task.completed"</span>, <span class="st">"alert"</span>],
+  <span class="st">"secret"</span>: <span class="st">"your-webhook-secret"</span>
+}</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('writing-skills')">&larr; 编写技能</button>
+<button class="doc-nav-btn" onclick="showDoc('catalog')">技能目录 &rarr;</button>
+</div>
+</div>
+
+<!-- SKILLS CATALOG -->
+<div class="doc-panel" id="doc-catalog">
+<div class="doc-hero">
+<h1>技能目录</h1>
+<p>可直接用于 SEKI 代理的预建技能。</p>
+</div>
+<div class="doc-section">
+<h2><span class="doc-badge blue">DeFi 技能</span></h2>
+<div class="doc-grid">
+<div class="doc-card"><h4>代币分析器</h4><p>深度分析任意 ERC-20 代币：流动性、持有者分布、合约验证、风险评分。</p></div>
+<div class="doc-card"><h4>DEX 聚合器</h4><p>在 PancakeSwap、Uniswap、1inch 之间寻找最优兑换路径。支持 BSC、ETH 和 X Layer。</p></div>
+<div class="doc-card"><h4>收益优化器</h4><p>监控流动性挖矿机会。比较 APY、评估无常损失风险、推荐策略。</p></div>
+<div class="doc-card"><h4>巨鲸跟踪器</h4><p>实时监控大额钱包动向。大额买入、卖出和转账时发出警报。</p></div>
+<div class="doc-card"><h4>流动性监控器</h4><p>跟踪流动性深度、LP 代币变动和跨 DEX 的池子健康指标。</p></div>
+<div class="doc-card"><h4>投资组合管理器</h4><p>跟踪跨链持仓。计算盈亏、建议再平衡、生成业绩报告。</p></div>
+</div>
+
+<h2><span class="doc-badge green">社交技能</span></h2>
+<div class="doc-grid">
+<div class="doc-card"><h4>Twitter 监控器</h4><p>跟踪提及、话题标签和 KOL 动态。加密货币相关内容的情绪分析。</p></div>
+<div class="doc-card"><h4>社区管理器</h4><p>管理 Telegram/Discord 群组。回答常见问题、检测垃圾信息、上报问题。</p></div>
+<div class="doc-card"><h4>内容生成器</h4><p>基于链上活动和市场数据创建推文、公告和报告。</p></div>
+</div>
+
+<h2><span class="doc-badge amber">治理技能</span></h2>
+<div class="doc-grid">
+<div class="doc-card"><h4>提案跟踪器</h4><p>监控各 DAO 的治理提案。总结变更、分析影响、推荐投票。</p></div>
+<div class="doc-card"><h4>投票委托器</h4><p>基于可配置策略的自动投票委托。支持 Snapshot 和链上投票。</p></div>
+<div class="doc-card"><h4>财库分析师</h4><p>监控 DAO 财库。跟踪流入、流出、资金寿命计算和支出模式。</p></div>
+</div>
+
+<h2>安装技能</h2>
+<div class="doc-code"><span class="cm"># 从注册表安装</span>
+<span class="kw">seki</span> skill install token-analyzer
+
+<span class="cm"># 从 Git 安装</span>
+<span class="kw">seki</span> skill install https://github.com/seki-skills/whale-tracker.git
+
+<span class="cm"># 列出已安装的技能</span>
+<span class="kw">seki</span> skill list</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('api')">&larr; API 参考</button>
+<button class="doc-nav-btn" onclick="showDoc('agent-logic')">代理逻辑 &rarr;</button>
+</div>
+</div>
+
+<!-- AGENT LOGIC -->
+<div class="doc-panel" id="doc-agent-logic">
+<div class="doc-hero">
+<h1>代理决策逻辑</h1>
+<p>SEKI 代理如何做出链上决策：完整的推理流水线。</p>
+</div>
+<div class="doc-section">
+<h2>决策流水线</h2>
+<p>每个链上操作都经过多阶段推理流水线处理：</p>
+
+<div class="doc-card" style="margin-bottom:12px">
+<h4>1. 数据采集</h4>
+<p>收集实时链上数据：代币价格、流动性深度、持有者分布、合约事件、Gas 费用。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>2. 信号处理</h4>
+<p>标准化并评分信号。与记忆中的历史模式进行交叉验证。生成加权信号向量。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>3. 风险评估</h4>
+<p>根据风险参数评估潜在结果。检查仓位大小规则。验证是否有足够的退出流动性。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>4. LLM 推理</h4>
+<p>将处理后的数据连同完整上下文提交给 LLM。模型给出结构化决策，包含置信度评分和决策理由。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>5. 执行</h4>
+<p>当置信度超过阈值：模拟交易、验证 Gas、执行。将完整决策记录写入记忆。</p>
+</div>
+
+<h2>置信度阈值</h2>
+<table class="doc-table">
+<tr><th>操作类型</th><th>最低置信度</th><th>审批方式</th></tr>
+<tr><td>只读查询</td><td>0.3</td><td>自动</td></tr>
+<tr><td>小额交易（&lt;1% 仓位）</td><td>0.7</td><td>自动</td></tr>
+<tr><td>中额交易（1-5%）</td><td>0.85</td><td>自动</td></tr>
+<tr><td>大额交易（&gt;5%）</td><td>0.95</td><td>人工审批</td></tr>
+<tr><td>合约交互</td><td>0.9</td><td>人工审批</td></tr>
+</table>
+
+<div class="doc-tip">所有阈值均可配置。生产环境中，建议先对所有交易启用人工审批，随着对代理行为的信心增强，再逐步提高自动审批的额度上限。</div>
+
+<h2>决策日志</h2>
+<p>每个决策都会连同完整上下文存储，以便审计：</p>
+<div class="doc-code">{
+  <span class="st">"id"</span>: <span class="st">"dec_20240315_001"</span>,
+  <span class="st">"timestamp"</span>: <span class="st">"2024-03-15T10:23:45Z"</span>,
+  <span class="st">"action"</span>: <span class="st">"swap"</span>,
+  <span class="st">"confidence"</span>: <span class="st">0.88</span>,
+  <span class="st">"rationale"</span>: <span class="st">"强买入信号：成交量飙升 + 巨鲸吸筹..."</span>,
+  <span class="st">"signals"</span>: [...],
+  <span class="st">"outcome"</span>: <span class="st">"pending"</span>
+}</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('catalog')">&larr; 技能目录</button>
+<button class="doc-nav-btn" onclick="showDoc('fund-safety')">资金安全 &rarr;</button>
+</div>
+</div>
+
+<!-- FUND SAFETY -->
+<div class="doc-panel" id="doc-fund-safety">
+<div class="doc-hero">
+<h1>资金安全</h1>
+<p>SEKI 如何通过多层安全控制保护用户资金。</p>
+</div>
+<div class="doc-section">
+<h2>安全架构</h2>
+<div class="doc-grid">
+<div class="doc-card">
+<h4>钱包隔离</h4>
+<p>代理钱包与用户钱包隔离。代理使用专用热钱包运行，并配置可调的支出限额。</p>
+</div>
+<div class="doc-card">
+<h4>交易模拟</h4>
+<p>每笔交易在执行前都会通过 <code>eth_call</code> 进行模拟。异常状态变化会触发自动中止。</p>
+</div>
+<div class="doc-card">
+<h4>支出限额</h4>
+<p>单笔交易和每日支出上限。超出限额需要用户通过安全渠道明确批准。</p>
+</div>
+<div class="doc-card">
+<h4>合约白名单</h4>
+<p>代理只能与预先批准的合约交互。新的合约交互需要人工验证。</p>
+</div>
+</div>
+
+<h2>安全参数</h2>
+<div class="doc-code"><span class="kw">safety</span>:
+  <span class="kw">max_per_tx</span>: <span class="st">"100 USDT"</span>
+  <span class="kw">max_daily</span>: <span class="st">"1000 USDT"</span>
+  <span class="kw">max_position</span>: <span class="st">"5%"</span>        <span class="cm"># 占总仓位比例</span>
+  <span class="kw">slippage_max</span>: <span class="st">"2%"</span>
+  <span class="kw">gas_limit_multiplier</span>: <span class="st">1.5</span>
+  <span class="kw">require_simulation</span>: <span class="st">true</span>
+  <span class="kw">contract_allowlist</span>:
+    - <span class="st">"0x10ED...PancakeRouter"</span>
+    - <span class="st">"0xEf1c...SEKIStaking"</span></div>
+
+<div class="doc-warn">切勿分享代理钱包私钥。请使用环境变量或硬件钱包进行签名。高价值操作建议使用多签钱包。</div>
+
+<h2>紧急控制</h2>
+<ul>
+<li><strong>紧急停止</strong> — 通过 API 或仪表盘立即停止所有代理操作</li>
+<li><strong>自动暂停</strong> — 当亏损超过可配置阈值时自动暂停（默认：仓位的 5%）</li>
+<li><strong>提款锁定</strong> — 大额提款需要时间锁确认（默认 24 小时）</li>
+<li><strong>审计日志</strong> — 完整的交易历史记录，包含决策上下文，可导出为 CSV/JSON</li>
+</ul>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('agent-logic')">&larr; 代理逻辑</button>
+<button class="doc-nav-btn" onclick="showDoc('faq')">常见问题 &rarr;</button>
+</div>
+</div>
+
+<!-- FAQ -->
+<div class="doc-panel" id="doc-faq">
+<div class="doc-hero">
+<h1>常见问题</h1>
+<p>SEKI 平台常见问题解答。</p>
+</div>
+<div class="doc-section">
+<div class="doc-card" style="margin-bottom:12px">
+<h4>SEKI 是什么？</h4>
+<p>SEKI 是一个面向 Web3 的自主 AI 代理平台。它结合持久记忆、自进化技能和链上执行能力，打造能够学习和持续进化的智能代理。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>SEKI 使用真实资金安全吗？</h4>
+<p>SEKI 拥有多层安全防护：交易模拟、支出限额、合约白名单和紧急停止开关。建议从小额资金和人工审批模式开始，逐步建立信心。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>支持哪些链？</h4>
+<p>目前支持 BSC 和 X Layer，Ethereum、Polygon 和 Arbitrum 已在路线图中。架构支持任何 EVM 兼容链。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>代理如何学习？</h4>
+<p>通过“观察-反思-进化”循环。代理分析其操作结果，识别模式，并生成改进策略 —— 所有这些都在沙箱环境中完成。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>可以创建自定义技能吗？</h4>
+<p>可以。技能采用模块化设计，结构简单（SKILL.md + index.js + config.yaml）。请参阅<a style="color:#6366f1;cursor:pointer" onclick="showDoc('writing-skills')">技能开发指南</a>。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>SEKI 支持哪些 LLM？</h4>
+<p>任何兼容 OpenAI API 的模型。GPT-4、Claude、Llama、Mistral —— 在 config.yaml 中配置你偏好的模型即可。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>有代币吗？</h4>
+<p>SEKI 代币用于治理、技能市场费用和代理质押。合约详情请见项目首页。</p>
+</div>
+<div class="doc-card" style="margin-bottom:12px">
+<h4>在哪里获取帮助？</h4>
+<p>加入我们的 Telegram 社区，查看 GitHub Issues，或通过网站主页的联系表单联系我们。</p>
+</div>
+</div>
+<div class="doc-nav-bottom">
+<button class="doc-nav-btn" onclick="showDoc('fund-safety')">&larr; 资金安全</button>
+<button class="doc-nav-btn" onclick="showDoc('overview')">返回概览 &rarr;</button>
+</div>
+</div>
+
+</div><!-- /doc-main -->
+</div><!-- /doc-wrap -->
 </div><!-- /page-wendang -->
+
 
 <div id="page-my" class="pw" style="display:none">
 <div style="max-width:700px;margin:0 auto;padding:80px 20px 60px">
@@ -2348,6 +2663,16 @@ window.docTab = function(tab, el) {
   if(tab==='logic' && typeof loadLogicSentiment==='function') loadLogicSentiment();
 };
 function docTab(tab,el){ window.docTab(tab,el); }
+function showDoc(id){
+  document.querySelectorAll('.doc-panel').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.doc-link').forEach(function(l){l.classList.remove('on');});
+  var panel=document.getElementById('doc-'+id);
+  if(panel) panel.classList.add('on');
+  var links=document.querySelectorAll('.doc-link');
+  links.forEach(function(l){if(l.getAttribute('onclick')&&l.getAttribute('onclick').indexOf("'"+id+"'")!==-1) l.classList.add('on');});
+  var main=document.querySelector('.doc-main');
+  if(main) main.scrollTop=0;
+}
 </script>
 <script>
 // Mystical Theme: override inline light backgrounds
@@ -2387,4 +2712,3 @@ function docTab(tab,el){ window.docTab(tab,el); }
 })();
 </script>
 </body>
-</html>

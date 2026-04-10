@@ -1,0 +1,201 @@
+/* ═══════════════════════════════════════════════
+   SEKI — Clean Light Theme
+   White-based modern design
+   ═══════════════════════════════════════════════ */
+
+:root {
+  /* ── Core palette ── */
+  --bg-body: #ffffff;
+  --bg-page: #f8f9fc;
+  --p:  #1a1a2e;           /* primary – deep navy */
+  --p2: #2d2d5e;           /* primary alt */
+  --acc: #6366f1;          /* accent – indigo */
+  --acc2: #818cf8;         /* accent lighter */
+
+  /* ── Text hierarchy ── */
+  --tx:  #1a1a2e;          /* primary text */
+  --tx2: #4a4a6a;          /* secondary text */
+  --tx3: #8888a8;          /* muted text */
+
+  /* ── Surface ── */
+  --bg:  rgba(0,0,0,.02);
+  --bg2: rgba(0,0,0,.04);
+  --bg3: rgba(0,0,0,.06);
+  --brd: rgba(0,0,0,.08);
+  --brd2:rgba(0,0,0,.12);
+}
+
+/* ── Body ── */
+body {
+  background: var(--bg-body) !important;
+  color: var(--tx) !important;
+}
+
+/* ── Top nav bar ── */
+.top-bar,
+nav,
+header {
+  background: rgba(255,255,255,.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(0,0,0,.06) !important;
+}
+
+.top-bar .nav-logo,
+.top-bar button,
+nav button {
+  color: var(--tx) !important;
+}
+
+/* Nav active state */
+.nl.act,
+.nl.active,
+button.nl.act {
+  color: var(--acc) !important;
+  border-color: var(--acc) !important;
+}
+
+/* ── Bottom bar ── */
+.bottom-bar {
+  background: rgba(255,255,255,.92) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-top: 1px solid rgba(0,0,0,.06) !important;
+}
+
+.bottom-bar button,
+.bottom-bar .bb {
+  color: var(--tx3) !important;
+}
+
+.bottom-bar button.act,
+.bottom-bar .bb.act {
+  color: var(--acc) !important;
+}
+
+/* ── Page wrappers ── */
+.pw, .page {
+  background: transparent !important;
+}
+
+/* ── Labels ── */
+.label {
+  color: var(--acc) !important;
+  opacity: .8;
+}
+
+/* ── Cards / panels ── */
+.card,
+[class*="card"],
+.panel {
+  background: #fff !important;
+  border: 1px solid rgba(0,0,0,.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04) !important;
+}
+
+/* ── Code blocks ── */
+pre, code {
+  background: #f4f5f9 !important;
+  color: var(--tx) !important;
+  border: 1px solid rgba(0,0,0,.06) !important;
+}
+
+/* ── Links ── */
+a {
+  color: var(--acc);
+}
+a:hover {
+  color: var(--acc2);
+}
+
+/* ── Buttons ── */
+button, .btn {
+  color: var(--tx);
+}
+
+/* ── Inputs ── */
+input, select, textarea {
+  background: #fff !important;
+  color: var(--tx) !important;
+  border-color: rgba(0,0,0,.12) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--tx3) !important;
+}
+
+/* ── Tables ── */
+table {
+  border-color: rgba(0,0,0,.06) !important;
+}
+th {
+  background: #f4f5f9 !important;
+  color: var(--tx2) !important;
+}
+td {
+  border-color: rgba(0,0,0,.04) !important;
+}
+
+/* ── Scrollbar (webkit) ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,.2); }
+
+/* ── Accent color badges (keep vibrant but soften bg) ── */
+/* Green accents */
+[style*="color:#34d399"],
+[style*="color:#6ee7b7"],
+[style*="color:#059669"] {
+  text-shadow: none !important;
+}
+
+/* ── Hero section typography ── */
+.hero-title,
+h1, h2, h3 {
+  color: var(--tx) !important;
+}
+
+/* ── Monospace / addresses ── */
+[style*="font-family:monospace"] {
+  color: var(--tx2) !important;
+}
+
+/* ── Modal / overlay ── */
+.modal, .overlay, .popup {
+  background: rgba(0,0,0,.3) !important;
+}
+.modal-content, .popup-content {
+  background: #fff !important;
+  color: var(--tx) !important;
+  border: 1px solid rgba(0,0,0,.08) !important;
+}
+
+/* ── Docs section specific ── */
+#page-wendang h3,
+#page-wendang h4 {
+  color: var(--tx) !important;
+}
+
+/* ── Misc cleanup ── */
+hr {
+  border-color: rgba(0,0,0,.06) !important;
+}
+
+/* Gold/primary accent references → indigo */
+[style*="color:var(--p)"] {
+  /* Already handled by var override */
+}
+
+/* ── Gentle hover effects ── */
+.dg-agent-card:hover,
+[onclick]:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,.06) !important;
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(99,102,241,.15);
+  color: var(--tx);
+}
