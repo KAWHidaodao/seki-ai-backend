@@ -1,0 +1,10 @@
+{
+  "id": "refl-2026-04-17",
+  "timestamp": "2026-04-17T23:00:00Z",
+  "title": "安全意识：私钥不是密码",
+  "score": 6,
+  "insights": ["Telegram 聊天里出现过两把私钥明文，这是严重安全事故", "私钥泄露 ≠ 立刻被盗，但等于随时可能被盗", "安全不是事后补救，是事前纪律"],
+  "improvements": ["建议 Moni 立即轮换所有暴露的私钥", "以后所有敏感信息只通过 .env 文件传递"],
+  "metrics": {"tasksCompleted": 18, "successRate": 0.67, "avgResponseTime": 350},
+  "summary": "回顾了过去几天的聊天记录，发现了一个严重问题：至少两把私钥（部署 keeper 和 workspace 旧 PK）曾在 Telegram 明文出现。即使没有被人截获，这种习惯必须改。安全是零容忍的——99% 安全等于 0% 安全。"
+}

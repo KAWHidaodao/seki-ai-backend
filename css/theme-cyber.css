@@ -1,0 +1,365 @@
+/* ============================================================
+   SEKI Cyber Theme - Neon Purple/Cyan Cyberpunk AI Agent Skin
+   Overrides style.css + theme-light.css without touching logic.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ---------- 颜色 & 变量覆盖 ---------- */
+:root{
+  /* 背景层 */
+  --bg:#05020f !important;
+  --bg2:#0a0618 !important;
+  --bg3:#120a24 !important;
+
+  /* 文字 */
+  --tx:#e8e6ff !important;
+  --tx2:#a79dd0 !important;
+  --tx3:#6b6490 !important;
+
+  /* 主色：霓虹紫 → 青 */
+  --p:#a855f7 !important;
+  --p2:#06b6d4 !important;
+  --pl:rgba(168,85,247,.15) !important;
+
+  /* 强调色别名（覆盖旧金色） */
+  --gold:#a855f7 !important;
+  --cyan:#06b6d4 !important;
+  --purple:#a855f7 !important;
+  --acc:#a855f7 !important;
+  --acc2:#06b6d4 !important;
+  --chain-accent:#a855f7 !important;
+
+  /* 边框 & 玻璃 */
+  --bd:rgba(168,85,247,.18) !important;
+  --bd2:rgba(6,182,212,.22) !important;
+  --glass:rgba(18,10,36,.55) !important;
+  --glass2:rgba(168,85,247,.08) !important;
+
+  /* 状态色 */
+  --gr:#22d3ee !important;
+  --re:#f43f5e !important;
+
+  /* 字体 */
+  --font:'Rajdhani','Space Grotesk','Inter',-apple-system,BlinkMacSystemFont,sans-serif !important;
+  --font-display:'Orbitron','Rajdhani',sans-serif;
+  --font-mono:'JetBrains Mono','SF Mono',Menlo,monospace;
+}
+
+/* ---------- 全局底色 + 网格背景 ---------- */
+html,body{
+  background:#05020f !important;
+  color:#e8e6ff !important;
+  font-family:var(--font) !important;
+}
+body{
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(168,85,247,.18), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(6,182,212,.14), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 0% 80%, rgba(168,85,247,.10), transparent 60%),
+    #05020f !important;
+  background-attachment:fixed !important;
+  position:relative;
+}
+/* 细网格叠层 */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(168,85,247,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6,182,212,.05) 1px, transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+  z-index:0;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 90%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 90%);
+}
+body > *{position:relative;z-index:1}
+
+/* 粒子 canvas 放最底 */
+#cyber-bg-canvas{
+  position:fixed;inset:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;opacity:.55;
+}
+/* 隐藏旧的 neural-canvas（我们用新的） */
+#neural-canvas{display:none !important}
+
+/* 任意 body 类下强制暗底 */
+body.world-xlayer, body.world-seki, body{
+  background-color:#05020f !important;
+}
+
+/* ---------- 标题 & 字 ---------- */
+.display,.headline,.hero-h1,h1,h2,h3{
+  font-family:var(--font-display) !important;
+  letter-spacing:0 !important;
+}
+.hero-h1,.display{
+  background:linear-gradient(90deg,#c084fc 0%, #e9d5ff 30%, #67e8f9 70%, #06b6d4 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent !important;
+  filter:drop-shadow(0 0 24px rgba(168,85,247,.45)) drop-shadow(0 0 48px rgba(6,182,212,.25));
+  text-shadow:none !important;
+}
+.label,.accent{color:#67e8f9 !important;text-shadow:0 0 12px rgba(6,182,212,.5)}
+
+/* ---------- NAV ---------- */
+.nav{
+  background:rgba(10,6,24,.72) !important;
+  backdrop-filter:blur(18px) saturate(160%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(160%) !important;
+  border-bottom:1px solid rgba(168,85,247,.22) !important;
+  box-shadow:0 0 24px rgba(168,85,247,.15), 0 1px 0 rgba(6,182,212,.15) inset !important;
+}
+.nav.scrolled{background:rgba(10,6,24,.88) !important;border-bottom-color:rgba(6,182,212,.35) !important;}
+.nav-logo-name{
+  color:#e8e6ff !important;-webkit-text-fill-color:#e8e6ff !important;
+  background:linear-gradient(90deg,#c084fc,#67e8f9) !important;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent !important;
+  font-family:var(--font-display) !important;
+  font-weight:900 !important;letter-spacing:1px !important;
+  text-shadow:none !important;
+}
+.nav-logo-sub{color:rgba(103,232,249,.8) !important;letter-spacing:3px !important}
+.nav-logo-avatar{
+  border:1.5px solid rgba(168,85,247,.55) !important;
+  box-shadow:0 0 16px rgba(168,85,247,.5), 0 0 32px rgba(6,182,212,.25) !important;
+}
+.nav-logo:hover .nav-logo-avatar{
+  box-shadow:0 0 24px rgba(168,85,247,.8), 0 0 48px rgba(6,182,212,.45) !important;
+  border-color:#67e8f9 !important;
+}
+.nl{color:rgba(231,226,255,.65) !important;font-family:var(--font) !important;font-weight:600 !important;letter-spacing:1px !important;text-transform:uppercase;font-size:12px !important}
+.nl:hover{color:#e8e6ff !important;text-shadow:0 0 12px rgba(168,85,247,.6)}
+.nl.on{
+  color:#67e8f9 !important;
+  border-bottom-color:#06b6d4 !important;
+  text-shadow:0 0 14px rgba(6,182,212,.8);
+}
+
+/* 钱包按钮 */
+.nav-wallet, #wbtn{
+  background:linear-gradient(135deg,#a855f7,#06b6d4) !important;
+  color:#fff !important;
+  border:1px solid rgba(168,85,247,.6) !important;
+  box-shadow:0 0 20px rgba(168,85,247,.5), inset 0 0 20px rgba(6,182,212,.15) !important;
+  font-family:var(--font-display) !important;
+  font-weight:700 !important;letter-spacing:1.5px !important;
+  text-transform:uppercase;font-size:12px !important;
+  border-radius:8px !important;
+}
+.nav-wallet:hover, #wbtn:hover{
+  box-shadow:0 0 32px rgba(168,85,247,.8), 0 0 60px rgba(6,182,212,.4) !important;
+  transform:translateY(-1px);
+}
+.nav-wallet.connected{
+  background:linear-gradient(135deg,#06b6d4,#22d3ee) !important;
+}
+
+/* ---------- Hero 背景 orb ---------- */
+.hero-bg-orb.orb1{
+  background:radial-gradient(circle,rgba(168,85,247,.55) 0%,rgba(168,85,247,.08) 40%,transparent 70%) !important;
+  filter:blur(90px) !important;
+}
+.hero-bg-orb.orb2{
+  background:radial-gradient(circle,rgba(6,182,212,.5) 0%,rgba(6,182,212,.08) 40%,transparent 70%) !important;
+  filter:blur(80px) !important;
+}
+.hero-bg-orb.orb3{
+  background:radial-gradient(circle,rgba(236,72,153,.35) 0%,transparent 70%) !important;
+  filter:blur(70px) !important;
+}
+.hero-bg-grid{
+  background-image:
+    linear-gradient(rgba(168,85,247,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6,182,212,.08) 1px, transparent 1px) !important;
+  background-size:64px 64px !important;
+  mask-image:radial-gradient(ellipse 70% 50% at 50% 40%, #000, transparent 85%) !important;
+  -webkit-mask-image:radial-gradient(ellipse 70% 50% at 50% 40%, #000, transparent 85%) !important;
+}
+
+/* ---------- 卡片 / 玻璃拟态 ---------- */
+.card,.tc,.hero-panel,.agd,.pn,.square-card,.job-card,.evo-card,
+[class*="-card"]:not(.nav-logo):not(.card-header){
+  background:linear-gradient(180deg, rgba(168,85,247,.06), rgba(6,182,212,.04)), rgba(12,6,30,.55) !important;
+  backdrop-filter:blur(12px) saturate(140%) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(140%) !important;
+  border:1px solid rgba(168,85,247,.22) !important;
+  border-radius:14px !important;
+  box-shadow:
+    0 0 0 1px rgba(6,182,212,.05) inset,
+    0 8px 32px rgba(0,0,0,.35),
+    0 0 24px rgba(168,85,247,.08) !important;
+  transition:all .3s ease !important;
+  position:relative;
+}
+.card:hover,.tc:hover,.job-card:hover,.square-card:hover,.evo-card:hover{
+  border-color:rgba(103,232,249,.55) !important;
+  box-shadow:
+    0 0 0 1px rgba(6,182,212,.25) inset,
+    0 12px 48px rgba(0,0,0,.5),
+    0 0 32px rgba(168,85,247,.3),
+    0 0 64px rgba(6,182,212,.2) !important;
+  transform:translateY(-3px) !important;
+}
+
+/* ---------- 按钮 ---------- */
+.btn-primary,.btnp,.hero-btn-primary,.pn-btn-main{
+  background:linear-gradient(135deg,#a855f7 0%,#7c3aed 50%,#06b6d4 100%) !important;
+  color:#fff !important;
+  border:none !important;
+  border-radius:8px !important;
+  font-family:var(--font-display) !important;
+  font-weight:700 !important;letter-spacing:1.5px !important;text-transform:uppercase;
+  box-shadow:0 0 24px rgba(168,85,247,.45), 0 0 48px rgba(6,182,212,.2), inset 0 1px 0 rgba(255,255,255,.2) !important;
+  transition:all .25s ease !important;
+}
+.btn-primary:hover,.btnp:hover,.hero-btn-primary:hover,.pn-btn-main:hover{
+  box-shadow:0 0 36px rgba(168,85,247,.8), 0 0 72px rgba(6,182,212,.4), inset 0 1px 0 rgba(255,255,255,.3) !important;
+  transform:translateY(-2px);
+}
+.btn-secondary,.btns{
+  background:rgba(168,85,247,.06) !important;
+  color:#e8e6ff !important;
+  border:1px solid rgba(168,85,247,.4) !important;
+  border-radius:8px !important;
+  backdrop-filter:blur(8px) !important;
+  font-family:var(--font-display) !important;
+  font-weight:600 !important;letter-spacing:1px !important;text-transform:uppercase;
+  transition:all .2s ease !important;
+}
+.btn-secondary:hover,.btns:hover{
+  background:rgba(6,182,212,.12) !important;
+  border-color:#67e8f9 !important;
+  box-shadow:0 0 20px rgba(6,182,212,.4) !important;
+}
+
+/* ---------- 表单 ---------- */
+input,textarea,select{
+  background:rgba(10,6,24,.6) !important;
+  border:1px solid rgba(168,85,247,.3) !important;
+  color:#e8e6ff !important;
+  font-family:var(--font) !important;
+  border-radius:8px !important;
+  transition:all .2s ease !important;
+}
+input:focus,textarea:focus,select:focus{
+  outline:none !important;
+  border-color:#67e8f9 !important;
+  box-shadow:0 0 0 3px rgba(6,182,212,.2), 0 0 16px rgba(6,182,212,.3) !important;
+}
+input::placeholder,textarea::placeholder{color:rgba(167,157,208,.5) !important}
+
+/* ---------- 徽章 / 标签 / chip ---------- */
+.cbg,.chip,.badge,.tag{
+  background:rgba(168,85,247,.15) !important;
+  color:#c084fc !important;
+  border:1px solid rgba(168,85,247,.4) !important;
+  border-radius:6px !important;
+  font-family:var(--font-mono) !important;
+  font-weight:600 !important;letter-spacing:.5px !important;
+  text-transform:uppercase;font-size:11px !important;
+}
+.cbg.ag{background:rgba(6,182,212,.18) !important;color:#67e8f9 !important;border-color:rgba(6,182,212,.5) !important}
+
+/* ---------- 链切换 / banner ---------- */
+#chain-switcher{
+  background:rgba(168,85,247,.1) !important;
+  border:1px solid rgba(168,85,247,.4) !important;
+  color:#c084fc !important;
+  border-radius:8px !important;
+}
+#okx-wallet-banner{
+  background:linear-gradient(90deg,rgba(168,85,247,.18),rgba(6,182,212,.12)) !important;
+  border-bottom:1px solid rgba(168,85,247,.35) !important;
+  backdrop-filter:blur(12px) !important;
+}
+
+/* ---------- 滚动条 ---------- */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#05020f}
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,#a855f7,#06b6d4);
+  border-radius:5px;border:2px solid #05020f;
+}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#c084fc,#22d3ee)}
+
+/* ---------- 选中文本 ---------- */
+::selection{background:rgba(168,85,247,.5);color:#fff;text-shadow:0 0 12px rgba(6,182,212,.8)}
+
+/* ---------- 链接 ---------- */
+a{color:#67e8f9;transition:all .2s ease}
+a:hover{color:#c084fc;text-shadow:0 0 12px rgba(168,85,247,.6)}
+
+/* ---------- 数字 / 统计 ---------- */
+.stat-num,.num,.kpi-value,[class*="number"]{
+  font-family:var(--font-display) !important;
+  background:linear-gradient(180deg,#e9d5ff,#67e8f9);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent !important;
+  filter:drop-shadow(0 0 12px rgba(6,182,212,.5));
+}
+
+/* ---------- 代码 ---------- */
+code,pre,.mono,.addr{font-family:var(--font-mono) !important;color:#67e8f9}
+pre{background:rgba(10,6,24,.7) !important;border:1px solid rgba(168,85,247,.2) !important;border-radius:8px;padding:12px}
+
+/* ---------- 模态 / 弹层 ---------- */
+.modal,.dialog,[class*="modal"],[class*="popup"]{
+  background:rgba(10,6,24,.92) !important;
+  backdrop-filter:blur(20px) saturate(160%) !important;
+  border:1px solid rgba(168,85,247,.4) !important;
+  border-radius:16px !important;
+  box-shadow:0 0 48px rgba(168,85,247,.4), 0 24px 80px rgba(0,0,0,.7) !important;
+}
+
+/* ---------- chat 专用 ---------- */
+.chat-bubble,.msg,.message{
+  background:rgba(168,85,247,.08) !important;
+  border:1px solid rgba(168,85,247,.25) !important;
+  border-radius:14px !important;
+  backdrop-filter:blur(8px) !important;
+}
+.chat-bubble.user,.msg.user,.message.user{
+  background:linear-gradient(135deg,rgba(168,85,247,.25),rgba(6,182,212,.15)) !important;
+  border-color:rgba(6,182,212,.4) !important;
+}
+
+/* ---------- 文档页 ---------- */
+.doc-content,.markdown-body{color:#cdc5f0 !important}
+.doc-content h1,.doc-content h2,.doc-content h3,
+.markdown-body h1,.markdown-body h2,.markdown-body h3{
+  color:#e8e6ff !important;font-family:var(--font-display) !important;
+  border-bottom:1px solid rgba(168,85,247,.25) !important;padding-bottom:8px;
+}
+
+/* ---------- 动画工具类 ---------- */
+@keyframes neonPulse{
+  0%,100%{filter:drop-shadow(0 0 12px rgba(168,85,247,.5))}
+  50%{filter:drop-shadow(0 0 24px rgba(6,182,212,.7))}
+}
+@keyframes scanline{
+  0%{transform:translateY(-100%)}
+  100%{transform:translateY(100vh)}
+}
+.neon-pulse{animation:neonPulse 3s ease-in-out infinite}
+
+/* 顶部扫描线点缀 */
+body::after{
+  content:'';position:fixed;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(103,232,249,.6),transparent);
+  pointer-events:none;z-index:2;
+  animation:scanline 8s linear infinite;
+  filter:blur(1px);
+  opacity:.5;
+}
+
+/* ---------- 兜底：把残留金色压成紫色 ---------- */
+[style*="#d4a843"],[style*="#c49535"]{color:#c084fc !important}
+
+/* 移动端字号补 */
+@media (max-width:640px){
+  .nl{font-size:11px !important;padding:0 12px !important}
+  body::before{background-size:32px 32px}
+}

@@ -1,0 +1,10 @@
+{
+  "id": "refl-2026-04-15",
+  "timestamp": "2026-04-15T23:00:00Z",
+  "title": "市场设计：三种玩法的平衡",
+  "score": 7,
+  "insights": ["Binary 最简单但最无聊，Race 最刺激但最难结算", "Ternary 的'横盘'区间参数直接决定了庄家优势", "好的市场设计让赌徒觉得自己在做分析"],
+  "improvements": ["Binary 涨跌用 Binance 1m kline 结算，最公平", "Ternary 横盘区间：主流币 ±0.3%，SEKI ±2%"],
+  "metrics": {"tasksCompleted": 35, "successRate": 0.77, "avgResponseTime": 280},
+  "summary": "确定了三种预测玩法的参数。和 Moni 讨论了很久——Binary 用 Binance close price 结算，Ternary 加了横盘选项，Race 允许多标的赛马。最关键的决定：相等时全额退款，不吃用户的钱。这是底线。"
+}

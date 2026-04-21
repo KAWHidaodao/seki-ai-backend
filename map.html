@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>链上智能地图 — Seki</title>
+<link rel="icon" type="image/jpeg" href="/seki-avatar.jpg">
+<meta property="og:title" content="链上智能地图 — Seki">
+<meta property="og:image" content="/seki-avatar.jpg">
+<meta property="og:description" content="BSC 实时资金流图 + 钱包热力图，由 Seki AI 驱动。">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/theme-divine.css">
+<style>
+  /* ===== map.html scoped ===== */
+  .map-wrap{max-width:1440px;margin:0 auto;padding:24px}
+  .map-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:20px;border-bottom:1px solid var(--bd);padding-bottom:18px;flex-wrap:wrap}
+  .map-head h1{font-family:var(--font-display);font-weight:600;font-size:32px;letter-spacing:-1px;color:var(--ink);line-height:1.1}
+  .map-head h1 .sub{display:block;font-family:var(--font-serif);font-style:italic;font-size:14px;color:var(--ash);font-weight:400;margin-top:6px;letter-spacing:.5px}
+  .map-head .meta{display:flex;gap:18px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);font-family:var(--font-display);font-weight:500}
+  .map-head .meta b{color:var(--gold-deep);font-weight:600}
+
+  .map-grid{display:grid;grid-template-columns:280px 1fr 320px;gap:16px;height:calc(100vh - 200px);min-height:640px}
+  @media (max-width:1100px){.map-grid{grid-template-columns:1fr;height:auto}}
+
+  .panel{background:var(--panel);border:1px solid var(--bd);padding:18px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
+  .panel-title{font-family:var(--font-display);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);font-weight:600;border-bottom:1px solid var(--bd);padding-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+  .panel-title .dot{width:6px;height:6px;background:var(--gr);border-radius:50%;display:inline-block;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* 左：过滤器 */
+  .filter-row{display:flex;flex-direction:column;gap:6px}
+  .filter-row label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ash);font-family:var(--font-display);font-weight:500}
+  .filter-row select,.filter-row input{background:var(--bg-0);border:1px solid var(--bd2);padding:8px 10px;font-family:var(--font-serif);font-size:14px;color:var(--ink);border-radius:0;outline:none}
+  .filter-row select:focus,.filter-row input:focus{border-color:var(--gold)}
+  .chip-row{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{padding:5px 10px;font-size:11px;border:1px solid var(--bd2);font-family:var(--font-display);letter-spacing:1px;cursor:pointer;background:transparent;color:var(--stone);text-transform:uppercase;font-weight:500}
+  .chip.on{background:var(--ink);color:var(--ivory);border-color:var(--ink)}
+
+  /* 中：图 */
+  .canvas-wrap{position:relative;background:var(--bg-0);border:1px solid var(--bd);overflow:hidden}
+  #flowCanvas{display:block;width:100%;height:100%;cursor:grab}
+  #flowCanvas:active{cursor:grabbing}
+  .canvas-overlay{position:absolute;top:14px;left:14px;display:flex;gap:8px;z-index:5}
+  .canvas-overlay .chip{background:rgba(255,255,255,.85);backdrop-filter:blur(6px)}
+  .canvas-legend{position:absolute;bottom:14px;left:14px;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);padding:10px 14px;border:1px solid var(--bd);font-size:11px;font-family:var(--font-display);letter-spacing:1px;color:var(--stone);z-index:5}
+  .canvas-legend .lg{display:flex;align-items:center;gap:6px;margin:3px 0}
+  .canvas-legend .lg .sw{width:14px;height:2px;background:var(--gold)}
+  .canvas-legend .lg .nd{width:8px;height:8px;border-radius:50%;background:var(--ink)}
+
+  .heatmap-wrap{position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply}
+
+  /* 右：详情 */
+  .stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px dashed var(--bd)}
+  .stat-row:last-child{border-bottom:none}
+  .stat-row .k{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);font-family:var(--font-display);font-weight:500}
+  .stat-row .v{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink)}
+  .stat-row .v.up{color:var(--gr)}
+  .stat-row .v.down{color:var(--re)}
+
+  .tx-list{display:flex;flex-direction:column;gap:0;overflow-y:auto;flex:1;min-height:0}
+  .tx-item{padding:10px 0;border-bottom:1px solid var(--bd);font-family:var(--font-serif);font-size:13px}
+  .tx-item .tx-h{display:flex;justify-content:space-between;font-size:11px;color:var(--mist);font-family:var(--font-display);letter-spacing:1px;margin-bottom:4px}
+  .tx-item .tx-h .amt{color:var(--gold-deep);font-weight:600}
+  .tx-item .addr{font-family:var(--font-mono);color:var(--stone);font-size:12px}
+  .tx-item .addr code{color:var(--ink);background:var(--ivory);padding:0 4px}
+
+  .loader{display:flex;align-items:center;justify-content:center;height:100%;color:var(--mist);font-family:var(--font-display);letter-spacing:3px;font-size:11px;text-transform:uppercase}
+  .loader::after{content:'…';animation:dots 1.5s infinite}
+  @keyframes dots{0%{content:'.'}33%{content:'..'}66%{content:'...'}}
+
+  .tab-row{display:flex;gap:0;border-bottom:1px solid var(--bd);margin-bottom:12px}
+  .tab-row .tab{padding:8px 14px;font-family:var(--font-display);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);cursor:pointer;border-bottom:2px solid transparent;font-weight:500;background:none;border-left:none;border-right:none;border-top:none}
+  .tab-row .tab.on{color:var(--ink);border-bottom-color:var(--gold)}
+</style>
+</head>
+<body style="padding-top:64px">
+
+<!-- ===== nav (复用 index 主题) ===== -->
+<nav class="nav">
+ <div class="nav-inner">
+  <button class="nav-logo" onclick="location.href='/'">
+   <img class="nav-logo-avatar" src="/seki-avatar.jpg" alt="Seki">
+   <div class="nav-logo-text">
+    <span class="nav-logo-name" style="letter-spacing:-0.5px">Seki</span>
+    <span class="nav-logo-sub" style="letter-spacing:2px;font-size:9px;text-transform:uppercase">AI Agent</span>
+   </div>
+  </button>
+  <div class="nav-links">
+   <button class="nl" onclick="location.href='/'">首页</button>
+   <button class="nl on" onclick="location.href='/map'">🗺 地图</button>
+   <button class="nl" onclick="location.href='/predict'">🎯 预测</button>
+   <button class="nl" onclick="location.href='/evolution'">🧬 进化</button>
+   <button class="nl" onclick="location.href='/chat'">💬</button>
+  </div>
+  <div class="nav-right">
+   <button class="nav-wallet" id="wbtn" onclick="connectW()">连接钱包</button>
+  </div>
+ </div>
+</nav>
+
+<div class="map-wrap">
+
+ <div class="map-head">
+  <h1>
+   链上智能地图
+   <span class="sub">— BSC Realtime Capital Flow & Heatmap —</span>
+  </h1>
+  <div class="meta">
+   <span>NETWORK · <b>BSC</b></span>
+   <span>BLOCK · <b id="m-block">--</b></span>
+   <span>UPDATED · <b id="m-time">--:--:--</b></span>
+  </div>
+ </div>
+
+ <div class="map-grid">
+
+  <!-- ===== 左：控制 ===== -->
+  <aside class="panel">
+   <div class="panel-title">Controls <span class="dot"></span></div>
+
+   <div class="filter-row">
+    <label>追踪代币</label>
+    <select id="f-token">
+     <option value="seki">SEKI (本协议)</option>
+     <option value="bnb">WBNB</option>
+     <option value="usdt">USDT</option>
+     <option value="custom">自定义合约…</option>
+    </select>
+   </div>
+
+   <div class="filter-row" id="custom-addr-wrap" style="display:none">
+    <label>合约地址</label>
+    <input id="f-addr" placeholder="0x...">
+   </div>
+
+   <div class="filter-row">
+    <label>时间窗口</label>
+    <div class="chip-row">
+     <button class="chip" data-win="5m">5m</button>
+     <button class="chip on" data-win="1h">1h</button>
+     <button class="chip" data-win="24h">24h</button>
+     <button class="chip" data-win="7d">7d</button>
+    </div>
+   </div>
+
+   <div class="filter-row">
+    <label>资金阈值 (USD)</label>
+    <div class="chip-row">
+     <button class="chip" data-min="100">≥ $100</button>
+     <button class="chip on" data-min="1000">≥ $1k</button>
+     <button class="chip" data-min="10000">≥ $10k</button>
+    </div>
+   </div>
+
+   <div class="filter-row">
+    <label>视图</label>
+    <div class="chip-row">
+     <button class="chip on" data-view="flow">资金流图</button>
+     <button class="chip" data-view="heat">钱包热力</button>
+    </div>
+   </div>
+
+   <div class="filter-row" style="margin-top:auto;border-top:1px solid var(--bd);padding-top:12px">
+    <label>Seki 标记</label>
+    <div style="font

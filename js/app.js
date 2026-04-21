@@ -197,6 +197,14 @@ function G(id,el){
   try{if(id==='hot')loadHotPage();}catch(e){}
   try{if(id==='wendang'){docTab('logic',document.getElementById('dtag-logic'));loadOnchainDecisions();}}catch(e){}
   try{if(id==='apps'){const acl=document.getElementById('apps-chain-label');if(acl)acl.textContent=currentChain?currentChain.name:'BSC';}}catch(e){}
+  // Lazy-load iframe sub-pages
+  try{
+    var iframeMap = {map:'/map.html', predict:'/predict.html', agents:'/agents.html', evolution:'/evolution.html', chat:'/chat.html'};
+    if(iframeMap[id]){
+      var ifr = document.getElementById('iframe-'+id);
+      if(ifr && !ifr.src) ifr.src = iframeMap[id];
+    }
+  }catch(e){}
  },0);
 }
 

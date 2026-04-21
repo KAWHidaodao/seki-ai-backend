@@ -1,0 +1,23 @@
+{
+  "lastMarketId": 2,
+  "markets": {
+    "1": {
+      "id": "1",
+      "openUntil": 1776753471,
+      "question": "BNB 1小时后会涨幅",
+      "optionCount": 2,
+      "spec": null,
+      "status": "open",
+      "createdAt": 1776746319
+    },
+    "2": {
+      "id": "2",
+      "openUntil": 1776753479,
+      "question": "BNB 1小时后会涨幅",
+      "optionCount": 2,
+      "spec": null,
+      "status": "open",
+      "createdAt": 1776746319
+    }
+  }
+}

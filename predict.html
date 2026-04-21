@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seki 预测市场 — Oracle of the Chain</title>
+<link rel="icon" type="image/jpeg" href="/seki-avatar.jpg">
+<meta property="og:title" content="Seki 预测市场">
+<meta property="og:image" content="/seki-avatar.jpg">
+<meta property="og:description" content="链上事件平注预测，SEKI 结算，不抽水。">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/theme-divine.css">
+<style>
+  .pr-wrap{max-width:1280px;margin:0 auto;padding:24px}
+  .pr-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:20px;border-bottom:1px solid var(--bd);padding-bottom:18px;flex-wrap:wrap}
+  .pr-head h1{font-family:var(--font-display);font-weight:600;font-size:32px;letter-spacing:-1px;color:var(--ink);line-height:1.1}
+  .pr-head h1 .sub{display:block;font-family:var(--font-serif);font-style:italic;font-size:14px;color:var(--ash);font-weight:400;margin-top:6px;letter-spacing:.5px}
+  .pr-head .meta{display:flex;gap:18px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);font-family:var(--font-display);font-weight:500;align-items:center}
+  .pr-head .meta b{color:var(--gold-deep);font-weight:600}
+  .pr-head .meta .dot{width:6px;height:6px;background:var(--gr,#3a7);border-radius:50%;display:inline-block;margin-right:6px;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  .pr-toolbar{display:flex;gap:12px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+  .pr-btn{background:transparent;border:1px solid var(--bd);color:var(--ink);padding:9px 16px;font-family:var(--font-display);font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .15s}
+  .pr-btn:hover{border-color:var(--gold-deep);color:var(--gold-deep)}
+  .pr-btn.primary{background:var(--ink);color:var(--bg-0)}
+  .pr-btn.primary:hover{background:var(--gold-deep);color:#fff;border-color:var(--gold-deep)}
+  .pr-btn[disabled]{opacity:.4;cursor:not-allowed}
+  .pr-wallet{margin-left:auto;font-family:var(--font-display);font-size:11px;letter-spacing:2px;color:var(--ash)}
+  .pr-wallet b{color:var(--ink)}
+
+  .pr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px}
+  .mkt{background:var(--panel);border:1px solid var(--bd);padding:20px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden}
+  .mkt::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .mkt .mkt-id{font-family:var(--font-display);font-size:10px;letter-spacing:3px;color:var(--mist);text-transform:uppercase}
+  .mkt .mkt-q{font-family:var(--font-serif);font-size:18px;line-height:1.4;color:var(--ink);font-weight:500;min-height:50px}
+  .mkt .mkt-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--ash);font-family:var(--font-display);letter-spacing:1px}
+  .mkt .mkt-meta b{color:var(--ink)}
+  .mkt .mkt-status{display:inline-block;padding:3px 8px;font-size:10px;letter-spacing:2px;text-transform:uppercase;border:1px solid var(--bd)}
+  .mkt .mkt-status.open{border-color:#3a7;color:#3a7}
+  .mkt .mkt-status.proposed{border-color:var(--gold-deep);color:var(--gold-deep)}
+  .mkt .mkt-status.resolved{border-color:var(--ash);color:var(--ash)}
+  .mkt .mkt-status.cancelled{border-color:var(--rose);color:var(--rose)}
+
+  .mkt-opts{display:flex;flex-direction:column;gap:6px}
+  .mkt-opt{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border:1px solid var(--bd);background:var(--bg-0);cursor:pointer;transition:all .15s;font-family:var(--font-display);font-size:13px;position:relative}
+  .mkt-opt:hover{border-color:var(--gold-deep)}
+  .mkt-opt.win{border-color:#3a7;background:rgba(50,120,70,.05)}
+  .mkt-opt .opt-label{color:var(--ink);font-weight:500}
+  .mkt-opt .opt-pct{color:var(--gold-deep);font-weight:600;font-variant-numeric:tabular-nums}
+  .mkt-opt .opt-total{color:var(--mist);font-size:10px;letter-spacing:1px}
+  .mkt-opt .opt-bar{position:absolute;inset:0;background:var(--gold);opacity:.08;pointer-events:none;transform-origin:left;transform:scaleX(var(--pct,0))}
+
+  .mkt-actions{display:flex;gap:8px;margin-top:auto}
+  .mkt-actions .pr-btn{flex:1}
+
+  .modal-bd{position:fixed;inset:0;background:rgba(10,10,10,.6);z-index:100;display:none;align-items:center;justify-content:center}
+  .modal-bd.show{display:flex}
+  .modal{background:var(--bg-0);border:1px solid var(--bd);padding:32px;max-width:520px;width:calc(100% - 32px);position:relative}
+  .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .modal h2{font-family:var(--font-display);font-size:20px;letter-spacing:-.5px;margin-bottom:6px}
+  .modal .hint{font-family:var(--font-serif);font-style:italic;color:var(--ash);font-size:13px;margin-bottom:22px}
+  .modal label{display:block;font-family:var(--font-display);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:6px;margin-top:16px}
+  .modal input,.modal select,.modal textarea{width:100%;background:var(--bg-1);border:1px solid var(--bd);padding:10px 12px;color:var(--ink);font-family:var(--font-serif);font-size:15px;outline:none;box-sizing:border-box}
+  .modal input:focus,.modal textarea:focus,.modal select:focus{border-color:var(--gold-deep)}
+  .modal textarea{min-height:80px;resize:vertical}
+  .modal .row{display:flex;gap:10px}
+  .modal .row > *{flex:1}
+  .modal-actions{display:flex;gap:10px;margin-top:24px}
+  .modal-actions .pr-btn{flex:1}
+
+  .empty{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--mist);font-family:var(--font-serif);font-style:italic;font-size:18px}
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg-0);padding:12px 22px;font-family:var(--font-display);font-size:12px;letter-spacing:2px;text-transform:uppercase;z-index:200;opacity:0;pointer-events:none;transition:opacity .2s}
+  .toast.show{opacity:1}
+  .toast.err{background:var(--blood,#a33)}
+
+  .nav-mini{display:flex;gap:20px;font-family:var(--font-display);font-size:11px;letter-spacing:3px;text-transform:uppercase}
+  .nav-mini a{color:var(--ash);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:all .15s}
+  .nav-mini a:hover,.nav-mini a.active{color:var(--gold-deep);border-color:var(--gold-deep)}
+  .spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--bd);border-top-color:var(--gold-deep);border-radius:50%;animation:spin .6s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="pr-wrap">
+  <div class="pr-head">
+    <div>
+      <h1>
+        Oracle Markets
+        <span class="sub">链上事件平注预测 · SEKI 结算 · 不抽水</span>
+      </h1>
+      <div class="nav-mini" style="margin-top:12px">
+        <a href="/">首页</a>
+        <a href="/map">资金流图</a>
+        <a href="/predict" class="active">预测市场</a>
+        <a href="/evolution">进化</a>
+        <a href="/chat">Seki 对话</a>
+      </div>
+    </div>
+    <div class="meta">
+      <span><span class="dot"></span>BSC · BLOCK <b id="blk">—</b></span>
+      <span>MARKETS <b id="cnt">—</b></span>
+      <span>POOL <b id="tvl">—</b> SEKI</span>
+    </div>
+  </div>
+
+  <div class="pr-toolbar">
+    <button class="pr-btn primary" id="btnCreate">+ 创建市场</button>
+    <button class="pr-btn" id="btnRefresh">↻ 刷新</button>
+    <select class="pr-btn" id="filter" style="padding:9px 12px">
+      <option value="all">全部</option>
+      <option value="open" selected>进行中</option>
+      <option value="proposed">待最终化</option>
+      <option value="resolved">已结算</option>
+      <option value="cancelled">已取消</option>
+    </select>
+    <div class="pr-wallet" id="walletInfo">
+      <button class="pr-btn" id="btnConnect">连接钱包</button>
+    </div>
+  </div>
+
+  <div class="pr-grid" id="grid">
+    <div class="empty">Loading markets…</div>
+  </div>
+</div>
+
+<!-- Create Market Modal -->
+<div class="modal-bd" id="modalCreate">
+  <div class="modal">
+    <h2>创建预测市场</h2>
+    <div class="hint">任何人可创建。最少 4 人下注才有效，否则全额退款。</div>
+    <label>问题（首行放 SPEC，第二行写人类可读描述）</label>
+    <textarea id="cQ" placeholder='SPEC:{"t":"BIN","a":"BNBUSDT"}&#10;BNB 1小时后涨还是跌？'></textarea>
+    <div class="row">
+      <div>
+        <label>玩法</label>
+        <select id="cType">
+          <option value="2">二选一（涨/跌）</option>
+          <option value="3">三选一（涨/跌/横盘）</option>
+          <option value="race">赛马（2~16）</option>
+        </select>
+      </div>
+      <div>
+        <label>赛马选项数</label>
+        <input id="cN" type="number" min="2" max="16" value="4">
+      </div>
+    </div>
+    <label>赛马选项标签（逗号分隔，仅 race 模式用）</label>
+    <input id="cLabels" placeholder="BTC, ETH, BNB, SOL">
+    <div class="row">
+      <div>
+        <label>持续时长</label>
+        <select id="cDur">
+          <option value="900">15 分钟</option>
+          <option value="3600" selected>1 小时</option>
+          <option value="14400">4 小时</option>
+          <option value="86400">1 天</option>
+          <option value="259200">3 天</option>
+          <option value="604800">7 天</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="pr-btn" onclick="closeModal('modalCreate')">取消</button>
+      <button class="pr-btn primary" id="btnCreateGo">创建</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bet Modal -->
+<div class="modal-bd" id="modalBet">
+  <div class="modal">
+    <h2>下注</h2>
+    <div class="hint" id="betHint"></div>
+    <label>下注金额（SEKI）</label>
+    <div class="row">
+      <input id="bAmt" type="number" value="500000" step="1000">
+      <button class="pr-btn" onclick="document.getElementById('bAmt').value=500000">500K</button>
+      <button class="pr-btn" onclick="document.getElementById('bAmt').value=1000000">1M</button>
+    </div>
+    <div style="margin-top:10px;font-family:var(--font-display);font-size:11px;letter-spacing:1px;color:var(--ash)">
+      你的余额：<b id="bBal" style="color:var(--ink)">—</b> SEKI
+    </div>
+    <div class="modal-actions">
+      <button class="pr-btn" onclick="closeModal('modalBet')">取消</button>
+      <button class="pr-btn primary" id="btnBetGo">下注</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<script>
+// ---------------- Config ----------------
+const CORE_ADDR = '0x7fbAd0F8E28785cDDe3371f7ED5EBB5A56a8167B';
+const SEKI_ADDR = '0x99950De793A7A85eB4bdE1bBA3DBF5dEa161ffff';
+const BSC_CHAIN_ID = 56n;
+const RPC = 'https://bsc-dataseed1.binance.org';
+
+const CORE_ABI = [
+  "function marketCount() view returns (uint256)",
+  "function getMarket(uint256) view returns (address creator,uint8 optionCount,uint8 winningOption,uint8 status,uint64 openUntil,uint64 proposedAt,uint64 disputeWindow,uint256 totalPool,uint256 uniqueBettors,string question)",
+  "function optionTotal(uint256 id, uint8 option) view returns (uint256)",
+  "function userStake(uint256 id, address user, uint8 option) view returns (uint256)",
+  "function previewClaim(uint256 id, address user) view returns (uint256)",
+  "function hasClaimed(uint256 id, address user) view returns (bool)",
+  "function createMarket(string question, uint8 optionCount, uint64 duration) returns (uint256)",
+  "function bet(uint256 id, uint8 option, uint256 amount)",
+  "function claim(uint256 id)",
+  "function finalize(uint256 id)",
+];
+const SEKI_ABI = [
+  "function balanceOf(address) view returns (uint256)",
+  "function allowance(address,address) view returns (uint256)",
+  "function approve(address,uint256) returns (bool)",
+  "function decimals() view returns (uint8)"
+];
+const STATUS = ['open','proposed','cancelled','resolved'];
+const STATUS_CN = {open:'进行中',proposed:'待最终化',cancelled:'已取消',resolved:'已结算'};
+
+// ---------------- State ----------------
+const roProvider = new ethers.JsonRpcProvider(RPC);
+const roCore = new ethers.Contract(CORE_ADDR, CORE_ABI, roProvider);
+let provider, signer, addr, wCore, wSeki, roSeki;
+let MARKETS = [];
+let pendingBet = null; // {marketId, option, label}
+
+// ---------------- Helpers ----------------
+const fmt = (n, d=18) => {
+  try {
+    const s = ethers.formatUnits(n, d);
+    const f = parseFloat(s);
+    if (f >= 1e9) return (f/1e9).toFixed(2)+'B';
+    if (f >= 1e6) return (f/1e6).toFixed(2)+'M';
+    if (f >= 1e3) return (f/1e3).toFixed(1)+'K';
+    return f.toFixed(0);
+  } catch { return '0'; }
+};
+const fmtFull = (n, d=18) => {
+  try { return parseFloat(ethers.formatUnits(n, d)).toLocaleString('en-US', {maximumFractionDigits:0}); }
+  catch { return '0'; }
+};
+const short = a => a ? a.slice(0,6)+'…'+a.slice(-4) : '';
+const showToast = (msg, err=false) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (err ? ' err' : '');
+  setTimeout(() => t.className = 'toast', 4000);
+};
+const openModal = id => document.getElementById(id).classList.add('show');
+const closeModal = id => document.getElementById(id).classList.remove('show');
+window.closeModal = closeModal;
+
+function timeLeft(openUntil) {
+  const left = Number(openUntil) - Math.floor(Date.now()/1000);
+  if (left <= 0) return '已截止';
+  if (left < 60) return left + 's';
+  if (left < 3600) return Math.floor(left/60) + 'm';
+  if (left < 86400) return Math.floor(left/3600) + 'h ' + Math.floor((left%3600)/60) + 'm';
+  return Math.floor(left/86400) + 'd ' + Math.floor((left%86400)/3600) + 'h';
+}
+
+function disputeTimeLeft(proposedAt, disputeWindow) {
+  const end = Number(proposedAt) + Number(disputeWindow);
+  const left = end - Math.floor(Date.now()/1000);
+  if (left <= 0) return '可最终化';
+  if (left < 3600) return Math.floor(left/60) + 'm';
+  if (left < 86400) return Math.floor(left/3600) + 'h';
+  return Math.floor(left/86400) + 'd';
+}
+
+function parseQuestion(q) {
+  // First line may be SPEC:... — strip it for display
+  const lines = (q || '').split('\n');
+  if (lines[0].trim().startsWith('SPEC:')) {
+    return lines.slice(1).join('\n').trim() || lines[0];
+  }
+  return q;
+}
+
+function defaultLabels(optionCount) {
+  if (optionCount === 2) return ['↑ 涨', '↓ 跌'];
+  if (optionCount === 3) return ['↑ 涨', '↓ 跌', '— 横'];
+  return Array.from({length: optionCount}, (_, i) => '#' + (i+1));
+}
+
+// ---------------- Wallet ----------------
+async function connect() {
+  if (!window.ethereum) { showToast('请安装 MetaMask', true); return; }
+  provider = new ethers.BrowserProvider(window.ethereum);
+  await provider.send('eth_requestAccounts', []);
+  const net = await provider.getNetwork();
+  if (net.chainId !== BSC_CHAIN_ID) {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x38' }]
+      });
+    } catch (e) {
+      // If chain not added, add it
+      if (e.code === 4902) {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: '0x38',
+            chainName: 'BNB Smart Chain',
+            rpcUrls: ['https://bsc-dataseed1.binance.org'],
+            nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+            blockExplorerUrls: ['https://bscscan.com']
+          }]
+        });
+      } else {
+        showToast('请切换到 BSC 主网', true);
+        return;
+      }
+    }
+    provider = new ethers.BrowserProvider(window.ethereum);
+  }
+  signer = await provider.getSigner();
+  addr = await signer.getAddress();
+  wCore = new ethers.Contract(CORE_ADDR, CORE_ABI, signer);
+  wSeki = new ethers.Contract(SEKI_ADDR, SEKI_ABI, signer);
+  roSeki = new ethers.Contract(SEKI_ADDR, SEKI_ABI, roProvider);
+  document.getElementById('walletInfo').innerHTML = `<b>${short(addr)}</b>`;
+  showToast('钱包已连接');
+  refresh();
+}
+
+// Listen for account/chain changes
+if (window.ethereum) {
+  window.ethereum.on('accountsChanged', () => location.reload());
+  window.ethereum.on('chainChanged', () => location.reload());
+}
+
+// ---------------- Load markets ----------------
+async function loadMarkets() {
+  const cnt = await roCore.marketCount();
+  const total = Number(cnt);
+  document.getElementById('cnt').textContent = total;
+
+  try {
+    const blk = await roProvider.getBlockNumber();
+    document.getElementById('blk').textContent = blk.toLocaleString();
+  } catch {}
+
+  if (total === 0) {
+    MARKETS = [];
+    document.getElementById('tvl').textContent = '0';
+    render();
+    return;
+  }
+
+  const list = [];
+  let totalPool = 0n;
+  const start = Math.max(1, total - 49);
+
+  // Load markets in parallel batches of 10
+  const ids = [];
+  for (let i = total; i >= start; i--) ids.push(i);
+
+  const batchSize = 10;
+  for (let b = 0; b < ids.length; b += batchSize) {
+    const batch = ids.slice(b, b + batchSize);
+    const results = await Promise.allSettled(batch.map(async id => {
+      const m = await roCore.getMarket(id);
+      const optCount = Number(m[1]);
+      // Load option totals individually
+      const optTotals = [];
+      for (let o = 1; o <= optCount; o++) {
+        try {
+          const t = await roCore.optionTotal(id, o);
+          optTotals.push(t);
+        } catch {
+          optTotals.push(0n);
+        }
+      }
+      return {
+        id,
+        creator: m[0],
+        optionCount: optCount,
+        winningOption: Number(m[2]),
+        status: Number(m[3]),
+        openUntil: Number(m[4]),
+        proposedAt: Number(m[5]),
+        disputeWindow: Number(m[6]),
+        totalPool: m[7],
+        uniqueBettors: Number(m[8]),
+        question: m[9],
+        optTotals,
+      };
+    }));
+    for (const r of results) {
+      if (r.status === 'fulfilled') {
+        list.push(r.value);
+        totalPool += r.value.totalPool;
+      }
+    }
+  }
+
+  list.sort((a, b) => b.id - a.id);
+  MARKETS = list;
+  document.getElementById('tvl').textContent = fmt(totalPool);
+  render();
+}
+
+function render() {
+  const f = document.getElementById('filter').value;
+  const grid = document.getElementById('grid');
+  let arr = MARKETS;
+  if (f !== 'all') arr = arr.filter(m => STATUS[m.status] === f);
+  if (!arr.length) {
+    grid.innerHTML = '<div class="empty">暂无市场，去创建一个 →</div>';
+    return;
+  }
+  grid.innerHTML = arr.map(renderMkt).join('');
+}
+
+function renderMkt(m) {
+  const st = STATUS[m.status];
+  const labels = defaultLabels(m.optionCount);
+  const displayQ = parseQuestion(m.question);
+
+  const opts = labels.slice(0, m.optionCount).map((lab, i) => {
+    const total = m.optTotals[i] || 0n;
+    const pct = m.totalPool > 0n ? Number(total * 10000n / m.totalPool) / 100 : 0;
+    const isWin = m.status === 3 && m.winningOption === i + 1;
+    const canBet = m.status === 0 && Number(m.openUntil) > Math.floor(Date.now()/1000);
+    return `<div class="mkt-opt ${isWin ? 'win' : ''}" ${canBet ? `onclick="openBet(${m.id},${i+1},'${lab.replace(/'/g, "\\'")}')"` : ''} style="${canBet ? 'cursor:pointer' : 'cursor:default'}">
+      <span class="opt-bar" style="--pct:${pct/100}"></span>
+      <span class="opt-label">${lab}${isWin ? ' ✓' : ''}</span>
+      <span>
+        <span class="opt-pct">${pct.toFixed(1)}%</span>
+        <span class="opt-total"> · ${fmt(total)}</span>
+      </span>
+    </div>`;
+  }).join('');
+
+  let statusInfo = '';
+  if (st === 'open') {
+    statusInfo = `<span>截止 <b>${timeLeft(m.openUntil)}</b></span>`;
+  } else if (st === 'proposed') {
+    statusInfo = `<span>挑战期 <b>${disputeTimeLeft(m.proposedAt, m.disputeWindow)}</b></span>`;
+  }
+
+  let actions = '';
+  if (st === 'proposed') {
+    const canFinalize = Math.floor(Date.now()/1000) >= Number(m.proposedAt) + Number(m.disputeWindow);
+    if (canFinalize) {
+      actions = `<div class="mkt-actions"><button class="pr-btn primary" onclick="doFinalize(${m.id})">最终化结算</button></div>`;
+    }
+  }
+  if (st === 'resolved' || st === 'cancelled') {
+    actions = `<div class="mkt-actions"><button class="pr-btn" onclick="doClaim(${m.id})">领取</button></div>`;
+  }
+
+  return `<div class="mkt">
+    <div class="mkt-id">MARKET #${m.id} · <span class="mkt-status ${st}">${STATUS_CN[st]}</span></div>
+    <div class="mkt-q">${escHtml(displayQ)}</div>
+    <div class="mkt-meta">
+      ${statusInfo}
+      <span>参与 <b>${m.uniqueBettors}</b> 人 · 池 <b>${fmt(m.totalPool)}</b></span>
+    </div>
+    <div class="mkt-opts">${opts}</div>
+    ${actions}
+  </div>`;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ---------------- Bet ----------------
+async function openBet(marketId, option, label) {
+  if (!addr) { showToast('请先连接钱包', true); return; }
+  pendingBet = { marketId, option, label };
+  document.getElementById('betHint').textContent = `市场 #${marketId} — 选择「${label}」`;
+  // Show balance
+  try {
+    const bal = await wSeki.balanceOf(addr);
+    document.getElementById('bBal').textContent = fmtFull(bal);
+  } catch {
+    document.getElementById('bBal').textContent = '—';
+  }
+  openModal('modalBet');
+}
+window.openBet = openBet;
+
+async function doBet() {
+  if (!pendingBet || !wCore || !wSeki) return;
+  const { marketId, option } = pendingBet;
+  const amtRaw = document.getElementById('bAmt').value;
+  if (!amtRaw || Number(amtRaw) <= 0) { showToast('请输入金额', true); return; }
+  const amount = ethers.parseUnits(String(amtRaw), 18);
+
+  try {
+    // Check allowance
+    const allowance = await wSeki.allowance(addr, CORE_ADDR);
+    if (allowance < amount) {
+      showToast('授权 SEKI…');
+      const tx = await wSeki.approve(CORE_ADDR, ethers.MaxUint256);
+      await tx.wait();
+      showToast('授权成功，正在下注…');
+    }
+    // Place bet
+    showToast('发送下注交易…');
+    const tx = await wCore.bet(marketId, option, amount);
+    await tx.wait();
+    showToast('下注成功！');
+    closeModal('modalBet');
+    pendingBet = null;
+    refresh();
+  } catch (e) {
+    console.error('bet error', e);
+    const msg = e.reason || e.message || '下注失败';
+    showToast(msg.slice(0, 80), true);
+  }
+}
+
+// ---------------- Create Market ----------------
+async function doCreate() {
+  if (!wCore) { showToast('请先连接钱包', true); return; }
+  const question = document.getElementById('cQ').value.trim();
+  if (!question) { showToast('请输入问题', true); return; }
+  const typeVal = document.getElementById('cType').value;
+  let optionCount;
+  if (typeVal === 'race') {
+    optionCount = parseInt(document.getElementById('cN').value);
+    if (optionCount < 2 || optionCount > 16) { showToast('赛马选项 2~16', true); return; }
+  } else {
+    optionCount = parseInt(typeVal);
+  }
+  const duration = parseInt(document.getElementById('cDur').value);
+
+  try {
+    showToast('创建市场…');
+    const tx = await wCore.createMarket(question, optionCount, duration);
+    const receipt = await tx.wait();
+    showToast('市场创建成功！');
+    closeModal('modalCreate');
+    refresh();
+  } catch (e) {
+    console.error('create error', e);
+    showToast((e.reason || e.message || '创建失败').slice(0, 80), true);
+  }
+}
+
+// ---------------- Claim ----------------
+async function doClaim(marketId) {
+  if (!wCore) { showToast('请先连接钱包', true); return; }
+  try {
+    // Check if already claimed
+    const claimed = await roCore.hasClaimed(marketId, addr);
+    if (claimed) { showToast('已领取过', true); return; }
+    // Preview
+    const preview = await roCore.previewClaim(marketId, addr);
+    if (preview === 0n) { showToast('无可领取金额', true); return; }
+    showToast(`领取 ${fmtFull(preview)} SEKI…`);
+    const tx = await wCore.claim(marketId);
+    await tx.wait();
+    showToast('领取成功！');
+    refresh();
+  } catch (e) {
+    console.error('claim error', e);
+    showToast((e.reason || e.message || '领取失败').slice(0, 80), true);
+  }
+}
+window.doClaim = doClaim;
+
+// ---------------- Finalize ----------------
+async function doFinalize(marketId) {
+  if (!wCore) { showToast('请先连接钱包', true); return; }
+  try {
+    showToast('最终化结算…');
+    const tx = await wCore.finalize(marketId);
+    await tx.wait();
+    showToast('已最终化！');
+    refresh();
+  } catch (e) {
+    console.error('finalize error', e);
+    showToast((e.reason || e.message || '最终化失败').slice(0, 80), true);
+  }
+}
+window.doFinalize = doFinalize;
+
+// ---------------- Refresh ----------------
+async function refresh() {
+  try { await loadMarkets(); }
+  catch (e) { console.error('load error', e); showToast('加载失败', true); }
+}
+
+// ---------------- Init ----------------
+document.getElementById('btnConnect').addEventListener('click', connect);
+document.getElementById('btnCreate').addEventListener('click', () => openModal('modalCreate'));
+document.getElementById('btnCreateGo').addEventListener('click', doCreate);
+document.getElementById('btnBetGo').addEventListener('click', doBet);
+document.getElementById('btnRefresh').addEventListener('click', refresh);
+document.getElementById('filter').addEventListener('change', render);
+
+// Auto-connect if already authorized
+(async () => {
+  await refresh();
+  if (window.ethereum) {
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+      if (accounts.length) connect();
+    } catch {}
+  }
+  // Auto-refresh every 30s
+  setInterval(refresh, 30000);
+})();
+</script>
+</body>
+</html>

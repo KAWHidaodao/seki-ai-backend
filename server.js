@@ -4,11 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const { execFile } = require('child_process');
 // 加载 .env
-require('/root/.openclaw/workspace/memebounty-v2/backend/node_modules/dotenv').config({
-  path: '/root/.openclaw/workspace/memebounty-v2/backend/.env'
-});
+require('dotenv').config({ path: '/var/www/seki-ai/.env' });
 
-const BASE = '/root/.openclaw/workspace/memebounty-v2';
+const BASE = '/var/www/seki-ai';
 const crypto = require('crypto');
 function okxWeb3Sign(method, path, body) {
   const key = process.env.OKX_API_KEY||'';
@@ -57,7 +55,7 @@ function touchUser(addr) {
 }
 
 // ── 签名验证
-const { ethers: ethersServer } = require('/root/.openclaw/workspace/memebounty-v2/backend/node_modules/ethers');
+const { ethers: ethersServer } = require('ethers');
 const SIGN_MESSAGE = (nonce) => `Seki AI Agent 身份验证\n地址授权操作\nNonce: ${nonce}`;
 const signNonces = new Map(); // addr -> { nonce, ts }
 function issueNonce(addr) {
@@ -184,6 +182,19 @@ const _serverHandler = async (req, res) => {
 
   if (req.method === 'OPTIONS') {
     res.writeHead(204, cors); res.end(); return;
+  }
+
+  // ── API: /api/predict-agent/* → predict-agents/api.js
+  if (req.url.startsWith('/api/predict-agent/')) {
+    try {
+      const { memeAgentRoute } = require('/var/www/seki-ai/predict-agents/api.js');
+      const handled = await memeAgentRoute(req, res, cors);
+      if (handled !== null) return;
+    } catch (e) {
+      console.error('[predict-agent] route err:', e.message);
+      res.writeHead(500, { 'Content-Type': 'application/json', ...cors });
+      res.end(JSON.stringify({ error: e.message })); return;
+    }
   }
 
   // ── bdmeme.xyz → 反代到 meme-sovereign (localhost:4000) ──
@@ -801,9 +812,9 @@ const _serverHandler = async (req, res) => {
   // ── 大户信号（OKX DEX V6 实时数据）────────────────────────────────
   if (req.method === 'GET' && req.url.startsWith('/api/okx/signal')) {
     try {
-      const OKX_KEY = '3fe0f8e7-1ef8-4304-afb0-ca67afe3995d';
-      const OKX_SECRET = 'A2E6A81E0B8C9BCBE0836AFC8F32DF44';
-      const OKX_PASS = '110220aA!';
+      const OKX_KEY = process.env.OKX_API_KEY || '';
+      const OKX_SECRET = process.env.OKX_SECRET_KEY || '';
+      const OKX_PASS = process.env.OKX_PASSPHRASE || '';
       const crypto = require('crypto');
       const u = new URL('https://x'+req.url);
       const chainIndex = u.searchParams.get('chain') || '56';
@@ -1210,7 +1221,7 @@ a{color:#60a5fa;text-decoration:none}
       try {
         const { jobId, budget } = JSON.parse(body);
         if (jobId === undefined || !budget) throw new Error('missing jobId or budget');
-        const { ethers } = require('/root/.openclaw/workspace/memebounty-v2/backend/node_modules/ethers');
+        const { ethers } = require('ethers');
         const rpcUrl = process.env.BSC_RPC_URL || 'https://bsc-dataseed.binance.org/';
         const provider = new ethers.JsonRpcProvider(rpcUrl);
         const agentWallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
@@ -1470,6 +1481,8 @@ a{color:#60a5fa;text-decoration:none}
   if (p === '/chat' || p === '/chat/') p = '/chat.html';
   if (p === '/evolution' || p === '/evolution/') p = '/evolution.html';
   if (p === '/docs' || p === '/docs/') p = '/docs/index.html';
+  if (p === '/map' || p === '/map/') p = '/map.html';
+  if (p === '/predict' || p === '/predict/') p = '/predict.html';
   if (p === '/contract') p = '/MemeBountyV2.sol';
   if (p === '/registry') p = '/AgentRegistry.sol';
   const full = path.join(BASE, p);

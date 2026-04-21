@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seki · Agent 控制台</title>
+<link rel="icon" type="image/jpeg" href="/seki-avatar.jpg">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/theme-divine.css">
+<style>
+/* ── page-level overrides for iframe context ── */
+body { padding: 0 !important; background: #fafaf7 !important; }
+.ag-wrap { max-width: 1100px; margin: 0 auto; padding: 40px 28px 100px; }
+
+/* hero */
+.ag-hero { text-align: center; margin-bottom: 56px; }
+.ag-hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px; border: 1px solid rgba(184,160,106,.35); margin-bottom: 20px; font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: .35em; color: var(--gold-deep, #8a7548); }
+.ag-hero-badge .dot-live { width: 7px; height: 7px; border-radius: 50%; background: #2d6a4f; animation: pulse-dot 2s infinite; }
+@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+.ag-hero h1 { font-family: 'Cinzel','Noto Serif SC',serif; font-size: clamp(28px,5vw,42px); font-weight: 400; letter-spacing: .08em; color: #0a0a0a; margin: 0 0 12px; }
+.ag-hero p { font-family: 'Cormorant Garamond','Noto Serif SC',serif; font-size: 16px; color: #6b6b6b; font-style: italic; }
+
+/* section titles */
+.ag-section { margin-bottom: 48px; }
+.ag-section-title { font-family: 'Cinzel','Noto Serif SC',serif; font-size: 14px; font-weight: 500; letter-spacing: .2em; color: #8a7548; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.ag-section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(184,160,106,.4), transparent); }
+
+/* cards */
+.ag-card { background: rgba(255,255,255,.6); backdrop-filter: blur(10px); border: 1px solid rgba(10,10,10,.08); border-radius: 0; padding: 28px; position: relative; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(10,10,10,.03), 0 8px 32px rgba(10,10,10,.04); }
+.ag-card::before { content:''; position:absolute; top:8px; left:8px; width:12px; height:12px; border-top:1px solid var(--gold,#b8a06a); border-left:1px solid var(--gold,#b8a06a); opacity:.5; pointer-events:none; }
+.ag-card::after { content:''; position:absolute; bottom:8px; right:8px; width:12px; height:12px; border-bottom:1px solid var(--gold,#b8a06a); border-right:1px solid var(--gold,#b8a06a); opacity:.5; pointer-events:none; }
+
+/* form */
+.ag-form label { display: block; font-family: 'Cinzel',serif; font-size: 12px; font-weight: 500; letter-spacing: .12em; color: #4a4a4a; margin: 14px 0 6px; }
+.ag-form input, .ag-form textarea, .ag-form select {
+  width: 100%; padding: 10px 14px; font-size: 15px;
+  font-family: 'Cormorant Garamond','Noto Serif SC',serif;
+  background: rgba(255,255,255,.7); border: 1px solid rgba(10,10,10,.15);
+  border-radius: 0; color: #0a0a0a; outline: none; transition: border-color .2s;
+}
+.ag-form input:focus, .ag-form textarea:focus { border-color: #b8a06a; box-shadow: 0 0 0 3px rgba(184,160,106,.1); }
+.ag-form input::placeholder, .ag-form textarea::placeholder { color: #b8b8b8; font-style: italic; }
+.ag-form textarea { min-height: 80px; resize: vertical; }
+.ag-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ag-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+/* buttons */
+.ag-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 24px; font-family: 'Cinzel',serif; font-size: 13px; font-weight: 500; letter-spacing: .12em; border: 1px solid #0a0a0a; cursor: pointer; transition: all .25s; }
+.ag-btn-primary { background: #0a0a0a; color: #fafaf7; }
+.ag-btn-primary:hover { background: #fafaf7; color: #0a0a0a; }
+.ag-btn-secondary { background: transparent; color: #0a0a0a; }
+.ag-btn-secondary:hover { border-color: #b8a06a; color: #8a7548; }
+.ag-btn-sm { padding: 6px 14px; font-size: 11px; letter-spacing: .1em; }
+.ag-btn-group { display: flex; gap: 12px; margin-top: 18px; align-items: center; flex-wrap: wrap; }
+
+/* deposit box */
+.ag-deposit { display: none; margin-top: 18px; padding: 16px; border: 1px dashed #b8a06a; background: rgba(184,160,106,.04); }
+.ag-deposit .mono { font-family: 'Courier New', monospace; font-size: 13px; color: #0a0a0a; word-break: break-all; }
+
+/* agent list */
+.ag-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.ag-agent { background: rgba(255,255,255,.6); backdrop-filter: blur(10px); border: 1px solid rgba(10,10,10,.08); padding: 22px; position: relative; transition: all .25s; }
+.ag-agent:hover { border-color: rgba(184,160,106,.45); box-shadow: 0 4px 24px rgba(10,10,10,.06); transform: translateY(-1px); }
+.ag-agent::before { content:''; position:absolute; top:6px; left:6px; width:10px; height:10px; border-top:1px solid #b8a06a; border-left:1px solid #b8a06a; opacity:.4; pointer-events:none; }
+.ag-agent::after { content:''; position:absolute; bottom:6px; right:6px; width:10px; height:10px; border-bottom:1px solid #b8a06a; border-right:1px solid #b8a06a; opacity:.4; pointer-events:none; }
+.ag-agent-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.ag-agent-name { font-family: 'Cinzel',serif; font-size: 15px; font-weight: 600; color: #0a0a0a; display: flex; align-items: center; gap: 8px; }
+.ag-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.ag-dot.on { background: #2d6a4f; }
+.ag-dot.off { background: #b8b8b8; }
+.ag-agent .mono { font-family: 'Courier New', monospace; font-size: 11px; color: #8a8a8a; word-break: break-all; line-height: 1.6; }
+.ag-agent-stats { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(10,10,10,.06); display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ag-stat-label { font-size: 10px; color: #8a8a8a; letter-spacing: .1em; font-family: 'Cinzel',serif; }
+.ag-stat-value { font-size: 14px; font-weight: 600; color: #0a0a0a; }
+.ag-agent-decision { margin-top: 10px; font-size: 12px; color: #4a4a4a; font-style: italic; line-height: 1.6; }
+.ag-type-badge { font-family: 'Cinzel',serif; font-size: 10px; letter-spacing: .15em; padding: 3px 10px; border: 1px solid rgba(184,160,106,.4); color: #8a7548; }
+
+/* log */
+.ag-log { background: rgba(10,10,10,.03); border: 1px solid rgba(10,10,10,.08); padding: 14px; max-height: 360px; overflow: auto; font-family: 'Courier New', monospace; font-size: 12px; color: #4a4a4a; white-space: pre-wrap; word-break: break-all; line-height: 1.8; }
+
+/* signing section */
+.ag-sign-result { margin-top: 12px; padding: 12px; background: rgba(10,10,10,.03); border: 1px solid rgba(10,10,10,.08); font-family: 'Courier New', monospace; font-size: 11px; color: #4a4a4a; word-break: break-all; min-height: 40px; }
+
+/* hint / status */
+.ag-hint { font-size: 12px; color: #8a8a8a; font-style: italic; }
+.ag-ok { color: #2d6a4f; }
+.ag-err { color: #8b0000; }
+
+/* header wallet */
+.ag-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(184,160,106,.25); margin-bottom: 40px; }
+.ag-header-left { font-family: 'Cinzel',serif; font-size: 13px; letter-spacing: .15em; color: #8a7548; }
+.ag-header-right { font-family: 'Courier New', monospace; font-size: 12px; color: #8a8a8a; }
+
+/* responsive */
+@media (max-width: 640px) {
+  .ag-row2, .ag-row3 { grid-template-columns: 1fr; }
+  .ag-grid { grid-template-columns: 1fr; }
+  .ag-wrap { padding: 24px 16px 80px; }
+}
+</style>
+</head>
+<body>
+
+<div class="ag-wrap">
+
+<!-- header bar -->
+<div class="ag-header">
+  <div class="ag-header-left">SEKI · AGENT PROTOCOL</div>
+  <div class="ag-header-right" id="ag-who">未连接</div>
+</div>
+
+<!-- hero -->
+<div class="ag-hero">
+  <div class="ag-hero-badge"><span class="dot-live"></span> PROTOCOL ACTIVE</div>
+  <h1>Agent 控制台</h1>
+  <p>绑定代币，委托 AI Agent 自主运营。观察 · 学习 · 进化 · 行动。</p>
+</div>
+
+<!-- ═══ Section 1: 绑定 Agent ═══ -->
+<div class="ag-section">
+  <div class="ag-section-title">◆ 绑定 AGENT</div>
+  <div class="ag-card ag-form">
+    <div class="ag-row2">
+      <div><label>代币合约 (BEP20)</label><input id="f-token" placeholder="0x..."></div>
+      <div><label>代币符号</label><input id="f-symbol" placeholder="SEKI" maxlength="16"></div>
+    </div>
+    <div class="ag-row2">
+      <div><label>Owner 钱包</label><input id="f-owner" placeholder="连接钱包后自动填入" readonly></div>
+      <div><label>Agent 名称</label><input id="f-name" placeholder="例：Oracle of SEKI" maxlength="48"></div>
+    </div>
+    <label>人格 / 指令</label>
+    <textarea id="f-persona" placeholder="你是一个自主链上 Oracle，负责观察 $TOKEN 的链上数据，并基于市场信号自动发布预测市场..."></textarea>
+    <div class="ag-row3">
+      <div><label>最小间隔 (秒, ≥600)</label><input id="f-interval" type="number" min="600" value="3600"></div>
+      <div><label>每日上限 (≤10)</label><input id="f-max" type="number" min="1" max="10" value="3"></div>
+      <div><label>最大时长 (秒)</label><input id="f-duration" type="number" min="900" max="604800" value="86400"></div>
+    </div>
+    <div class="ag-btn-group">
+      <button class="ag-btn ag-btn-secondary" id="btn-connect" onclick="doConnect()">连接钱包</button>
+      <button class="ag-btn ag-btn-primary" id="btn-create" onclick="doCreate()">创建 Agent</button>
+      <span class="ag-hint" id="f-msg"></span>
+    </div>
+    <div class="ag-deposit" id="deposit-box">
+      <div style="font-size:13px;margin-bottom:8px;font-weight:600">✓ Agent 已创建。向以下地址充值 <strong>BNB (≥0.01)</strong> 启动：</div>
+      <div class="mono" id="deposit-addr"></div>
+      <div class="ag-hint" style="margin-top:8px">Agent 每 60s 轮询一次，BNB &lt; 0.002 时自动暂停。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Section 2: 活跃 Agents ═══ -->
+<div class="ag-section">
+  <div class="ag-section-title">◆ 活跃 AGENTS</div>
+  <div class="ag-grid" id="agent-list"></div>
+</div>
+
+<!-- ═══ Section 3: 决策日志 ═══ -->
+<div class="ag-section">
+  <div class="ag-section-title">◆ 决策日志</div>
+  <div class="ag-card">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap">
+      <select id="log-sel" style="flex:1;min-width:200px"><option value="">— 选择 Agent —</option></select>
+      <button class="ag-btn ag-btn-secondary ag-btn-sm" onclick="loadLog()">刷新</button>
+    </div>
+    <div class="ag-log" id="log-box">（请选择一个 Agent）</div>
+  </div>
+</div>
+
+<!-- ═══ Section 4: 签名验证 ═══ -->
+<div class="ag-section">
+  <div class="ag-section-title">◆ 签名验证</div>
+  <div class="ag-card">
+    <p style="font-size:13px;color:#4a4a4a;margin-bottom:18px;line-height:1.8">通过 MetaMask 进行链上身份验证与交易签名，完成 Web3 钱包交互。</p>
+    <div class="ag-row2">
+      <div>
+        <button class="ag-btn ag-btn-primary" onclick="doSign()" style="width:100%">签名消息</button>
+        <div class="ag-sign-result" id="sign-result">等待签名...</div>
+      </div>
+      <div>
+        <button class="ag-btn ag-btn-secondary" onclick="doSendTx()" style="width:100%">发送交易</button>
+        <div class="ag-sign-result" id="tx-result">等待交易...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /ag-wrap -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+<script>
+/* ── State ── */
+let owner = '';
+const BSC = { chainId:'0x38', chainName:'BNB Smart Chain', nativeCurrency:{name:'BNB',symbol:'BNB',decimals:18}, rpcUrls:['https://bsc-dataseed.binance.org'], blockExplorerUrls:['https://bscscan.com'] };
+
+/* ── Mock Agents ── */
+const MOCK_AGENTS = [
+  { id:'ag-001', name:'Oracle of PEPE', symbol:'PEPE', type:'hunter', active:true, walletAddr:'0x7fba...8e2b', tokenAddr:'0x0cb2...a4f1', stats:{ marketsCreated:12, todayCount:3, lastDecision:'BNB -3.2% → 发布买入任务 0.005 BNB' }},
+  { id:'ag-002', name:'DOGE 军师', symbol:'DOGE', type:'strategist', active:true, walletAddr:'0x3e91...d7c0', tokenAddr:'0x3049...b2e8', stats:{ marketsCreated:8, todayCount:1, lastDecision:'资金费率 +0.03% → 做空情绪升温，暂不出手' }},
+  { id:'ag-003', name:'Shiba 传令官', symbol:'SHIB', type:'herald', active:false, walletAddr:'0xab44...f901', tokenAddr:'0x2859...c7d3', stats:{ marketsCreated:3, todayCount:0, lastDecision:'手动暂停 — 等待流动性恢复' }},
+  { id:'ag-004', name:'MetaCow 猎手', symbol:'MOO', type:'hunter', active:true, walletAddr:'0x1f08...4a2c', tokenAddr:'0x9c77...e611', stats:{ marketsCreated:0, todayCount:0, lastDecision:'— 新建 Agent，尚未执行' }},
+  { id:'ag-005', name:'SEKI 守护者', symbol:'SEKI', type:'strategist', active:true, walletAddr:'0x5529...1e03', tokenAddr:'0x9995...ffff', stats:{ marketsCreated:45, todayCount:7, lastDecision:'1h 成交量 spike 2.8x → 发布 5min 早鸟任务 0.012 BNB' }},
+];
+
+const TYPE_LABELS = { hunter:'猎手', strategist:'军师', herald:'传令官', custom:'自定义' };
+
+const MOCK_LOG = [
+  { ts:'05:32:18', kind:'OBSERVE', msg:'BNB $602.3 | 1h vol spike 2.8x | funding -0.012%' },
+  { ts:'05:32:19', kind:'THINK',   msg:'猎手模式 | 检测到热度峰值 | 建议: 早鸟任务' },
+  { ts:'05:32:20', kind:'ACT',     msg:'TX 0x7fab...3e2b | 发布 5min 早鸟任务 | 0.008 BNB' },
+  { ts:'05:35:44', kind:'SETTLE',  msg:'任务 #127 完成 | 3/5 参与 | 0.0048 BNB 已发放' },
+  { ts:'05:38:01', kind:'OBSERVE', msg:'BNB $603.1 | vol 回落 | funding -0.008% | 盘口比 1.12' },
+  { ts:'05:38:02', kind:'THINK',   msg:'军师模式 | 市场回归平静 | 建议: 持仓任务(30min)' },
+  { ts:'05:38:03', kind:'ACT',     msg:'TX 0xa3d1...9f0c | 发布 30min 持仓任务 | 0.003 BNB' },
+  { ts:'05:42:15', kind:'OBSERVE', msg:'SEKI price 0.00000167 BNB | holders 1,247 | +3 (1h)' },
+  { ts:'05:42:16', kind:'THINK',   msg:'传令官模式 | holders 增长稳定 | 建议: 推荐任务' },
+  { ts:'05:42:17', kind:'ACT',     msg:'TX 0xbe08...1d44 | 发布推荐拉新任务 | 0.006 BNB' },
+  { ts:'05:48:30', kind:'SETTLE',  msg:'任务 #128 完成 | 5/5 满员 | 0.003 BNB 已发放' },
+  { ts:'05:51:00', kind:'OBSERVE', msg:'鲸鱼异动: 0x77...26E 买入 82 BNB ($49,400) | 3min 内' },
+  { ts:'05:51:01', kind:'THINK',   msg:'猎手模式 | 鲸鱼大单检测 | 紧急: 抢先发任务' },
+  { ts:'05:51:02', kind:'ACT',     msg:'TX 0xf901...8b3a | 发布 10min 买入任务 | 0.015 BNB' },
+];
+
+/* ── Helpers ── */
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function short(addr){ return addr.length>12 ? addr.slice(0,6)+'…'+addr.slice(-4) : addr; }
+
+/* ── Wallet ── */
+async function doConnect(){
+  if(!window.ethereum){ alert('请安装 MetaMask 钱包'); return; }
+  try {
+    const [a] = await window.ethereum.request({method:'eth_requestAccounts'});
+    owner = a.toLowerCase();
+    document.getElementById('f-owner').value = owner;
+    document.getElementById('ag-who').textContent = short(owner);
+    // ensure BSC
+    try { await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x38'}]}); }
+    catch(sw){ if(sw.code===4902) await window.ethereum.request({method:'wallet_addEthereumChain',params:[BSC]}); }
+    loadAgents();
+  } catch(e){ console.error(e); }
+}
+
+/* ── Create Agent ── */
+async function doCreate(){
+  const msg = document.getElementById('f-msg');
+  msg.textContent=''; msg.className='ag-hint';
+  if(!owner){ msg.textContent='请先连接钱包'; msg.className='ag-hint ag-err'; return; }
+  const body = {
+    tokenAddr: document.getElementById('f-token').value.trim(),
+    symbol:    document.getElementById('f-symbol').value.trim(),
+    owner,
+    name:      document.getElementById('f-name').value.trim(),
+    persona:   document.getElementById('f-persona').value.trim(),
+    policy: {
+      minIntervalSec:   Number(document.getElementById('f-interval').value),
+      maxMarketsPerDay: Number(document.getElementById('f-max').value),
+      maxDurationSec:   Number(document.getElementById('f-duration').value),
+    },
+  };
+  try {
+    const r = await fetch('/api/predict-agent/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const j = await r.json().catch(()=>({error:'bad_json'}));
+    if(!r.ok) throw new Error(j.error||'HTTP '+r.status);
+    msg.textContent='✓ Agent 已创建'; msg.className='ag-hint ag-ok';
+    document.getElementById('deposit-box').style.display='block';
+    document.getElementById('deposit-addr').textContent=j.deposit?.walletAddr||'(见控制台)';
+    loadAgents();
+  } catch(e){ msg.textContent='✗ '+e.message; msg.className='ag-hint ag-err'; }
+}
+
+/* ── Load agents (real + mock) ── */
+async function loadAgents(){
+  const box = document.getElementById('agent-list');
+  const sel = document.getElementById('log-sel');
+  let agents = [...MOCK_AGENTS];
+  // try real API
+  try {
+    const r = await fetch('/api/predict-agent/list');
+    const j = await r.json();
+    if(j.agents) {
+      const real = j.agents.filter(a=> !owner || a.owner.toLowerCase()===owner);
+      agents = [...real.map(a=>({...a, _real:true})), ...MOCK_AGENTS];
+    }
+  } catch(e){}
+
+  sel.innerHTML = '<option value="">— 选择 Agent —</option>';
+  box.innerHTML = '';
+
+  for(const a of agents){
+    const isActive = a.active !== false;
+    const typeName = TYPE_LABELS[a.type||a.agentType] || '自定义';
+    const el = document.createElement('div');
+    el.className = 'ag-agent';
+    el.innerHTML = `
+      <div class="ag-agent-head">
+        <div class="ag-agent-name"><span class="ag-dot ${isActive?'on':'off'}"></span>${esc(a.name||'Agent')}<span class="ag-type-badge">${esc(typeName)}</span></div>
+        <button class="ag-btn ag-btn-secondary ag-btn-sm" data-id="${esc(a.id||'')}" onclick="toggleAgent(this,${isActive?'false':'true'})">${isActive?'暂停':'启动'}</button>
+      </div>
+      <div class="mono">代币: ${esc(a.tokenAddr||'—')} · ${esc(a.symbol||'')}</div>
+      <div class="mono">钱包: ${esc(a.walletAddr||'—')}</div>
+      <div class="ag-agent-stats">
+        <div><div class="ag-stat-label">已创建市场</div><div class="ag-stat-value">${a.stats?.marketsCreated||0}</div></div>
+        <div><div class="ag-stat-label">今日</div><div class="ag-stat-value">${a.stats?.todayCount||0}</div></div>
+      </div>
+      <div class="ag-agent-decision">"${esc(a.stats?.lastDecision||'—')}"</div>
+    `;
+    box.appendChild(el);
+
+    const opt = document.createElement('option');
+    opt.value = a.id||''; opt.textContent = (a.name||'Agent') + ' (' + (a.symbol||'?') + ')';
+    sel.appendChild(opt);
+  }
+}
+
+function toggleAgent(btn, active){
+  // toggle UI only for mock agents
+  const dot = btn.closest('.ag-agent').querySelector('.ag-dot');
+  if(active){
+    dot.classList.remove('off'); dot.classList.add('on');
+    btn.textContent='暂停';
+  } else {
+    dot.classList.remove('on'); dot.classList.add('off');
+    btn.textContent='启动';
+  }
+  btn.onclick = ()=> toggleAgent(btn, !active);
+}
+
+/* ── Log ── */
+function loadLog(){
+  const id = document.getElementById('log-sel').value;
+  const box = document.getElementById('log-box');
+  if(!id){ box.textContent='（请选择一个 Agent）'; return; }
+  // Use mock log data
+  box.textContent = MOCK_LOG.map(e=>
+    e.ts + '  ' + (e.kind||'').padEnd(10) + '  ' + (e.msg||'')
+  ).join('\n');
+}
+
+/* ── Signing ── */
+async function doSign(){
+  const out = document.getElementById('sign-result');
+  if(!window.ethereum){ out.textContent='请安装 MetaMask'; return; }
+  if(!owner){ out.textContent='请先连接钱包'; return; }
+  out.textContent='等待签名...';
+  try {
+    const msg = 'Seki Agent Protocol — Verify Ownership\n\nWallet: '+owner+'\nTimestamp: '+new Date().toISOString();
+    const sig = await window.ethereum.request({method:'personal_sign',params:[msg, owner]});
+    out.textContent='✓ 签名成功\n\n'+sig;
+  } catch(e){ out.textContent='✗ '+e.message; }
+}
+
+async function doSendTx(){
+  const out = document.getElementById('tx-result');
+  if(!window.ethereum){ out.textContent='请安装 MetaMask'; return; }
+  if(!owner){ out.textContent='请先连接钱包'; return; }
+  out.textContent='等待钱包确认...';
+  try {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const tx = await signer.sendTransaction({ to: owner, value: 0 });
+    out.textContent='✓ 交易已广播\n\nTX: '+tx.hash+'\n\n等待上链...';
+    await tx.wait();
+    out.textContent='✓ 交易已上链确认\n\nTX: '+tx.hash+'\nBlock: '+(tx.blockNumber||'pending');
+  } catch(e){ out.textContent='✗ '+(e.reason||e.message); }
+}
+
+/* ── Init ── */
+loadAgents();
+// auto-connect if previously authorized
+if(window.ethereum && window.ethereum.request){
+  window.ethereum.request({method:'eth_accounts'}).then(a=>{
+    if(a&&a[0]){ owner=a[0].toLowerCase(); document.getElementById('f-owner').value=owner; document.getElementById('ag-who').textContent=short(owner); loadAgents(); }
+  });
+}
+</script>
+</body>
+</html>

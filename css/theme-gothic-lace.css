@@ -1,0 +1,414 @@
+/* =========================================================
+   THEME: Gothic Lace — 维多利亚暗黑蕾丝
+   覆盖优先：body/html scope + !important for core tokens
+   ========================================================= */
+
+/* ---------- Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=UnifrakturCook:wght@700&family=Noto+Serif+SC:wght@300;400;500;700&display=swap');
+
+/* ---------- Design tokens (override existing :root vars) ---------- */
+:root, html, body {
+  --bg:             #0a0505 !important;
+  --bg-0:           #0a0505 !important;
+  --bg-1:           #120709 !important;
+  --bg-2:           #1a090c !important;
+  --panel:          rgba(20, 6, 10, 0.78) !important;
+  --panel-2:        rgba(30, 8, 12, 0.88) !important;
+  --glass:          rgba(212, 0, 31, 0.04) !important;
+
+  --wine:           #8b0a1a;
+  --blood:          #d4001f;
+  --blood-soft:     #a6172a;
+  --rose:           #6b0a14;
+
+  --gold:           #b8914a !important;
+  --gold-bright:    #e0b968 !important;
+  --ivory:          #e8dcc4;
+  --parchment:      #d9c9a8;
+
+  --text:           #e8dcc4 !important;
+  --text-dim:       #a89676 !important;
+  --text-mute:      #6b5a44 !important;
+  --muted:          #7a6a55 !important;
+
+  --accent:         #b8914a !important;
+  --accent-2:       #8b0a1a !important;
+  --accent-3:       #d4001f !important;
+  --primary:        #8b0a1a !important;
+  --secondary:      #b8914a !important;
+
+  --cyan:           #b8914a !important;
+  --purple:         #8b0a1a !important;
+  --dim:            #1a090c !important;
+
+  --border:         rgba(184, 145, 74, 0.32) !important;
+  --border-strong:  rgba(184, 145, 74, 0.55) !important;
+  --divider:        rgba(184, 145, 74, 0.2) !important;
+
+  --glow-gold:      0 0 24px rgba(184, 145, 74, 0.35) !important;
+  --glow-cyan:      0 0 24px rgba(139, 10, 26, 0.5) !important;
+  --glow-blood:     0 0 28px rgba(212, 0, 31, 0.35);
+
+  --shadow-deep:    0 12px 40px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(184, 145, 74, 0.15);
+
+  --radius:         2px;
+  --radius-lg:      4px;
+
+  --font-display:   'Cinzel Decorative', 'UnifrakturCook', 'Noto Serif SC', serif;
+  --font-serif:     'Cormorant Garamond', 'Noto Serif SC', 'Times New Roman', serif;
+  --font-mono:      'Cormorant Garamond', 'Courier New', monospace;
+
+  color-scheme: dark;
+}
+
+/* ---------- Global base ---------- */
+html, body {
+  background: var(--bg-0) !important;
+  color: var(--text) !important;
+  font-family: var(--font-serif) !important;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Layered background: deep wine radial glows + lace SVG overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(1200px 800px at 15% 10%, rgba(139, 10, 26, 0.22), transparent 60%),
+    radial-gradient(1000px 700px at 85% 90%, rgba(107, 10, 20, 0.28), transparent 60%),
+    radial-gradient(700px 500px at 50% 50%, rgba(30, 8, 12, 0.9), transparent 70%),
+    linear-gradient(180deg, #0a0505 0%, #140608 50%, #0a0505 100%);
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.14;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'><defs><pattern id='lace' x='0' y='0' width='80' height='80' patternUnits='userSpaceOnUse'><g fill='none' stroke='%23b8914a' stroke-width='0.6' opacity='0.7'><circle cx='40' cy='40' r='28'/><circle cx='40' cy='40' r='18'/><circle cx='40' cy='40' r='8'/><path d='M40 2 Q50 20 40 40 Q30 20 40 2Z'/><path d='M40 78 Q50 60 40 40 Q30 60 40 78Z'/><path d='M2 40 Q20 30 40 40 Q20 50 2 40Z'/><path d='M78 40 Q60 30 40 40 Q60 50 78 40Z'/><path d='M14 14 Q28 28 40 40 Q28 28 14 14Z'/><path d='M66 14 Q52 28 40 40 Q52 28 66 14Z'/><path d='M14 66 Q28 52 40 40 Q28 52 14 66Z'/><path d='M66 66 Q52 52 40 40 Q52 52 66 66Z'/><circle cx='0' cy='0' r='4'/><circle cx='80' cy='0' r='4'/><circle cx='0' cy='80' r='4'/><circle cx='80' cy='80' r='4'/></g></pattern></defs><rect width='320' height='320' fill='url(%23lace)'/></svg>");
+}
+
+/* ---------- Typography ---------- */
+h1, h2, h3, h4, h5, .hero-title, .title, .section-title, .page-title {
+  font-family: var(--font-display) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  color: var(--ivory) !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 0 18px rgba(139, 10, 26, 0.35);
+  background: linear-gradient(180deg, #e8dcc4 0%, #b8914a 55%, #8b0a1a 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+h1::first-letter, .hero-title::first-letter {
+  font-family: 'UnifrakturCook', serif;
+  font-size: 1.15em;
+}
+.hero-label, .eyebrow, .kicker, small, .label {
+  font-family: var(--font-display) !important;
+  letter-spacing: 0.35em !important;
+  color: var(--gold) !important;
+  opacity: 0.85;
+  text-transform: uppercase;
+}
+p, li, td, th, span, div, label, input, textarea, select, button {
+  font-family: var(--font-serif);
+}
+a {
+  color: var(--gold-bright) !important;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(184, 145, 74, 0.35);
+  transition: all 0.25s ease;
+}
+a:hover {
+  color: var(--blood) !important;
+  border-bottom-color: var(--blood);
+  text-shadow: 0 0 10px rgba(212, 0, 31, 0.5);
+}
+
+/* ---------- Lace border image ---------- */
+.card, .panel, .box, .tile, .module, .section-card,
+[class*="card"], [class*="panel"], [class*="box"] {
+  background: var(--panel) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-deep) !important;
+  position: relative;
+  backdrop-filter: blur(6px);
+}
+.card::before, .panel::before, .box::before,
+[class*="card"]::before, [class*="panel"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'><defs><pattern id='corner' x='0' y='0' width='40' height='40' patternUnits='userSpaceOnUse'><g fill='none' stroke='%23b8914a' stroke-width='0.4' opacity='0.25'><path d='M0 20 Q10 10 20 20 Q30 30 40 20'/><path d='M20 0 Q10 10 20 20 Q30 30 20 40'/><circle cx='20' cy='20' r='2'/></g></pattern></defs><rect width='100%25' height='100%25' fill='url(%23corner)'/></svg>");
+  opacity: 0.4;
+  mix-blend-mode: screen;
+}
+
+/* ---------- Buttons ---------- */
+button, .btn, [class*="button"], input[type="button"], input[type="submit"] {
+  font-family: var(--font-display) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.25em !important;
+  text-transform: uppercase;
+  font-size: 12px !important;
+  padding: 12px 28px !important;
+  background: linear-gradient(180deg, #1a090c 0%, #2a0c12 100%) !important;
+  color: var(--ivory) !important;
+  border: 1px solid var(--gold) !important;
+  border-radius: var(--radius) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(232, 220, 196, 0.08),
+    inset 0 0 20px rgba(139, 10, 26, 0.25),
+    0 4px 14px rgba(0, 0, 0, 0.6),
+    0 0 0 3px rgba(10, 5, 5, 0.6),
+    0 0 0 4px rgba(184, 145, 74, 0.18) !important;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+button:hover, .btn:hover, [class*="button"]:hover {
+  background: linear-gradient(180deg, #2a0c12 0%, #8b0a1a 100%) !important;
+  border-color: var(--blood) !important;
+  color: #fff !important;
+  box-shadow:
+    inset 0 1px 0 rgba(232, 220, 196, 0.15),
+    inset 0 0 30px rgba(212, 0, 31, 0.4),
+    0 6px 24px rgba(139, 10, 26, 0.6),
+    0 0 0 3px rgba(10, 5, 5, 0.6),
+    0 0 0 4px rgba(212, 0, 31, 0.35) !important;
+  transform: translateY(-1px);
+}
+button:active, .btn:active { transform: translateY(0); }
+button:disabled, .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-primary, .primary, button.primary {
+  background: linear-gradient(180deg, #8b0a1a 0%, #4a0810 100%) !important;
+  color: #fff !important;
+  border-color: var(--blood-soft) !important;
+}
+
+/* ---------- Inputs ---------- */
+input, textarea, select {
+  background: rgba(10, 5, 5, 0.7) !important;
+  color: var(--ivory) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  padding: 10px 14px !important;
+  font-family: var(--font-serif) !important;
+  font-size: 14px;
+  transition: all 0.25s ease;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none !important;
+  border-color: var(--blood) !important;
+  box-shadow:
+    0 0 0 3px rgba(139, 10, 26, 0.25),
+    inset 0 0 14px rgba(139, 10, 26, 0.15) !important;
+}
+input::placeholder, textarea::placeholder {
+  color: var(--text-mute) !important;
+  font-style: italic;
+}
+
+/* ---------- Tables ---------- */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  background: rgba(10, 5, 5, 0.5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+th {
+  font-family: var(--font-display) !important;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold) !important;
+  background: linear-gradient(180deg, #1a090c, #120709) !important;
+  border-bottom: 1px solid var(--gold) !important;
+  padding: 12px 14px !important;
+  font-size: 11px;
+}
+td {
+  border-bottom: 1px solid var(--divider) !important;
+  padding: 12px 14px !important;
+  color: var(--text) !important;
+}
+tr:hover td { background: rgba(139, 10, 26, 0.08) !important; }
+
+/* ---------- Filigree Divider ---------- */
+hr, .divider {
+  border: none !important;
+  height: 28px !important;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='28' viewBox='0 0 400 28'><g fill='none' stroke='%23b8914a' stroke-width='0.8' opacity='0.75'><path d='M0 14 L150 14'/><path d='M250 14 L400 14'/><circle cx='200' cy='14' r='5'/><circle cx='200' cy='14' r='2' fill='%238b0a1a' stroke='none'/><path d='M170 14 Q185 4 200 14 Q215 24 230 14'/><path d='M170 14 Q185 24 200 14 Q215 4 230 14'/><circle cx='170' cy='14' r='1.5'/><circle cx='230' cy='14' r='1.5'/><path d='M140 14 Q150 8 160 14'/><path d='M240 14 Q250 20 260 14'/></g></svg>") center center no-repeat !important;
+  background-size: contain !important;
+  margin: 32px 0 !important;
+  opacity: 0.85;
+}
+
+/* ---------- Scrollbars ---------- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #0a0505; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8b0a1a, #4a0810);
+  border: 2px solid #0a0505;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #d4001f, #8b0a1a); }
+
+/* ---------- Selection ---------- */
+::selection { background: var(--blood); color: #fff; text-shadow: none; }
+
+/* ---------- Nav / Header ---------- */
+header, nav, .navbar, .nav, .header, .topbar {
+  background: linear-gradient(180deg, rgba(10,5,5,0.95), rgba(20,7,10,0.85)) !important;
+  border-bottom: 1px solid var(--border) !important;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+header::after, nav::after, .navbar::after, .header::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 6px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='6' viewBox='0 0 40 6'><path d='M0 0 Q10 6 20 3 Q30 0 40 3 L40 6 L0 6 Z' fill='%238b0a1a' opacity='0.55'/><path d='M0 0 Q10 5 20 2 Q30 0 40 2' fill='none' stroke='%23b8914a' stroke-width='0.5' opacity='0.6'/></svg>") repeat-x;
+  background-size: 40px 6px;
+  pointer-events: none;
+}
+nav a, .nav a, .navbar a, header a {
+  border-bottom: none !important;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-family: var(--font-display) !important;
+  font-size: 12px;
+  color: var(--parchment) !important;
+  padding: 6px 14px;
+}
+nav a:hover, .nav a:hover, .navbar a:hover, header a:hover {
+  color: var(--blood) !important;
+  text-shadow: 0 0 12px rgba(212,0,31,0.55);
+}
+nav a.active, .nav a.active { color: var(--gold-bright) !important; }
+
+/* ---------- Code / pre ---------- */
+code, pre {
+  font-family: 'Courier New', monospace !important;
+  background: rgba(0,0,0,0.5) !important;
+  color: var(--parchment) !important;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2px 6px;
+}
+pre { padding: 14px; overflow:auto; }
+
+/* ---------- Badges / pills / tags ---------- */
+.badge, .tag, .pill, .chip, [class*="badge"], [class*="tag"] {
+  display: inline-block;
+  font-family: var(--font-display) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 4px 10px !important;
+  border: 1px solid var(--gold) !important;
+  border-radius: 2px !important;
+  color: var(--gold-bright) !important;
+  background: rgba(139, 10, 26, 0.15) !important;
+  box-shadow: inset 0 0 12px rgba(139, 10, 26, 0.25);
+}
+
+/* ---------- Modal / Dialog ---------- */
+.modal, .dialog, [class*="modal"], [class*="dialog"] {
+  background: var(--panel-2) !important;
+  border: 1px solid var(--gold) !important;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.85),
+    0 0 0 1px rgba(184,145,74,0.3),
+    0 0 60px rgba(139, 10, 26, 0.4) !important;
+}
+
+/* ---------- Progress bars ---------- */
+progress, .progress, [class*="progress"] {
+  background: rgba(10,5,5,0.7) !important;
+  border: 1px solid var(--border) !important;
+  height: 8px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+progress::-webkit-progress-bar { background: rgba(10,5,5,0.7); }
+progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #8b0a1a, #d4001f, #b8914a);
+  box-shadow: 0 0 12px rgba(212,0,31,0.6);
+}
+
+/* ---------- Hero specific ---------- */
+.hero, .hero-section, [class*="hero"] {
+  position: relative;
+  padding: 80px 20px !important;
+  text-align: center;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(500px 300px at 50% 30%, rgba(139,10,26,0.4), transparent 70%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'><g fill='none' stroke='%23b8914a' stroke-width='0.5' opacity='0.18'><circle cx='300' cy='200' r='180'/><circle cx='300' cy='200' r='140'/><circle cx='300' cy='200' r='100'/><circle cx='300' cy='200' r='60'/><path d='M300 20 L300 380 M120 200 L480 200 M180 80 L420 320 M420 80 L180 320'/><path d='M300 60 Q360 130 300 200 Q240 130 300 60Z'/><path d='M300 340 Q360 270 300 200 Q240 270 300 340Z'/><path d='M60 200 Q130 260 200 200 Q130 140 60 200Z'/><path d='M540 200 Q470 260 400 200 Q470 140 540 200Z'/></g></svg>") center/contain no-repeat;
+  opacity: 0.9;
+}
+
+/* ---------- Override gradient text on specific ids that use bright cyans ---------- */
+[style*="webkit-background-clip:text"], [style*="-webkit-text-fill-color:transparent"] {
+  background: linear-gradient(180deg, #e8dcc4 0%, #b8914a 55%, #8b0a1a 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* ---------- Evolution page inline style overrides ---------- */
+.scanlines {
+  background: repeating-linear-gradient(0deg,
+    transparent, transparent 2px,
+    rgba(184,145,74,0.025) 2px, rgba(184,145,74,0.025) 4px) !important;
+}
+.hud-corner { color: var(--gold) !important; font-family: var(--font-display) !important; }
+.core-ring:nth-child(1) { border-color: var(--gold) !important; }
+.core-ring:nth-child(2) { border-color: var(--blood) !important; }
+.core-ring:nth-child(3) { border-color: var(--wine) !important; }
+
+/* ---------- Generic neon/cyan killer ---------- */
+[style*="#00f0ff"], [style*="#0ff"], [style*="cyan"] {
+  /* let token var override take care; but try to neutralize obvious neons */
+}
+
+/* ---------- Images: gentle sepia-tint hover ---------- */
+img {
+  filter: contrast(1.05) saturate(0.9);
+}
+
+/* ---------- Utility classes ---------- */
+.text-gold { color: var(--gold) !important; }
+.text-blood { color: var(--blood) !important; }
+.text-ivory { color: var(--ivory) !important; }
+.bg-panel { background: var(--panel) !important; }
+
+/* ---------- Animation: candlelight flicker for accents ---------- */
+@keyframes candle {
+  0%,100% { opacity: 1; }
+  40% { opacity: 0.92; }
+  60% { opacity: 0.98; }
+}
+.flicker, .hero-title, h1 { animation: candle 4.5s ease-in-out infinite; }
+
+/* END theme-gothic-lace */

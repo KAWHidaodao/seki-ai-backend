@@ -1,4 +1,26 @@
 node_modules/
 *.log
 .env
+.env.*
 .DS_Store
+
+# backups
+*.bak
+*.bak.*
+*.backup
+server.js.bak*
+index.html.bak*
+chat.html.bak*
+evolution.html.bak*
+xlayer.html.bak*
+css/*.bak*
+
+# test scratch
+test-*.js
+tmp-*.html
+tmp-*.js
+
+# runtime state (may contain sensitive data)
+users.json
+agent-log.json
+agent-jobs.json

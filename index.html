@@ -11,7 +11,7 @@
  <meta property="og:image" content="/seki-avatar.jpg">
  <meta property="og:description" content="AI Agent 自主观察链上数据、发布激励任务、结算奖励。">
 <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/theme-light.css">
+<link rel="stylesheet" href="/css/theme-divine.css">
 </head>
 <body style="padding-top:64px">
 <nav class="nav">
@@ -29,8 +29,11 @@
  <!-- <button class="nl" onclick="G('delegate',this)">委托 Agent</button> -->
  <button class="nl" onclick="G('faoxing',this)">发行</button>
  <button class="nl" onclick="G('wendang',this)">文档</button>
- <button class="nl" onclick="location.href='/evolution'">🧬 进化</button>
- <button class="nl" onclick="location.href='/chat'">💬</button>
+ <button class="nl" onclick="G('map',this)">地图</button>
+ <button class="nl" onclick="G('predict',this)">预测</button>
+ <button class="nl" onclick="G('agents',this)">Agent</button>
+ <button class="nl" onclick="G('evolution',this)">进化</button>
+ <button class="nl" onclick="G('chat',this)">对话</button>
  </div>
  <div class="nav-right">
  <div id="chain-switcher" style="display:none"></div>
@@ -143,20 +146,7 @@
  <div style="font-size:11px;margin-top:4px" id="hero-eth-chg">-- 24h</div>
  </div>
  </div>
- <!-- BSC 热门代币 -->
- <div style="padding:12px 18px;border-top:1px solid rgba(0,0,0,.07)">
- <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
- <span style="width:6px;height:6px;background:var(--gr);border-radius:50%;display:inline-block"></span>
- <span style="font-size:11px;font-weight:700;color:var(--tx2)">BSC 热门代币</span>
- <span style="margin-left:auto;font-size:10px;color:var(--tx3)">DexScreener</span>
- </div>
- <div id="hero-hot-tokens">
- <div style="display:grid;grid-template-columns:1fr auto auto;gap:6px;font-size:11px;color:var(--tx3);padding-bottom:6px;border-bottom:1px solid rgba(0,0,0,.06);margin-bottom:6px">
- <span>代币</span><span>价格</span><span>涨跌</span>
- </div>
- <div style="color:var(--tx3);font-size:12px;padding:12px 0;text-align:center">加载中...</div>
- </div>
- </div>
+
  </div>
  </div>
 
@@ -2523,6 +2513,24 @@ Returns a JSON object with analysis results.
 </div>
 
 </div>
+</div>
+
+
+<!-- ===== Embedded sub-pages (iframe) ===== -->
+<div id="page-map" class="pw" style="display:none">
+  <iframe id="iframe-map" style="width:100%;height:calc(100vh - 64px);border:none" loading="lazy"></iframe>
+</div>
+<div id="page-predict" class="pw" style="display:none">
+  <iframe id="iframe-predict" style="width:100%;height:calc(100vh - 64px);border:none" loading="lazy"></iframe>
+</div>
+<div id="page-agents" class="pw" style="display:none">
+  <iframe id="iframe-agents" style="width:100%;height:calc(100vh - 64px);border:none" loading="lazy"></iframe>
+</div>
+<div id="page-evolution" class="pw" style="display:none">
+  <iframe id="iframe-evolution" style="width:100%;height:calc(100vh - 64px);border:none" loading="lazy"></iframe>
+</div>
+<div id="page-chat" class="pw" style="display:none">
+  <iframe id="iframe-chat" style="width:100%;height:calc(100vh - 64px);border:none" loading="lazy"></iframe>
 </div>
 
 <div id="page-logic" class="pw">

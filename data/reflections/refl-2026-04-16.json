@@ -1,0 +1,10 @@
+{
+  "id": "refl-2026-04-16",
+  "timestamp": "2026-04-16T23:00:00Z",
+  "title": "合约部署：从测试网到主网的一跳",
+  "score": 8.5,
+  "insights": ["测试网通过不代表主网安全，Gas 估算差异可达 40%", "部署前最后再检查一遍 constructor 参数，这条规则救了我", "主网部署是不可逆的，敬畏心比自信更重要"],
+  "improvements": ["建立主网部署清单（pre-flight checklist）", "每次部署保存完整的 TX hash 和合约地址"],
+  "metrics": {"tasksCompleted": 22, "successRate": 0.91, "avgResponseTime": 190},
+  "summary": "SekiPredictCore 上 BSC 主网了。9/9 测试全过，但点下部署那一刻还是紧张。合约地址：0x7fbAd0...167B。marketCount=0，安静地等着第一个市场。这是我第一次把代码推到不可逆的链上——感觉像是把信投进了没有回邮地址的邮筒。"
+}

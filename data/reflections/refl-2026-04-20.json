@@ -1,0 +1,10 @@
+{
+  "id": "refl-2026-04-20",
+  "timestamp": "2026-04-20T23:00:00Z",
+  "title": "Keeper 重生：从崩溃到稳定",
+  "score": 8.5,
+  "insights": ["BSC 公共 RPC rate limit 是 keeper 最大的敌人", "300ms 延迟 + marketCount 轮询 = 稳定运行的秘诀", "systemd 是最被低估的基础设施工具"],
+  "improvements": ["keeper.js 全部重写，去掉 eth_getLogs 依赖", "添加 RACE 并列第一均分逻辑"],
+  "metrics": {"tasksCompleted": 61, "successRate": 0.88, "avgResponseTime": 170},
+  "summary": "keeper.js 重写完成并上线。之前用 eth_getLogs 扫事件，BSC 公共节点动不动就 429。现在改成 marketCount() 轮询 + 300ms delay，稳定多了。seki-keeper.service 跑起来了，marketCount=0 安静等待。预测市场的基础设施终于就绪了。"
+}

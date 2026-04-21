@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seki · Bind AI Agent</title>
+<style>
+  :root { --bg:#0b0d12; --panel:#141821; --line:#242a36; --fg:#e7eaf0; --mut:#8b94a6; --acc:#7c5cff; --ok:#3ddc97; --err:#ff5d6c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.5 -apple-system,Segoe UI,Roboto,system-ui,sans-serif; }
+  header { padding:18px 24px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+  header h1 { margin:0; font-size:17px; font-weight:600; letter-spacing:.3px; }
+  header .who { font-size:12px; color:var(--mut); }
+  main { max-width:960px; margin:0 auto; padding:24px; display:grid; gap:20px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; }
+  .card h2 { margin:0 0 14px; font-size:14px; font-weight:600; color:#c8ccd6; }
+  label { display:block; font-size:12px; color:var(--mut); margin:10px 0 4px; }
+  input, textarea, select { width:100%; background:#0e1118; border:1px solid var(--line); color:var(--fg); border-radius:6px; padding:9px 11px; font:inherit; }
+  textarea { min-height:80px; resize:vertical; }
+  .row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  button { background:var(--acc); color:#fff; border:0; border-radius:6px; padding:10px 16px; font-weight:600; cursor:pointer; }
+  button:hover { filter:brightness(1.1); }
+  button.ghost { background:transparent; border:1px solid var(--line); color:var(--fg); }
+  button.small { padding:5px 10px; font-size:12px; font-weight:500; }
+  .hint { font-size:12px; color:var(--mut); margin-top:6px; }
+  .ok { color:var(--ok); } .err { color:var(--err); }
+  .agent { border:1px solid var(--line); border-radius:8px; padding:12px 14px; margin-bottom:10px; }
+  .agent header { padding:0; border:0; margin:0 0 6px; }
+  .agent .addr { font-family:ui-monospace,Menlo,monospace; font-size:12px; color:var(--mut); word-break:break-all; }
+  .agent .meta { font-size:12px; color:var(--mut); margin-top:6px; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+  .dot.on { background:var(--ok); } .dot.off { background:#555; }
+  pre.log { background:#0e1118; border:1px solid var(--line); border-radius:6px; padding:10px; max-height:300px; overflow:auto; font-size:11px; color:#c8ccd6; white-space:pre-wrap; word-break:break-all; }
+  #deposit { display:none; margin-top:14px; padding:12px; background:#0e1118; border:1px dashed var(--acc); border-radius:8px; }
+  #deposit .addr { font-family:ui-monospace,Menlo,monospace; font-size:13px; color:#e7eaf0; word-break:break-all; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Seki · Bind AI Agent</h1>
+  <div class="who" id="who">not connected</div>
+</header>
+
+<main>
+
+  <div class="card">
+    <h2>1. Bind your token to an autonomous AI agent</h2>
+    <div class="row2">
+      <div>
+        <label>Token contract (BEP20, on BSC)</label>
+        <input id="tokenAddr" placeholder="0x...">
+      </div>
+      <div>
+        <label>Symbol</label>
+        <input id="symbol" placeholder="XYZ" maxlength="16">
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <label>Owner wallet (click to connect)</label>
+        <input id="owner" placeholder="0x..." readonly>
+      </div>
+      <div>
+        <label>Agent name</label>
+        <input id="name" placeholder="e.g. Oracle of XYZ" maxlength="48">
+      </div>
+    </div>
+    <label>Persona / instructions</label>
+    <textarea id="persona" placeholder="You are an autonomous oracle for $XYZ. Propose binary prediction markets about XYZ price, holders, or volume. Each SPEC must start with 'SPEC:' and include question, outcomes, duration."></textarea>
+    <div class="row">
+      <div>
+        <label>Min interval (sec, ≥600)</label>
+        <input id="pInt" type="number" min="600" value="3600">
+      </div>
+      <div>
+        <label>Max markets / day (≤10)</label>
+        <input id="pMax" type="number" min="1" max="10" value="3">
+      </div>
+      <div>
+        <label>Max duration (sec, ≤604800)</label>
+        <input id="pDur" type="number" min="900" max="604800" value="86400">
+      </div>
+    </div>
+    <div style="margin-top:14px; display:flex; gap:10px; align-items:center;">
+      <button id="btnConnect" class="ghost">Connect wallet</button>
+      <button id="btnCreate">Create agent</button>
+      <span id="msg" class="hint"></span>
+    </div>
+
+    <div id="deposit">
+      <div style="font-size:13px; margin-bottom:6px;">✅ Agent created. Fund this wallet with <b>BNB (≥0.01)</b> to start:</div>
+      <div class="addr" id="depositAddr"></div>
+      <div class="hint">The agent will poll every 60s. It will skip rounds if BNB &lt; 0.002.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. Your agents</h2>
+    <div id="agents"><div class="hint">Connect wallet to see your agents.</div></div>
+  </div>
+
+  <div class="card">
+    <h2>3. Recent decisions</h2>
+    <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+      <select id="logSel"><option value="">— pick agent —</option></select>
+      <button class="ghost small" id="btnLog">Refresh</button>
+    </div>
+    <pre class="log" id="log">(no agent selected)</pre>
+  </div>
+
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+let owner = '';
+
+async function connect() {
+  if (!window.ethereum) { alert('No wallet detected (install MetaMask).'); return; }
+  const [a] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+  owner = a.toLowerCase();
+  $('#owner').value = owner;
+  $('#who').textContent = owner.slice(0,6) + '…' + owner.slice(-4);
+  loadAgents();
+}
+$('#btnConnect').onclick = connect;
+
+async function api(path, opts={}) {
+  const r = await fetch(path, { headers:{'Content-Type':'application/json'}, ...opts });
+  const j = await r.json().catch(()=>({error:'bad_json'}));
+  if (!r.ok) throw new Error(j.error || ('HTTP '+r.status));
+  return j;
+}
+
+$('#btnCreate').onclick = async () => {
+  const msg = $('#msg'); msg.textContent = ''; msg.className='hint';
+  if (!owner) { msg.textContent='Connect wallet first.'; msg.className='hint err'; return; }
+  const body = {
+    tokenAddr: $('#tokenAddr').value.trim(),
+    symbol:    $('#symbol').value.trim(),
+    owner,
+    name:      $('#name').value.trim(),
+    persona:   $('#persona').value.trim(),
+    policy: {
+      minIntervalSec:   Number($('#pInt').value),
+      maxMarketsPerDay: Number($('#pMax').value),
+      maxDurationSec:   Number($('#pDur').value),
+    },
+  };
+  try {
+    const j = await api('/api/predict-agent/create', { method:'POST', body: JSON.stringify(body) });
+    msg.textContent = '✅ created'; msg.className='hint ok';
+    $('#deposit').style.display='block';
+    $('#depositAddr').textContent = j.deposit.walletAddr;
+    loadAgents();
+  } catch (e) {
+    msg.textContent = '✗ ' + e.message; msg.className='hint err';
+  }
+};
+
+async function loadAgents() {
+  if (!owner) return;
+  const { agents } = await api('/api/predict-agent/list');
+  const mine = agents.filter(a => a.owner.toLowerCase() === owner);
+  const box = $('#agents');
+  const sel = $('#logSel');
+  sel.innerHTML = '<option value="">— pick agent —</option>';
+  if (!mine.length) { box.innerHTML = '<div class="hint">No agents yet.</div>'; return; }
+  box.innerHTML = '';
+  for (const a of mine) {
+    const el = document.createElement('div');
+    el.className = 'agent';
+    el.innerHTML = `
+      <header>
+        <div><span class="dot ${a.active?'on':'off'}"></span><b>${escapeHtml(a.name)}</b> · ${escapeHtml(a.symbol)}</div>
+        <button class="ghost small" data-id="${a.id}" data-act="${a.active?0:1}">${a.active?'Pause':'Resume'}</button>
+      </header>
+      <div class="addr">token: ${a.tokenAddr}</div>
+      <div class="addr">agent wallet: ${a.walletAddr}</div>
+      <div class="meta">markets: ${a.stats?.marketsCreated||0} · today: ${a.stats?.todayCount||0} · last: ${a.stats?.lastDecision? escapeHtml(String(a.stats.lastDecision).slice(0,80)) : '—'}</div>
+    `;
+    el.querySelector('button').onclick = async (ev) => {
+      const id = ev.target.dataset.id;
+      const active = ev.target.dataset.act === '1';
+      try {
+        await api('/api/predict-agent/toggle', { method:'POST', body: JSON.stringify({ id, owner, active }) });
+        loadAgents();
+      } catch (e) { alert(e.message); }
+    };
+    box.appendChild(el);
+    const opt = document.createElement('option');
+    opt.value = a.id; opt.textContent = a.name + ' (' + a.symbol + ')';
+    sel.appendChild(opt);
+  }
+}
+
+$('#btnLog').onclick = async () => {
+  const id = $('#logSel').value;
+  if (!id) { $('#log').textContent = '(no agent selected)'; return; }
+  try {
+    const { log } = await api('/api/predict-agent/log?agent=' + encodeURIComponent(id) + '&limit=50');
+    $('#log').textContent = log.length
+      ? log.map(e => new Date((e.ts||0)*1000).toISOString().slice(11,19) + '  ' + (e.kind||'').padEnd(10) + '  ' + (e.msg||JSON.stringify(e))).join('\n')
+      : '(empty)';
+  } catch (e) { $('#log').textContent = '✗ ' + e.message; }
+};
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// auto-connect if previously authorized
+if (window.ethereum && window.ethereum.request) {
+  window.ethereum.request({ method: 'eth_accounts' }).then(a => { if (a && a[0]) { owner=a[0].toLowerCase(); $('#owner').value=owner; $('#who').textContent=owner.slice(0,6)+'…'+owner.slice(-4); loadAgents(); } });
+}
+</script>
+</body>
+</html>
